@@ -1,0 +1,31 @@
+header {
+  display: flex;
+  align-items: center;
+  height: 90px;
+  padding: 0 40px;
+}
+
+.logo {
+  margin-top: 50px;
+  font-size: 2rem;
+  margin-right: 20px;
+}
+
+.header-text {
+  flex: 1;
+}
+
+.login {
+  display: flex;
+  align-items: center;
+}
+
+.login img {
+  width: 60px;
+  height: 60px;
+  margin-right: 10px;
+}
+
+.login-links {
+  width: 270px;
+}

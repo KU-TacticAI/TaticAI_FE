@@ -1,0 +1,79 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #111;
+  color: #fff;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.scale-wrapper {
+  transform-origin: 0 0;
+  width: 100%;
+  height: 100%;
+}
+
+main {
+  display: flex;
+  justify-content: space-between;
+  padding: 60px 85px;
+}
+
+.game-images {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.game-image {
+  width: 420px;
+  height: 200px;
+  background: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.play-guide {
+  position: relative;
+  width: 605px;
+  height: 440px;
+  background: #222;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #fff;
+  margin: 0;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #444;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
