@@ -13,8 +13,18 @@ html, body {
 
 .layout-wrapper {
   /*max-width: 1200px;*/
-  padding: 0 2rem;     /* 좌우 패딩 */
   margin: 0 auto;      /* 가운데 정렬 */
   box-sizing: border-box;
   min-height: 100vh;
+}
+
+.layout-content-wrapper{
+  padding: 2rem;
+}
+
+.layout-content{
+  padding: 2rem;
+  background: #171a21;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }

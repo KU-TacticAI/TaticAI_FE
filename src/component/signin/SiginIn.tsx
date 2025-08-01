@@ -80,105 +80,100 @@ const Signup = () => {
 
   return (
       <Layout>
-        <div className="tacticai-signup">
+        <h1>계정 만들기</h1>
 
-          <div className="content">
-            <h1>계정 만들기</h1>
-
-            <form onSubmit={handleSubmit} className="signup-form">
-              <div className="form-container">
-                <div className="text-data">
-                  <div className="form-group">
-                    <label htmlFor="name">이름</label>
-                    <input
-                        id="name"
-                        name="name"
-                        type="text"
-                        value={form.name}
-                        onChange={handleChange}
-                        placeholder="이름을 입력하세요"
-                        required
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="username">닉네임</label>
-                    <input
-                        id="username"
-                        name="username"
-                        type="text"
-                        value={form.username}
-                        onChange={handleChange}
-                        placeholder="닉네임을 입력하세요"
-                        required
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="email">이메일 주소</label>
-                    <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={form.email}
-                        onChange={handleChange}
-                        placeholder="이메일 주소를 입력하세요"
-                        required
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="password">비밀번호</label>
-                    <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        value={form.password}
-                        onChange={handleChange}
-                        placeholder="비밀번호를 입력하세요"
-                        required
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="confirmPassword">비밀번호 확인</label>
-                    <input
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        type="password"
-                        value={form.confirmPassword}
-                        onChange={handleChange}
-                        placeholder="비밀번호를 다시 입력하세요"
-                        required
-                    />
-                  </div>
-
-                  <div className="image-group">
-                    <label htmlFor="profileImage">프로필 사진</label>
-                    <input
-                        id="profileImage"
-                        type="file"
-                        onChange={onFileChange}
-                        accept="image/*"
-                    />
-                    <div className="image-preview-group">
-                      {imagePreviewUrl && (
-                          <div className="image-preview">
-                            <img src={imagePreviewUrl} alt="프로필 사진 미리보기"/>
-                          </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
+        <form onSubmit={handleSubmit} className="signup-form">
+          <div className="form-container">
+            <div className="text-data">
+              <div className="form-group">
+                <label htmlFor="name">이름</label>
+                <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    value={form.name}
+                    onChange={handleChange}
+                    placeholder="이름을 입력하세요"
+                    required
+                />
               </div>
 
-              {error && <div className="error-message">{error}</div>}
-              {success && <div className="success-message">회원가입이 성공적으로 완료되었습니다!</div>}
+              <div className="form-group">
+                <label htmlFor="username">닉네임</label>
+                <input
+                    id="username"
+                    name="username"
+                    type="text"
+                    value={form.username}
+                    onChange={handleChange}
+                    placeholder="닉네임을 입력하세요"
+                    required
+                />
+              </div>
 
-              <button type="submit" className="submit-button">회원가입</button>
-            </form>
+              <div className="form-group">
+                <label htmlFor="email">이메일 주소</label>
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    placeholder="이메일 주소를 입력하세요"
+                    required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="password">비밀번호</label>
+                <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    value={form.password}
+                    onChange={handleChange}
+                    placeholder="비밀번호를 입력하세요"
+                    required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="confirmPassword">비밀번호 확인</label>
+                <input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    value={form.confirmPassword}
+                    onChange={handleChange}
+                    placeholder="비밀번호를 다시 입력하세요"
+                    required
+                />
+              </div>
+
+              <div className="image-group">
+                <label htmlFor="profileImage">프로필 사진</label>
+                <input
+                    id="profileImage"
+                    type="file"
+                    onChange={onFileChange}
+                    accept="image/*"
+                />
+                <div className="image-preview-group">
+                  {imagePreviewUrl && (
+                      <div className="image-preview">
+                        <img src={imagePreviewUrl} alt="프로필 사진 미리보기"/>
+                      </div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+
+          {error && <div className="error-message">{error}</div>}
+          {success && <div className="success-message">회원가입이 성공적으로 완료되었습니다!</div>}
+
+          <button type="submit" className="submit-button">회원가입</button>
+        </form>
       </Layout>
   );
 };
