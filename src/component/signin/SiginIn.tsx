@@ -2,8 +2,6 @@ import React, {useState} from 'react';
 import {AxiosError} from 'axios';
 import './SiginIn.css';
 import axiosInstance from '../../api/Api';
-import Header from "../header/Header";
-import NavBar from "../nav/NavBar";
 import Layout from "../layout/Layout";
 
 const Signup = () => {
