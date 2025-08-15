@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { AxiosError } from 'axios';
 import './Login.css';
-import axiosInstance from '../../api/Api';
+import { login } from '../../api/Api';
 import Layout from '../layout/Layout';
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '../../store/slices/authSlice';
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -10,6 +12,7 @@ const Login = () => {
     password: '',
   });
   const [error, setError] = useState('');
+  const dispatch = useDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -24,10 +27,12 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await axiosInstance.post('users/login', form);
+      const response = await login(form);
+      const token = response.data.token;
 
       console.log('로그인 성공:', response.data);
-      // TODO: 로그인 성공 후 처리 (e.g., 토큰 저장, 페이지 이동)
+      localStorage.setItem('Authorization', token);
+      dispatch(loginSuccess(token));
       window.location.href = '/';
     } catch (err) {
       const error = err as AxiosError;
@@ -71,7 +76,9 @@ const Login = () => {
 
         {error && <div className="error-message">{error}</div>}
 
-        <button type="submit" className="submit-button">로그인</button>
+        <button type="submit" className="submit-button">
+          로그인
+        </button>
       </form>
     </Layout>
   );
