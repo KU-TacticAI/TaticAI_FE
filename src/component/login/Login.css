@@ -1,0 +1,59 @@
+h1 {
+  margin: 0 0 2rem;
+  font-size: 2rem;
+  font-weight: normal;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #8f98a0;
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #32353c;
+  background: #32353c;
+  color: #fff;
+  border-radius: 2px;
+  font-size: 1rem;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border-color: #66c0f4;
+}
+
+.error-message {
+  margin: 1rem 0;
+  color: red;
+  font-size: 0.875rem;
+}
+
+.submit-button {
+  background: linear-gradient(to right, #47bfff, #1a44c2);
+  border: none;
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  align-self: flex-start;
+}
+
+.submit-button:hover {
+  opacity: 0.9;
+}

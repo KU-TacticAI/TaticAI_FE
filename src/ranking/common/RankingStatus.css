@@ -1,0 +1,45 @@
+.ranking-status-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  color: #888;
+}
+
+.ranking-skeleton-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+}
+
+.skeleton-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.skeleton-item {
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  animation: skeleton-loading 1.5s infinite ease-in-out;
+}
+
+.skeleton-rank { width: 40px; height: 20px; }
+.skeleton-nickname { flex: 1; height: 20px; }
+.skeleton-score { width: 80px; height: 20px; }
+.skeleton-delta { width: 40px; height: 20px; }
+.skeleton-updatedAt { width: 120px; height: 20px; }
+
+
+@keyframes skeleton-loading {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}

@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
 import {AxiosError} from 'axios';
 import './SiginIn.css';
-import axiosInstance from '../../api/Api';
-import Header from "../header/Header";
-import NavBar from "../nav/NavBar";
+import { signIn } from '../../api/Api';
 import Layout from "../layout/Layout";
 
 const Signup = () => {
@@ -56,11 +54,7 @@ const Signup = () => {
     if (file) formData.append('file', file);
 
     try {
-      const response = await axiosInstance.post('users/sign-in', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await signIn(formData);
 
       console.log('회원가입 성공:', response.data);
       setSuccess(true);

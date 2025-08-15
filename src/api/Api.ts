@@ -5,6 +5,7 @@ import axios, {
   InternalAxiosRequestConfig
 } from 'axios';
 import { NavigateFunction } from 'react-router-dom';
+import { RankingItem } from '../ranking/table/RankingTable';
 
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:8080', // 또는 배포용 주소
@@ -24,6 +25,22 @@ const onRefreshed = (newToken: string) => {
 
 axiosInstance.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
+
+      const url = (config.url || '').toLowerCase();
+
+      // 토큰을 붙이지 않을 경로들(로그인, 회원가입, 토큰 리프레시 등)
+      const skipAuth = [
+        '/users/sign-in',
+        '/api/core/login',
+        '/api/core/users/sign-in',
+        '/token/refresh',
+        '/refresh',
+      ];
+
+      if (skipAuth.some(path => url.endsWith(path))) {
+        return config;
+      }
+
       const accessToken = localStorage.getItem('Authorization');
       if (accessToken) {
         config.headers = config.headers || {};
@@ -33,7 +50,6 @@ axiosInstance.interceptors.request.use(
     },
     (error: AxiosError) => Promise.reject(error)
 );
-
 
 axiosInstance.interceptors.response.use(
     (response: AxiosResponse) => response,
@@ -79,5 +95,25 @@ axiosInstance.interceptors.response.use(
       return Promise.reject(error);
     }
 );
+
+export const getRankings = (params: { page: number; size: number; sort: string; }) => {
+  return axiosInstance.get<RankingItem[]>('/api/core/api/user/ranking', { params });
+};
+
+export const loginApi = (data: object) => {
+    return axiosInstance.post('/api/core/login', data);
+}
+
+export const logoutApi = () => {
+  return  axiosInstance.post('/api/core/logout', {});
+}
+
+export const signIn = (data: object) => {
+    return axiosInstance.post('/api/core/users/sign-in', data, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    });
+}
 
 export default axiosInstance;
