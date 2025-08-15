@@ -105,7 +105,7 @@ export const loginApi = (data: object) => {
 }
 
 export const logoutApi = () => {
-  axiosInstance.post('/api/core/logout', {}, {withCredentials: true});
+  return  axiosInstance.post('/api/core/logout', {});
 }
 
 export const signIn = (data: object) => {
