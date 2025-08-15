@@ -35,6 +35,8 @@ axiosInstance.interceptors.request.use(
 );
 
 
+import { RankingItem } from '../ranking/table/RankingTable';
+
 axiosInstance.interceptors.response.use(
     (response: AxiosResponse) => response,
     async (error: AxiosError) => {
@@ -79,5 +81,9 @@ axiosInstance.interceptors.response.use(
       return Promise.reject(error);
     }
 );
+
+export const getRankings = (params: { page: number; size: number; sort: string; }) => {
+  return axiosInstance.get<RankingItem[]>('/api/user/ranking', { params });
+};
 
 export default axiosInstance;

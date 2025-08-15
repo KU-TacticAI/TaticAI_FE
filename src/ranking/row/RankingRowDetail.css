@@ -1,0 +1,29 @@
+.ranking-row-detail {
+  background-color: #000000;
+  padding: 16px 24px;
+  border-left: 3px solid #007bff;
+}
+
+.ranking-row-detail h4 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.ai-list-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ai-list-table th,
+.ai-list-table td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.ai-list-table th {
+  font-weight: 600;
+  color: #000;
+  font-size: 0.9em;
+}

@@ -1,0 +1,50 @@
+.ranking-container {
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+.ranking-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ranking-controls select {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.ranking-table th,
+.ranking-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.ranking-table th {
+  background-color: #f8f8f8;
+}
+
+.ranking-table .up {
+  color: #28a745;
+}
+
+.ranking-table .down {
+  color: #dc3545;
+}
+
+.ranking-table .clickable-row {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.ranking-table .clickable-row:hover {
+  background-color: #171aFF;
+}

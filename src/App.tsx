@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignIn from './component/signin/SiginIn'
 import Main from './component/main/Main'; // 홈 컴포넌트 (또는 App 내 기본 페이지)
 import Login from './component/login/Login';
+import Ranking from './ranking/page/Ranking';
 
 const App: React.FC = () => {
   return (
@@ -11,6 +12,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Main />} />
           <Route path="/signup" element={<SignIn />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/ranking" element={<Ranking />} />
         </Routes>
       </Router>
   );
