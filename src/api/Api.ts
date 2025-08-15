@@ -100,8 +100,12 @@ export const getRankings = (params: { page: number; size: number; sort: string; 
   return axiosInstance.get<RankingItem[]>('/api/user/ranking', { params });
 };
 
-export const login = (data: object) => {
+export const loginApi = (data: object) => {
     return axiosInstance.post('/api/core/login', data);
+}
+
+export const logoutApi = () => {
+  axiosInstance.post('/api/core/logout', {}, {withCredentials: true});
 }
 
 export const signIn = (data: object) => {

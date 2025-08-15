@@ -2,18 +2,25 @@ import React from 'react';
 import './Header.css';
 import logo from '../../resource/img/logo.png';
 import profilePic from '../../resource/img/profile-icon.png';
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../store/store";
-import {logout} from "../../store/slices/authSlice";
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { logout } from '../../store/slices/authSlice';
+import { logoutApi } from '../../api/Api';
 
-const Header = () => {
+const Header: React.FC = () => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    localStorage.removeItem('Authorization');
-    dispatch(logout());
-    window.location.href = '/';
+  const handleLogout = async () => {
+    try {
+      await logoutApi(); // 서버가 refresh 쿠키를 만료(Set-Cookie)
+    } catch (_) {
+      // 실패해도 클라 정리 계속
+    } finally {
+      localStorage.removeItem('Authorization');
+      dispatch(logout());
+      window.location.href = '/';
+    }
   };
 
   return (
@@ -25,7 +32,6 @@ const Header = () => {
         <div className="login">
           <img src={profilePic} alt="프로필 아이콘" />
           <div className="login-links">
-
             {isAuthenticated ? (
                 <>
                   <button onClick={handleLogout} className="logout-button">로그아웃</button> |

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AxiosError } from 'axios';
 import './Login.css';
-import { login } from '../../api/Api';
+import { loginApi } from '../../api/Api';
 import Layout from '../layout/Layout';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../../store/slices/authSlice';
@@ -27,7 +27,7 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await login(form);
+      const response = await loginApi(form);
       const token = response.data.token;
 
       console.log('로그인 성공:', response.data);
