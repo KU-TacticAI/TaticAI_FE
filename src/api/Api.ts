@@ -97,7 +97,7 @@ axiosInstance.interceptors.response.use(
 );
 
 export const getRankings = (params: { page: number; size: number; sort: string; }) => {
-  return axiosInstance.get<RankingItem[]>('/api/user/ranking', { params });
+  return axiosInstance.get<RankingItem[]>('/api/core/api/user/ranking', { params });
 };
 
 export const loginApi = (data: object) => {
