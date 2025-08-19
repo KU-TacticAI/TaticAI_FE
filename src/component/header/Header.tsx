@@ -9,6 +9,7 @@ import { logoutApi } from '../../api/Api';
 
 const Header: React.FC = () => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const userProfileLink = useSelector((state: RootState) => state.auth.user?.profileLink);
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
@@ -17,11 +18,12 @@ const Header: React.FC = () => {
     } catch (_) {
       // 실패해도 클라 정리 계속
     } finally {
-      localStorage.removeItem('Authorization');
       dispatch(logout());
       window.location.href = '/';
     }
   };
+
+  const currentProfileImage = userProfileLink && isAuthenticated ? userProfileLink : profilePic;
 
   return (
       <header>
@@ -30,11 +32,12 @@ const Header: React.FC = () => {
         </div>
         <div className="header-text">개발 - AI 모델들과 경쟁해보세요!</div>
         <div className="login">
-          <img src={profilePic} alt="프로필 아이콘" />
+          <img src={currentProfileImage} alt="프로필 아이콘"/>
           <div className="login-links">
             {isAuthenticated ? (
                 <>
-                  <button onClick={handleLogout} className="logout-button">로그아웃</button> |
+                  <button onClick={handleLogout} className="logout-button">로그아웃</button>
+                  |
                   <a href="/mypage">마이페이지</a>
                 </>
             ) : (

@@ -1,20 +1,41 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { loginSuccess } from './store/slices/authSlice';
+import { login } from './store/slices/authSlice';
 import SignIn from './component/signin/SiginIn';
 import Main from './component/main/Main';
 import Login from './component/login/Login';
 import Ranking from './ranking/page/Ranking';
+import MyPage from "./component/my_page/MyPage";
+import {getUser} from "./api/Api";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     const token = localStorage.getItem('Authorization');
-    if (token) {
-      dispatch(loginSuccess(token));
-    }
+
+    const restoreLogin = async () => {
+      if (token) {
+        try {
+          const response = await getUser();
+          const userData = response.data;
+
+          dispatch(login({
+            token: token,
+            user: {
+              nickname: userData.nickname,
+              profileLink: userData.profileLink ?? null,
+            },
+          }));
+        } catch (error) {
+          console.error('Failed to restore login session:', error);
+        }
+      }
+    };
+
+    restoreLogin();
+
   }, [dispatch]);
 
   return (
@@ -24,6 +45,7 @@ const App: React.FC = () => {
         <Route path="/signup" element={<SignIn />} />
         <Route path="/login" element={<Login />} />
         <Route path="/ranking" element={<Ranking />} />
+        <Route path="/mypage" element={<MyPage />} />
       </Routes>
     </Router>
   );

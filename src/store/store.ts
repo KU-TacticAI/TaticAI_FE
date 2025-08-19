@@ -1,10 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import pointReducer from './slices/pointSlice'
 import authReducer from './slices/authSlice';
 
 export const store = configureStore({
   reducer:{
-    point: pointReducer,
     auth: authReducer,
   }
 });

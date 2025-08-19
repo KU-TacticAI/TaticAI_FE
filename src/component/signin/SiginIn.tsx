@@ -6,8 +6,8 @@ import Layout from "../layout/Layout";
 
 const Signup = () => {
   const [form, setForm] = useState({
-    name: '',
     username: '',
+    nickname: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -58,7 +58,7 @@ const Signup = () => {
 
       console.log('회원가입 성공:', response.data);
       setSuccess(true);
-      setForm({name: '', username: '', email: '', password: '', confirmPassword: ''});
+      setForm({username: '', nickname: '', email: '', password: '', confirmPassword: ''});
       setFile(null);
       setImagePreviewUrl(''); // 빈 문자열로 초기화
 
@@ -80,12 +80,12 @@ const Signup = () => {
           <div className="form-container">
             <div className="text-data">
               <div className="form-group">
-                <label htmlFor="name">이름</label>
+                <label htmlFor="username">이름</label>
                 <input
-                    id="name"
-                    name="name"
+                    id="username"
+                    name="username"
                     type="text"
-                    value={form.name}
+                    value={form.username}
                     onChange={handleChange}
                     placeholder="이름을 입력하세요"
                     required
@@ -93,12 +93,12 @@ const Signup = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="username">닉네임</label>
+                <label htmlFor="nickname">닉네임</label>
                 <input
-                    id="username"
-                    name="username"
+                    id="nickname"
+                    name="nickname"
                     type="text"
-                    value={form.username}
+                    value={form.nickname}
                     onChange={handleChange}
                     placeholder="닉네임을 입력하세요"
                     required
