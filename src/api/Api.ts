@@ -96,24 +96,85 @@ axiosInstance.interceptors.response.use(
     }
 );
 
-export const getRankings = (params: { page: number; size: number; sort: string; }) => {
-  return axiosInstance.get<RankingItem[]>('/api/core/api/user/ranking', { params });
+/**
+ * 랭킹을 가져오는 api
+ * @param params : 'Pageable'
+ */
+export const getRankings = async (params: { page: number; size: number; sort: string; }) => {
+  return await axiosInstance.get<RankingItem[]>('/api/core/api/user/ranking', { params });
 };
 
-export const loginApi = (data: object) => {
-    return axiosInstance.post('/api/core/login', data);
+/**
+ * 로그인 api
+ * -> 토큰을 localStoreage, Cookie에 저장
+ * @param data : application/json
+ */
+export const loginApi = async (data: object) => {
+    return await axiosInstance.post('/api/core/login', data);
 }
 
-export const logoutApi = () => {
-  return  axiosInstance.post('/api/core/logout', {});
+/**
+ * 로그아웃 api
+ * -> 토큰 삭제
+ */
+export const logoutApi = async () => {
+  const response = await axiosInstance.post('/api/core/logout', {});
+  localStorage.removeItem('Authorization');
+  return response;
 }
 
-export const signIn = (data: object) => {
-    return axiosInstance.post('/api/core/users/sign-in', data, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        }
-    });
+/**
+ * 회원가입 api
+ * 회원 정보 + 프로필 사진
+ * @param data : 'multipart/form-data'
+ */
+export const signIn = async (data: object) => {
+  return await axiosInstance.post('/api/core/users/sign-in', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    }
+  });
+}
+
+/**
+ * 회원 정보 조회
+ */
+export const getUser = async () => {
+  return await axiosInstance.get('/api/core/users');
+}
+
+/**
+ * 회원 정보 수정
+ * @param data : 'multipart/form-data'
+ */
+export const updateUser = async (data: object) => {
+  return await axiosInstance.put('/api/core/users', data, { // Changed to put and added a placeholder URL
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    }
+  });
+}
+
+/**
+ * 비밀번호 변경
+ * @param data : 'application/json'
+ */
+export const changePassword = async (data:object) => {
+  return await axiosInstance.patch('/api/core/users/password', data, {
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+}
+
+/**
+ * 회원 삭제
+ * @param data : 'application/json'
+ */
+export const deleteUser = async (data: object) => {
+  return await axiosInstance.delete('/api/core/users', {
+    data: data,
+  });
 }
 
 export default axiosInstance;

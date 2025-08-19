@@ -4,7 +4,7 @@ import './Login.css';
 import { loginApi } from '../../api/Api';
 import Layout from '../layout/Layout';
 import { useDispatch } from 'react-redux';
-import { loginSuccess } from '../../store/slices/authSlice';
+import { login } from '../../store/slices/authSlice';
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -32,7 +32,13 @@ const Login = () => {
 
       console.log('로그인 성공:', response.data);
       localStorage.setItem('Authorization', token);
-      dispatch(loginSuccess(token));
+      dispatch(login({
+        token: token,
+        user: {
+          nickname: response.data.nickname,
+          profileLink: response.data.nickprofileLink,
+        }
+      }));
       window.location.href = '/';
     } catch (err) {
       const error = err as AxiosError;
@@ -40,6 +46,7 @@ const Login = () => {
         (error.response?.data as { message?: string })?.message ??
         '로그인 중 오류가 발생했습니다.';
       setError(message);
+      alert(message);
     }
   };
 
