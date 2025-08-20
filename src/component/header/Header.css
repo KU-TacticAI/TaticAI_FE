@@ -1,31 +1,72 @@
 header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  height: 90px;
-  padding: 0 40px;
+  height: var(--header-height);
+  padding: 0 var(--horizontal-padding);
+  background-color: #1a1a1a;
+  border-bottom: 1px solid #333;
+  max-width: var(--max-width);
+  margin: 0 auto;
 }
 
 .logo {
-  margin-top: 50px;
-  font-size: 2rem;
-  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.logo img {
+  height: 40px; /* Adjust as needed */
+  width: auto;
+  vertical-align: middle;
 }
 
 .header-text {
-  flex: 1;
+  color: #ccc;
+  font-size: 1rem;
+  white-space: nowrap;
+  margin: 0 20px;
+  flex-grow: 1;
+  text-align: center;
 }
 
-.login {
+.login-section {
   display: flex;
   align-items: center;
+  gap: 15px;
+  flex-shrink: 0;
 }
 
-.login img {
-  width: 60px;
-  height: 60px;
-  margin-right: 10px;
+.profile-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .login-links {
-  width: 270px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.auth-link {
+  color: var(--text-color);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.auth-link:hover {
+  color: #aaa;
+}
+
+.separator {
+  color: #555;
 }

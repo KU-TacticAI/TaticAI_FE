@@ -10,6 +10,7 @@ import { logoutApi } from '../../api/Api';
 const Header: React.FC = () => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   const userProfileLink = useSelector((state: RootState) => state.auth.user?.profileLink);
+  const userNickName = useSelector((state: RootState) => state.auth.user?.nickname);
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
@@ -24,6 +25,7 @@ const Header: React.FC = () => {
   };
 
   const currentProfileImage = userProfileLink && isAuthenticated ? userProfileLink : profilePic;
+  const currentNickName = userNickName && isAuthenticated ? userNickName : "로그인을 해주세요";
 
   return (
       <header>
@@ -31,20 +33,24 @@ const Header: React.FC = () => {
           <a href="/"><img src={logo} alt="로고" /></a>
         </div>
         <div className="header-text">개발 - AI 모델들과 경쟁해보세요!</div>
-        <div className="login">
-          <img src={currentProfileImage} alt="프로필 아이콘"/>
+        <div className="login-section">
+          <img src={currentProfileImage} alt="프로필 아이콘" className="profile-icon"/>
           <div className="login-links">
             {isAuthenticated ? (
                 <>
-                  <button onClick={handleLogout} className="logout-button">로그아웃</button>
-                  |
-                  <a href="/mypage">마이페이지</a>
+                  <span className="separator"> {currentNickName} 님 환영합니다.</span>
+                  <button onClick={handleLogout} className="auth-link">로그아웃</button>
+                  <span className="separator">|</span>
+                  <a href="/mypage" className="auth-link">마이페이지</a>
                 </>
             ) : (
                 <>
-                  <a href="/login">로그인</a> |
-                  <a href="/signup">회원가입</a> |
-                  <a href="/find-id">아이디찾기</a>
+                  <span className="separator"> {currentNickName}</span>
+                  <a href="/login" className="auth-link">로그인</a>
+                  <span className="separator">|</span>
+                  <a href="/signup" className="auth-link">회원가입</a>
+                  <span className="separator">|</span>
+                  <a href="/find-id" className="auth-link">아이디찾기</a>
                 </>
             )}
           </div>

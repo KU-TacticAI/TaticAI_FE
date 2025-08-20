@@ -13,67 +13,111 @@ body {
   overflow: hidden;
 }
 
-.scale-wrapper {
-  transform-origin: 0 0;
-  width: 100%;
-  height: 100%;
-}
-
 main {
   display: flex;
   justify-content: space-between;
   padding: 60px 85px;
+  gap: 20px; /* main-home의 gap을 main으로 이동 */
 }
 
+/* --- Left Side: Game Images --- */
 .game-images {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 20px;
+  flex: 1;
+  /* 2개의 이미지(200px)와 그 사이의 갭(20px)만큼 높이를 설정 */
+  height: 420px;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+}
+
+/* 스크롤바 디자인 (선택 사항) */
+.game-images::-webkit-scrollbar {
+  width: 8px;
+}
+.game-images::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+.game-images::-webkit-scrollbar-track {
+  background-color: #222;
 }
 
 .game-image {
-  width: 420px;
+  /*width: 420px; 제거 */
   height: 200px;
   background: #333;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.play-guide {
+  border-radius: 15px;
+  overflow: hidden;
   position: relative;
-  width: 605px;
-  height: 440px;
-  background: #222;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  color: #fff;
-  margin: 0;
+  cursor: pointer;
+  scroll-snap-align: start;
+  /* flex-shrink를 0으로 설정해 높이가 고정되도록 함 */
+  flex-shrink: 0;
 }
 
-.swiper {
-  width: 100%;
-  height: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.swiper-slide {
-  text-align: center;
-  font-size: 18px;
-  background: #444;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.swiper-slide img {
-  display: block;
+.game-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+.game-image:hover img {
+  filter: brightness(50%);
+  transform: scale(1.05);
+}
+
+.game-title {
+  position: absolute;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+
+/* --- Right Side: Swiper --- */
+.play-guide {
+  flex: 1.5;
+  /* game-images와 동일한 높이로 설정하여 좌우 균형 맞춤 */
+  height: 420px;
+}
+
+/* 중복되는 .swiper 및 .swiper-slide 스타일은 제거함 */
+
+/* 다른 화면 스타일은 유지 */
+.main-screen {
+  display: none;
+}
+.main-screen.active {
+  display: flex;
+}
+#main-home {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+.records-box,
+.ranking-box {
+  margin-top: 20px;
+  width: 100%;
+  height: 500px;
+  background: #333;
+}
+
+/* 중복된 .game-image img 속성을 제거하고 하나로 통합 */
+.game-image img {
+  /* 위에서 정의된 속성을 사용하고 이 부분은 삭제 */
+  object-fit: contain;
+  aspect-ratio: 19 / 9;
+  border-radius: 30px;
+}
+
+.game-image img:hover {
+  filter: brightness(70%);
 }

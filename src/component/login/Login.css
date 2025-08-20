@@ -1,10 +1,24 @@
-h1 {
-  margin: 0 0 2rem;
-  font-size: 2rem;
-  font-weight: normal;
+.form-container {
+  /*width: 100%;*/
+  /*max-width: 550px;*/
+  padding: 40px;
+  background-color: var(--content-bg-color);
+  border-radius: 8px;
+  border: 1px solid #333;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-container h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  font-weight: bold;
 }
 
 .login-form {
+  width: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -13,45 +27,49 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
-label {
+.form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  color: #8f98a0;
+  color: #aaa;
+  font-size: 0.9rem;
 }
 
-input[type="email"],
-input[type="password"] {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #32353c;
-  background: #32353c;
+.form-group input {
+  /*width: 100%;*/
+  padding: 12px;
+  border: 1px solid #444;
+  background: #1a1a1a;
   color: #fff;
-  border-radius: 2px;
+  border-radius: 4px;
   font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
 }
 
-input[type="email"]:focus,
-input[type="password"]:focus {
+.form-group input:focus {
   outline: none;
   border-color: #66c0f4;
 }
 
 .error-message {
-  margin: 1rem 0;
-  color: red;
-  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  color: #ff6b6b;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
 .submit-button {
   background: linear-gradient(to right, #47bfff, #1a44c2);
   border: none;
   color: white;
-  padding: 1rem 2rem;
+  padding: 1rem;
   font-size: 1rem;
-  border-radius: 2px;
+  font-weight: bold;
+  border-radius: 4px;
   cursor: pointer;
   transition: opacity 0.2s;
-  align-self: flex-start;
+  width: 100%;
+  margin-top: 1rem;
 }
 
 .submit-button:hover {

@@ -1,25 +1,26 @@
-nav {
-  margin-top: 40px;
-  background: #222;
-  padding: 10px 0px;
+.main-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  height: var(--nav-height);
+  background-color: var(--content-bg-color);
+  border-bottom: 1px solid #333;
+  max-width: var(--max-width);
+  margin: 0 auto;
 }
 
-nav a {
-  color: #fff;
-  margin-right: 20px;
+.main-nav a {
+  color: var(--text-color);
   text-decoration: none;
+  font-size: 1.1rem;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.logout-button {
-  background: none;
-  border: none;
-  color: inherit;
-  font: inherit;
-  cursor: pointer;
-  padding: 0;
-  text-decoration: underline;
+.main-nav a:hover {
+  background-color: #444;
+  color: #fff;
 }
 
-.logout-button:hover {
-  color: #007bff;
-}
