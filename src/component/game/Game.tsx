@@ -13,68 +13,11 @@ const API_START_URL = `${API_BASE_URL}game-request/`;
 interface GameProps {
   gameType: string;
   sessionId: string;
-  ai_model_ids: string[];
-  ai_model_urls: string[];
-  player_ids: string[];
   player_names: string[]; // 플레이어 이름이 필요할 경우 추가
   player: string;
 }
 
-interface GameDevInfoProps {
-  gameType: string;
-  sessionId?: string;
-  ai_model_ids?: string[];
-  ai_model_urls?: string[];
-  player_ids?: string[];
-  totalStateNum: number;
-}
-
-const GameDevInfo: React.FC<GameDevInfoProps> = ({gameType,sessionId, ai_model_ids, ai_model_urls, player_ids, totalStateNum}) => {
-    const startGame = () => {
-    // 게임 시작 로직을 여기에 추가
-    console.log(`게임 시작: ${gameType}, 세션 ID: ${sessionId}, AI 모델 IDs: ${ai_model_ids}, AI 모델 URLs: ${ai_model_urls}, 플레이어 이름: ${player_ids}`);
-    // 예시: API 호출로 게임 시작
-    fetch(API_START_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },      body: JSON.stringify({
-        game_id: sessionId,  // session_id를 game_id로 변경
-        game_type: gameType,
-        ai_model_ids: ai_model_ids,
-        ai_model_urls: ai_model_urls,
-        player_ids: player_ids
-      }),
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('게임 시작 응답:', data);
-      // 게임 시작 후 필요한 로직 추가
-    }
-    )
-    .catch(error => {
-      console.error('게임 시작 오류:', error);
-    }
-    );
-  };
-  
-  return (
-    <div>
-      <div className="game-dev-info" style={{display: 'flex', gap: '20px', justifyContent: 'center'}}>
-        <span>게임 타입: {gameType}</span>
-        <span>세션 ID: {sessionId}</span>
-        <span>받아온스냅샷 수: {totalStateNum}</span>
-      </div>
-      <div className="game-dev-info" style={{display: 'flex', gap: '20px', justifyContent: 'center'}}>
-        <button onClick={startGame}>게임 시작</button>
-      </div>
-    </div>
-  );
-};
-
-
-
-const Game: React.FC<GameProps> = ({gameType, sessionId,ai_model_ids,ai_model_urls,player_ids, player_names, player}) => {
+const Game: React.FC<GameProps> = ({gameType, sessionId, player_names, player}) => {
 
   // 게임 진행상황 저장하기 위한 배열 useState
   const [gameProgress, setGameProgress] = React.useState<any[]>([]);
@@ -192,9 +135,6 @@ const Game: React.FC<GameProps> = ({gameType, sessionId,ai_model_ids,ai_model_ur
 
   return (
     <div>
-      <div>
-        <GameDevInfo gameType={gameType} sessionId={sessionId} ai_model_ids={ai_model_ids} ai_model_urls={ai_model_urls} player_ids={player_ids} totalStateNum={ gameProgress.length } />
-      </div>
       <div className="game-container">
         {renderGame()}
       </div>
