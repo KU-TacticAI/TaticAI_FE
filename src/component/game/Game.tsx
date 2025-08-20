@@ -6,7 +6,7 @@ import Chess from "./Chess";
 // import Checkers from "./Checkers";
 
 // api 기본 URL 설정
-const API_BASE_URL = "http://192.168.0.2:8000/"; // 실제 API URL로 변경 필요
+const API_BASE_URL = "http://localhost:8000/"; // 실제 API URL로 변경 필요
 const API_PROGRESS_URL = `${API_BASE_URL}progress`;
 const API_START_URL = `${API_BASE_URL}game-request/`;
 
@@ -21,7 +21,7 @@ const Game: React.FC<GameProps> = ({gameType, sessionId, player_names, player}) 
 
   // 게임 진행상황 저장하기 위한 배열 useState
   const [gameProgress, setGameProgress] = React.useState<any[]>([]);
-  // 현제 인덱스 
+  // 현제 인덱스
   const [currentIndex, setCurrentIndex] = React.useState(-1);
 
   const progressRef = React.useRef(gameProgress);

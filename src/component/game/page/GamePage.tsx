@@ -2,11 +2,13 @@ import Game from "../Game";
 import { useEffect, useState } from "react";
 import { getGameLobbyApi } from "../../../api/Api";
 import Layout from "../../layout/Layout";
+import "./GamePage.css";
 
 interface GameProps {
   gameType: string;
   sessionId: string;
   player_names: string[];
+  player_id: string;
 }
 
 const GamePage = () => {
@@ -17,13 +19,20 @@ const GamePage = () => {
       try {
         const roomId = '1';
 
-        const response = await getGameLobbyApi(roomId);
+        // const response = await getGameLobbyApi(roomId);
 
-        // setGameProbs에 객체 형태로 데이터를 저장
+        // setGameProbs({
+        //   gameType: response.data.gameType,
+        //   sessionId: response.data.sessionId,
+        //   player_names: response.data.player_names,
+        //   player_id: response.data.player_id,
+        // });
+
         setGameProbs({
-          gameType: response.data.gameType,
-          sessionId: response.data.sessionId,
-          player_names: response.data.player_names,
+          gameType: 'chess',
+          sessionId: '1', // 서버 응답에 맞춰 수정
+          player_names: ['update', 'name2'],
+          player_id: '1', // 서버 응답에 맞춰 수정
         });
 
       } catch (error) {
@@ -40,12 +49,14 @@ const GamePage = () => {
 
   return (
       <Layout>
+        <div className='form-container'>
           <Game
               gameType={gameProbs.gameType}
               sessionId={gameProbs.sessionId}
               player_names={gameProbs.player_names}
-              player={gameProbs.player_ids && gameProbs.player_ids[0]}
+              player={gameProbs.player_id}
           />
+        </div>
       </Layout>
   );
 };

@@ -18,6 +18,14 @@ const Main: React.FC = () => {
                 <img src="/img/sample-img/img7.jpg" alt="체스"/>
                 <span className="game-title">체스</span>
               </div>
+              <div className="game-image">
+                <img src="/img/sample-img/img7.jpg" alt="체스"/>
+                <span className="game-title">오셀로</span>
+              </div>
+              <div className="game-image">
+                <img src="/img/sample-img/img7.jpg" alt="체스"/>
+                <span className="game-title">틱텍토</span>
+              </div>
             </section>
 
             <section className="play-guide">
