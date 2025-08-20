@@ -121,10 +121,10 @@ const MyPage = () => {
 
   return (
       <Layout>
-        <h1>마이 페이지</h1>
-
         <form onSubmit={handleSubmit} className="mypage-form">
           <div className="form-container">
+            <h1>마이 페이지</h1>
+
             <div className="text-data">
 
               <div className="form-group">
@@ -200,10 +200,14 @@ const MyPage = () => {
           {error && <div className="error-message">{error}</div>}
           {success && <div className="success-message">프로필이 성공적으로 업데이트되었습니다!</div>}
 
-          <div className="button-container" >
+          <div className="button-container">
             <button type="submit" className="submit-button">프로필 업데이트</button>
-            <button type="button" className="submit-button" onClick={() => setChangePasswordModalOpen(true)}>비밀번호 변경</button>
-            <button type="button" className="submit-button" onClick={() => setDeleteUserModalOpen(true)}>회원 탈퇴</button>
+            <button type="button" className="submit-button"
+                    onClick={() => setChangePasswordModalOpen(true)}>비밀번호 변경
+            </button>
+            <button type="button" className="submit-button"
+                    onClick={() => setDeleteUserModalOpen(true)}>회원 탈퇴
+            </button>
           </div>
         </form>
         <ChangePasswordModal

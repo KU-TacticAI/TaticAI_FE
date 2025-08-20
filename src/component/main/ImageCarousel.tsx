@@ -19,7 +19,6 @@ const ImageCarousel: React.FC = () => {
 
   return (
       <Box sx={{ maxWidth: 605, height: 440, bgcolor: '#222', position: 'relative' }}>
-        {/* ✅ 조건부 렌더링 */}
         <Box
             component="img"
             src={images[activeStep].path}
@@ -27,8 +26,11 @@ const ImageCarousel: React.FC = () => {
             sx={{
               width: '100%',
               height: '100%',
-              objectFit: 'cover',
+              objectFit: 'contain',
               transition: 'opacity 0.5s ease-in-out',
+            }}
+            style={{
+              padding: '0 0 27px 0',
             }}
         />
 

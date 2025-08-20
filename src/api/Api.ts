@@ -177,4 +177,8 @@ export const deleteUser = async (data: object) => {
   });
 }
 
+export const getGameLobbyApi = async (roomId: string) => {
+  return await axiosInstance.get(`/api/games/rooms/${roomId}`);
+}
+
 export default axiosInstance;
