@@ -1,0 +1,279 @@
+.othello-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+  min-height: 100vh;
+  color: white;
+}
+
+.othello-game-info {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.othello-game-info h2 {
+  color: #ecf0f1;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.othello-game-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.othello-player-info {
+  display: flex;
+  gap: 30px;
+}
+
+.othello-player {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px 15px;
+  border-radius: 10px;
+}
+
+.othello-player-name {
+  font-weight: bold;
+  min-width: 100px;
+}
+
+.othello-score {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #f39c12;
+}
+
+.othello-turn-info {
+  text-align: center;
+}
+
+.othello-turn-info p {
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+.othello-game-finished {
+  color: #e74c3c !important;
+  font-weight: bold;
+  font-size: 1.2rem !important;
+}
+
+.othello-board {
+  display: grid;
+  grid-template-columns: repeat(8, 60px);
+  grid-template-rows: repeat(8, 60px);
+  gap: 2px;
+  background: #2c3e50;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+.board-row {
+  display: contents;
+}
+
+.othello-cell {
+  width: 60px;
+  height: 60px;
+  background: #27ae60;
+  border: 2px solid #2c3e50;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.othello-cell.last-move {
+  box-shadow: 0 0 15px #f39c12;
+  border-color: #f39c12;
+}
+
+.othello-piece {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+}
+
+/* 플레이어 정보용 작은 말 */
+.othello-black-piece-display,
+.othello-white-piece-display {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.othello-white-piece-display {
+  background: radial-gradient(circle at 30% 30%, #ffffff, #e8e8e8);
+  border: 1px solid #bdc3c7;
+}
+
+.othello-black-piece-display {
+  background: radial-gradient(circle at 30% 30%, #555555, #2c3e50);
+  border: 1px solid #34495e;
+}
+
+.othello-coordinates {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.othello-row-labels,
+.othello-col-labels {
+  display: flex;
+  gap: 2px;
+}
+
+.othello-row-label,
+.othello-col-label {
+  width: 60px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  font-weight: bold;
+  color: #ecf0f1;
+}
+
+/* 보드와 좌표를 포함하는 컨테이너 */
+.othello-board-with-coordinates {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+}
+
+/* 행 좌표 (좌측) */
+.othello-row-coordinates {
+  position: absolute;
+  left: -40px;
+  top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 10;
+}
+
+.othello-row-coordinate {
+  width: 30px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ecf0f1;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+/* 열 좌표 (하단) */
+.othello-col-coordinates {
+  display: flex;
+  gap: 2px;
+  margin-top: 5px;
+  margin-left: 10px;
+}
+
+.othello-col-coordinate {
+  width: 60px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ecf0f1;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .othello-board {
+    grid-template-columns: repeat(8, 45px);
+    grid-template-rows: repeat(8, 45px);
+  }
+  
+  .othello-cell {
+    width: 45px;
+    height: 45px;
+  }
+    .othello-piece {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .game-stats {
+    flex-direction: column;
+    gap: 20px;
+  }  .othello-row-coordinate {
+    width: 25px;
+    height: 45px;
+    font-size: 0.9rem;
+  }
+  
+  .othello-col-coordinate {
+    width: 45px;
+    height: 20px;
+    font-size: 0.9rem;
+  }
+  
+  .othello-row-coordinates {
+    left: -35px;
+  }
+  
+  .othello-col-coordinates {
+    margin-left: 5px;
+  }
+}
+
+/* 애니메이션 효과 */
+@keyframes piecePlace {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.othello-piece {
+  animation: piecePlace 0.3s ease-out;
+}
+
+.othello-white-piece-inner {
+  background: radial-gradient(circle at 30% 30%, #ffffff, #e8e8e8);
+  border: 2px solid #bdc3c7;
+}
+
+.othello-black-piece-inner {
+  background: radial-gradient(circle at 30% 30%, #555555, #2c3e50);
+  border: 2px solid #34495e;
+}
