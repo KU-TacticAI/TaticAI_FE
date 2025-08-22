@@ -177,8 +177,24 @@ export const deleteUser = async (data: object) => {
   });
 }
 
-export const getGameLobbyApi = async (roomId: string) => {
-  return await axiosInstance.get(`/api/games/rooms/${roomId}`);
+export const getGameRoomsApi = async (gameName: string) => {
+  return await axiosInstance.get(`/api/game/rooms/lobby/${gameName}`);
+}
+
+export const getGameRoomDetailApi = async (roomId: string) => {
+  return await axiosInstance.get(`/api/game/rooms/${roomId}`);
+}
+
+export const getGameLobbyApi = async()=>{
+  return await axiosInstance.get('/api/game/lobby')
+}
+
+export const createGameRoom = async(data:object)=>{
+  return await axiosInstance.post('/api/game/rooms', data, {
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
 }
 
 export default axiosInstance;
