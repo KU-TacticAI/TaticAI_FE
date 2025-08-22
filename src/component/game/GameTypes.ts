@@ -1,3 +1,34 @@
+export interface GameRoom {
+    roomId: string;
+    roomName: string;
+    gameType: string;
+    host: string;
+    hostRanking: number;
+    playerCount: number;
+    maxPlayers: number;
+    isPrivate: boolean;
+    status: string;
+}
+
+export interface AI {
+    aiId: string;
+    aiName: string;
+    description: string;
+}
+
+export interface Player {
+    userId: string;
+    nickname: string;
+    profileImage: string;
+    ranking: number;
+    isReady: boolean;
+    selectedAi: AI | null;
+}
+
+export interface GameRoomDetail extends GameRoom {
+    players: Player[];
+}
+
 // 공통 게임 데이터 인터페이스
 export interface GameData {
   game_type: string;
