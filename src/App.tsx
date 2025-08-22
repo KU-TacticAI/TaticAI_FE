@@ -11,7 +11,7 @@ import Game from "./component/game/Game";
 import {getUser} from "./api/Api";
 import GamePage from "./component/game/page/GamePage"
 import Lobby from "./component/lobby/Lobby";
-import WaitingRoom from "./component/waiting_room/WaitingRoom";
+import WaitingRoom from "./pages/waiting_room/WaitingRoom";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();

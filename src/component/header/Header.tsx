@@ -15,6 +15,7 @@ const Header: React.FC = () => {
 
   const handleLogout = async () => {
     try {
+      // localStorage.removeItem("Authorization")
       await logoutApi(); // 서버가 refresh 쿠키를 만료(Set-Cookie)
     } catch (_) {
       // 실패해도 클라 정리 계속
