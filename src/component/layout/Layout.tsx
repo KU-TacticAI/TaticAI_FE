@@ -7,11 +7,9 @@ const Layout = ({children}: { children: React.ReactNode }) => {
       <div className="layout-wrapper">
         <Header/>
         <NavBar/>
-        <div className="layout-content-wrapper">
-          <div className="layout-content">
-            {children}
-          </div>
-        </div>
+        <main className="layout-content">
+          {children}
+        </main>
       </div>
   );
 };

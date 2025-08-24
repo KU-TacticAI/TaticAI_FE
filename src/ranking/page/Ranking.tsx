@@ -9,6 +9,11 @@ import RankingError from '../common/RankingError';
 import RankingSkeleton from '../common/RankingSkeleton';
 import { getRankings } from '../../api/Api';
 
+/**
+ * AI 순위 조회 페이지 컴포넌트
+ * @description 기간, 게임 종류, 정렬 순서에 따라 AI 순위 목록을 조회하고 표시합니다.
+ * @returns {React.FC} Ranking 페이지의 UI를 렌더링합니다.
+ */
 const PAGE_SIZE = 10;
 
 const sortMapping: { [key: string]: string } = {
@@ -41,12 +46,9 @@ const Ranking: React.FC = () => {
         const response = await getRankings(params);
         setItems(response.data);
 
-        // API doesn't return total pages, so we infer it.
-        // If returned items are less than page size, it's the last page.
         if (response.data.length < PAGE_SIZE) {
           setTotalPages(filters.page);
         } else if (totalPages <= filters.page) {
-          // If we got a full page, there might be a next page.
           setTotalPages(filters.page + 1);
         }
 
@@ -57,7 +59,6 @@ const Ranking: React.FC = () => {
       }
     };
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
   const renderContent = () => {
@@ -87,9 +88,9 @@ const Ranking: React.FC = () => {
 
   return (
       <Layout>
-        <h1>Ranking</h1>
         <div className="ranking-container">
-          <RankingControls value={filters} onChange={setFilters} />
+          <h1>Ranking</h1>
+          <RankingControls value={filters} onChange={setFilters}/>
           {renderContent()}
         </div>
       </Layout>

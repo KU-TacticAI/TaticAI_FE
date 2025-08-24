@@ -7,7 +7,11 @@ import Main from './component/main/Main';
 import Login from './component/login/Login';
 import Ranking from './ranking/page/Ranking';
 import MyPage from "./component/my_page/MyPage";
+import Game from "./component/game/Game";
 import {getUser} from "./api/Api";
+import GamePage from "./component/game/page/GamePage"
+import Lobby from "./component/lobby/Lobby";
+import WaitingRoom from "./component/waiting_room/WaitingRoom";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -46,6 +50,9 @@ const App: React.FC = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/game" element={<GamePage />} />
+        <Route path="/lobby/:gameName" element={<Lobby />} />
+        <Route path="/waiting-room/:roomId" element={<WaitingRoom />} />
       </Routes>
     </Router>
   );

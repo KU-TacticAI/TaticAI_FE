@@ -52,41 +52,42 @@ const Login = () => {
 
   return (
     <Layout>
-      <h1>로그인</h1>
+      <div className="form-container">
+        <h1>로그인</h1>
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="form-group">
+            <label htmlFor="email">이메일 주소</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="이메일 주소를 입력하세요"
+              required
+            />
+          </div>
 
-      <form onSubmit={handleSubmit} className="login-form">
-        <div className="form-group">
-          <label htmlFor="email">이메일 주소</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={handleChange}
-            placeholder="이메일 주소를 입력하세요"
-            required
-          />
-        </div>
+          <div className="form-group">
+            <label htmlFor="password">비밀번호</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              value={form.password}
+              onChange={handleChange}
+              placeholder="비밀번호를 입력하세요"
+              required
+            />
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="password">비밀번호</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            value={form.password}
-            onChange={handleChange}
-            placeholder="비밀번호를 입력하세요"
-            required
-          />
-        </div>
+          {error && <div className="error-message">{error}</div>}
 
-        {error && <div className="error-message">{error}</div>}
-
-        <button type="submit" className="submit-button">
-          로그인
-        </button>
-      </form>
+          <button type="submit" className="submit-button">
+            로그인
+          </button>
+        </form>
+      </div>
     </Layout>
   );
 };
