@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { GameData, GameComponentProps, Coordinates, Score, GAME_CONFIGS } from './GameTypes';
+import GameResultModal from './GameResultModal';
 
 interface BaseGameProps extends GameComponentProps {
   gameType: string;
@@ -9,16 +10,13 @@ interface BaseGameProps extends GameComponentProps {
 }
 
 const BaseBoardGame: React.FC<BaseGameProps> = ({ gameData, gameType, renderCell, calculateScore, children }) => {
+  const [showResultModal, setShowResultModal] = useState(false);
   const config = GAME_CONFIGS[gameType.toLowerCase()];
   
-  if (!config) {
-    return <div>지원하지 않는 게임 타입: {gameType}</div>;
-  }
-
   // 기본값 설정
   const defaultGameData: GameData = {
     game_type: gameType,
-    board_state: [...config.defaultBoardState],
+    board_state: config ? [...config.defaultBoardState] : [],
     turn_number: 0,
     current_turn: 0,
     player_ids: ["None", "None"],
@@ -31,6 +29,25 @@ const BaseBoardGame: React.FC<BaseGameProps> = ({ gameData, gameType, renderCell
   };
 
   const currentGameData: GameData = gameData || defaultGameData;
+
+  // 게임 종료 시 모달 표시
+  useEffect(() => {
+    let timer: NodeJS.Timeout | undefined;
+    if (currentGameData.is_finished) {
+      timer = setTimeout(() => {
+        setShowResultModal(true);
+      }, 1000);
+    } else {
+      setShowResultModal(false);
+    }
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [currentGameData.is_finished]);
+  
+  if (!config) {
+    return <div>지원하지 않는 게임 타입: {gameType}</div>;
+  }
 
   // NxN 보드로 변환하는 함수
   const convertToBoard = (boardState: number[]): number[][] => {
@@ -150,16 +167,11 @@ const BaseBoardGame: React.FC<BaseGameProps> = ({ gameData, gameType, renderCell
   const scoreDisplay = getScoreDisplay();
 
   return (
-    <div className={`${gameType.toLowerCase()}-container`}>
+    <div className={`${gameType.toLowerCase()}-container`} style={{ position: 'relative' }}>
       <div className={`${gameType.toLowerCase()}-game-info`}>
         <h2>{getGameTitle()} 게임</h2>
         <div className={`${gameType.toLowerCase()}-turn-info`}>
           <p>턴: {currentGameData.turn_number} | 현재 플레이어: {currentPlayer.name} ({currentPlayer.symbol}) | 마지막 수: {currentGameData.last_move || '없음'}</p>
-          {currentGameData.is_finished && (
-            <p className={`${gameType.toLowerCase()}-game-finished`}>게임 종료! 
-              {currentGameData.winner ? ` 승자: ${currentGameData.player_names[currentGameData.player_ids.indexOf(currentGameData.winner)]}` : ' 무승부'}
-            </p>
-          )}
         </div>
       </div>
       
@@ -236,6 +248,20 @@ const BaseBoardGame: React.FC<BaseGameProps> = ({ gameData, gameType, renderCell
           </div>
         </div>
       </div>
+      
+      {/* 게임 결과 모달 */}
+      <GameResultModal
+        isOpen={showResultModal}
+        gameType={gameType}
+        winner={currentGameData.winner}
+        playerNames={currentGameData.player_names}
+        playerIds={currentGameData.player_ids}
+        score={score}
+  avg_response_times={currentGameData.avg_response_times}
+        onClose={() => setShowResultModal(false)}
+      />
     </div>
   );
-};export default BaseBoardGame;
+};
+
+export default BaseBoardGame;
