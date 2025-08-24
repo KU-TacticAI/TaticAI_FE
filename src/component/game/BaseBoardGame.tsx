@@ -153,71 +153,89 @@ const BaseBoardGame: React.FC<BaseGameProps> = ({ gameData, gameType, renderCell
     <div className={`${gameType.toLowerCase()}-container`}>
       <div className={`${gameType.toLowerCase()}-game-info`}>
         <h2>{getGameTitle()} 게임</h2>
-        <div className={`${gameType.toLowerCase()}-game-stats`}>
-          <div className={`${gameType.toLowerCase()}-player-info`}>
-            <div className={`${gameType.toLowerCase()}-player`}>              <span className={`${gameType.toLowerCase()}-player-name`}>{currentGameData.player_names[0]}</span>
-              <div className={`${gameType.toLowerCase()}-piece ${gameType.toLowerCase()}-${config.playerColors[0]}-piece-display`}>
-                {gameType !== 'othello' ? config.playerSymbols[0] : ''}
-              </div>
-              <span className={`${gameType.toLowerCase()}-score`}>
-                {scoreDisplay.player1}
-              </span>
-            </div>
-            <div className={`${gameType.toLowerCase()}-player`}>
-              <span className={`${gameType.toLowerCase()}-player-name`}>{currentGameData.player_names[1]}</span>
-              <div className={`${gameType.toLowerCase()}-piece ${gameType.toLowerCase()}-${config.playerColors[1]}-piece-display`}>
-                {gameType !== 'othello' ? config.playerSymbols[1] : ''}
-              </div>
-              <span className={`${gameType.toLowerCase()}-score`}>
-                {scoreDisplay.player2}
-              </span>
-            </div>
-          </div>
-          <div className={`${gameType.toLowerCase()}-turn-info`}>
-            <p>턴: {currentGameData.turn_number}</p>
-            <p>현재 플레이어: {currentPlayer.name} ({currentPlayer.symbol})</p>
-            <p>마지막 수: {currentGameData.last_move || '없음'}</p>
-            {currentGameData.is_finished && (
-              <p className={`${gameType.toLowerCase()}-game-finished`}>게임 종료! 
-                {currentGameData.winner ? ` 승자: ${currentGameData.player_names[currentGameData.player_ids.indexOf(currentGameData.winner)]}` : ' 무승부'}
-              </p>
-            )}
-          </div>
+        <div className={`${gameType.toLowerCase()}-turn-info`}>
+          <p>턴: {currentGameData.turn_number} | 현재 플레이어: {currentPlayer.name} ({currentPlayer.symbol}) | 마지막 수: {currentGameData.last_move || '없음'}</p>
+          {currentGameData.is_finished && (
+            <p className={`${gameType.toLowerCase()}-game-finished`}>게임 종료! 
+              {currentGameData.winner ? ` 승자: ${currentGameData.player_names[currentGameData.player_ids.indexOf(currentGameData.winner)]}` : ' 무승부'}
+            </p>
+          )}
         </div>
       </div>
       
       {children}
       
-      <div className={`${gameType.toLowerCase()}-board-with-coordinates`}>        <div className={`${gameType.toLowerCase()}-row-coordinates`}>
-          {Array.from({length: config.boardSize}, (_, i) => (
-            <div key={i} className={`${gameType.toLowerCase()}-row-coordinate`}>
-              {gameType.toLowerCase() === 'chess' ? 8 - i : i}
+      <div 
+        className={`${gameType.toLowerCase()}-game-board-container`}
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'flex-end',
+          justifyContent: 'space-between',
+          gap: '20px',
+          width: '100%',
+          maxWidth: '1200px',
+          margin: '15px auto 0 auto'
+        }}
+      >
+        {/* 왼쪽 플레이어 점수 */}
+        <div className={`${gameType.toLowerCase()}-left-player-score`}>
+          <div className={`${gameType.toLowerCase()}-player`}>
+            <span className={`${gameType.toLowerCase()}-player-name`}>{currentGameData.player_names[0]}</span>
+            <div className={`${gameType.toLowerCase()}-piece ${gameType.toLowerCase()}-${config.playerColors[0]}-piece-display`}>
+              {gameType !== 'othello' ? config.playerSymbols[0] : ''}
             </div>
-          ))}
+            <span className={`${gameType.toLowerCase()}-score`}>
+              {scoreDisplay.player1}
+            </span>
+          </div>
         </div>
-        
-        <div className={`${gameType.toLowerCase()}-board`}>
-          {board.map((row, rowIndex) => (
-            <div key={rowIndex} className="board-row">
-              {row.map((cell, colIndex) => {
-                const isLastMove = lastMoveCoords && 
-                  rowIndex === lastMoveCoords.row && 
-                  colIndex === lastMoveCoords.col;
-                return renderCell(cell, rowIndex, colIndex, isLastMove || false);
-              })}
-            </div>
-          ))}
-        </div>
+
+        {/* 중앙 게임 보드 */}
+        <div className={`${gameType.toLowerCase()}-board-with-coordinates`}>
+          <div className={`${gameType.toLowerCase()}-row-coordinates`}>
+            {Array.from({length: config.boardSize}, (_, i) => (
+              <div key={i} className={`${gameType.toLowerCase()}-row-coordinate`}>
+                {gameType.toLowerCase() === 'chess' ? 8 - i : i}
+              </div>
+            ))}
+          </div>
+          
+          <div className={`${gameType.toLowerCase()}-board`}>
+            {board.map((row, rowIndex) => (
+              <div key={rowIndex} className="board-row">
+                {row.map((cell, colIndex) => {
+                  const isLastMove = lastMoveCoords && 
+                    rowIndex === lastMoveCoords.row && 
+                    colIndex === lastMoveCoords.col;
+                  return renderCell(cell, rowIndex, colIndex, isLastMove || false);
+                })}
+              </div>
+            ))}
+          </div>
+          
           <div className={`${gameType.toLowerCase()}-col-coordinates`}>
-          {Array.from({length: config.boardSize}, (_, i) => (
-            <div key={i} className={`${gameType.toLowerCase()}-col-coordinate`}>
-              {gameType.toLowerCase() === 'chess' ? String.fromCharCode(97 + i) : i}
+            {Array.from({length: config.boardSize}, (_, i) => (
+              <div key={i} className={`${gameType.toLowerCase()}-col-coordinate`}>
+                {gameType.toLowerCase() === 'chess' ? String.fromCharCode(97 + i) : i}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 오른쪽 플레이어 점수 */}
+        <div className={`${gameType.toLowerCase()}-right-player-score`}>
+          <div className={`${gameType.toLowerCase()}-player`}>
+            <span className={`${gameType.toLowerCase()}-player-name`}>{currentGameData.player_names[1]}</span>
+            <div className={`${gameType.toLowerCase()}-piece ${gameType.toLowerCase()}-${config.playerColors[1]}-piece-display`}>
+              {gameType !== 'othello' ? config.playerSymbols[1] : ''}
             </div>
-          ))}
+            <span className={`${gameType.toLowerCase()}-score`}>
+              {scoreDisplay.player2}
+            </span>
+          </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default BaseBoardGame;
+};export default BaseBoardGame;
