@@ -1,12 +1,13 @@
 import React from 'react';
-import { Player } from '../game/GameTypes';
+import {GameRoom, Player} from '../game/GameTypes';
 import defaultProfileIcon from '../../resource/img/profile-icon.png';
 
 interface Props {
   player?: Player;
+  room?: GameRoom
 }
 
-const PlayerSection: React.FC<Props> = ({ player }) => {
+const PlayerSection: React.FC<Props> = ({ player, room }) => {
   if (!player) {
     return <div className="player-section empty">Empty</div>;
   }
@@ -27,13 +28,17 @@ const PlayerSection: React.FC<Props> = ({ player }) => {
       {player.isReady ? (
           <div className="player-isReady">{"READY"}</div>
       ) : (
-          <div className="player-isReady">{"WAITING"}</div>
+          room?.hostUserId === player.userId ? (
+                  <div className="player-isReady">{"ROOM MANAGER"}</div>
+              ):(
+              < div className = "player-isReady" > {"WAITING"}</div>
+          )
       )}
 
       <div className="selected-ai-info">
         {player.selectedAi ? (
           <>
-            <div><strong>AI:</strong> {player.selectedAi.aiName}</div>
+            <div><strong>AI:</strong> {player.selectedAi.name}</div>
             <div className="ai-description">{player.selectedAi.description}</div>
           </>
         ) : (

@@ -43,18 +43,18 @@ export function useStompChat({ roomId, endpoint = 'http://localhost:8080/ws' }: 
     });
   }, [roomId, safePublish]);
 
-  const selectAi = useCallback((aiId: string) => {
-    safePublish(`/app/game.room.${roomId}.selectAi`, {
-      type: 'selectAi',
-      roomId: roomId,
-      aiId,
-    });
-  }, [roomId, safePublish]);
-
   const startGame = useCallback(() => {
     safePublish(`/app/game.room.${roomId}.startGame`, {
       type: 'startGame',
       roomId: roomId,
+    });
+  }, [roomId, safePublish]);
+
+  const selectAi = useCallback((aiId: number) => {
+    safePublish(`/app/game.room.${roomId}.selectAi`, {
+      type: 'selectAi',
+      roomId: roomId,
+      aiId,
     });
   }, [roomId, safePublish]);
 
@@ -81,6 +81,15 @@ export function useStompChat({ roomId, endpoint = 'http://localhost:8080/ws' }: 
           setMessages((prev) => [...prev, body]);
         } catch (e) {
           console.error('Invalid chat payload:', e, msg.body);
+        }
+      });
+
+      client.subscribe(`/topic/game.room.${roomId}.state`, (msg: IMessage) => {
+        try {
+          const body = JSON.parse(msg.body);
+          setRoomState(body);
+        } catch (e) {
+          console.error('Invalid room state payload:', e, msg.body);
         }
       });
 
@@ -120,7 +129,7 @@ export function useStompChat({ roomId, endpoint = 'http://localhost:8080/ws' }: 
         stompRef.current = null;
       }
     };
-  }, [roomId, endpoint]);
+  }, [roomId, endpoint, selectAi]);
 
   return {
     connected,

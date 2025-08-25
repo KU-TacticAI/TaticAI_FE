@@ -4,7 +4,11 @@ import Layout from '../../component/layout/Layout';
 import './WaitingRoom.css';
 import { Box } from '@mui/material';
 
-import { getGameRoomDetailApi, leaveGameRoom } from '../../api/Api';
+import {
+  getAiListApi,
+  getGameRoomDetailApi,
+  leaveGameRoom
+} from '../../api/Api';
 import { GameRoomDetail, Player, AI } from '../../component/game/GameTypes';
 
 import PlayerSection from '../../component/waiting/PlayerSection';
@@ -14,18 +18,12 @@ import { useStompChat } from '../../hooks/useStompChat';
 import AiSelectionModal from '../../component/waiting/AiSelectionModal';
 
 const WaitingRoom: React.FC = () => {
-  const { id } = useParams<{ id: string }>(); // Changed back to id
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [room, setRoom] = useState<GameRoomDetail | null>(null);
   const [players, setPlayers] = useState<Player[]>([]);
   const [isAiModalOpen, setIsAiModalOpen] = useState(false);
-
-  // Dummy AI list for now
-  const [aiList, setAiList] = useState<AI[]>([
-    { aiId: '1', aiName: 'Rookie Bot', description: 'A simple bot for beginners.' },
-    { aiId: '2', aiName: 'Chess Master Alpha', description: 'An advanced AI using alpha-beta pruning.' },
-    { aiId: '3', aiName: 'Random Mover', description: 'Makes random valid moves.' },
-  ]);
+  const [aiList, setAiList] = useState<AI[]>([]); // aiList 상태를 WaitingRoom에서 관리
 
   const { messages, sendChat, sendReady, startGame, selectAi, roomState } = useStompChat({
     roomId: id as string,
@@ -33,7 +31,6 @@ const WaitingRoom: React.FC = () => {
   });
 
   useEffect(() => {
-    // Update component state when websocket pushes a new room state
     if (roomState) {
       setRoom(roomState);
       const rawPlayers = roomState.players ?? (roomState as any).playerList ?? (roomState as any).participants ?? [];
@@ -48,20 +45,41 @@ const WaitingRoom: React.FC = () => {
           const res = await getGameRoomDetailApi(id);
           setRoom(res.data);
           const rawPlayers =
-            res.data?.players ??
-            (res.data as any)?.playerList ??
-            (res.data as any)?.participants ??
-            [];
+              res.data?.players ??
+              (res.data as any)?.playerList ??
+              (res.data as any)?.participants ??
+              [];
           setPlayers(Array.isArray(rawPlayers) ? rawPlayers : []);
         } catch (e) {
           console.error('Failed to fetch room data:', e);
-          // Optionally navigate away or show an error message
         }
       }
     };
-
     fetchRoomData();
   }, [id]);
+
+  // 모달을 열 때 AI 목록을 가져오는 로직 추가
+  const handleOpenAiModal = async () => {
+    if (room?.players) {
+      try {
+        const playersIdList = room.players.map(player => Number(player.userId));
+        // const response = await getAiListsByUserIdsApi({ ids: playersIdList });
+        const response = await getAiListApi();
+        setAiList(response.data);
+      } catch (error) {
+        console.error("Failed to fetch AI list:", error);
+      }
+    }
+    setIsAiModalOpen(true);
+  };
+
+  // 모달에서 AI를 선택했을 때 호출될 함수
+  const handleSelectAi = (ai: AI) => {
+    if (selectAi) {
+      selectAi(Number(ai.aiId)); // selectAi API 호출
+    }
+    setIsAiModalOpen(false); // 모달 닫기
+  };
 
   if (!room) return <div>Loading...</div>;
 
@@ -72,44 +90,34 @@ const WaitingRoom: React.FC = () => {
         navigate(`/lobby/${room.gameType}`);
       } catch (error) {
         console.error('Failed to leave room:', error);
-        // Optionally, show an error message to the user
       }
     }
-  };
-
-  const handleAiSelect = (ai: AI) => {
-    console.log('Selected AI:', ai);
-    if (selectAi) {
-      selectAi(ai.aiId);
-    }
-    setIsAiModalOpen(false);
   };
 
   return (
       <Layout>
         <Box className="waiting-room-container">
           <Box className="top-sections-wrapper">
-            <PlayerSection player={players[0]} />
-            <PlayerSection player={players[1]} />
+            <PlayerSection player={players[0]} room={room} />
+            <PlayerSection player={players[1]} room={room} />
             <GameInfoPanel
                 room={room}
-                onSelectAi={() => setIsAiModalOpen(true)}
-                onReady={() => sendReady('currentUserId')} // TODO: Fix this userId
+                onSelectAi={handleOpenAiModal} // 함수 변경
+                onReady={() => sendReady('currentUserId')}
                 onStartGame={startGame}
                 onLeaveRoom={handleLeaveRoom}
             />
           </Box>
-
           <ChatPanel
               messages={messages}
-              onSend={(text) => sendChat('CurrentUser', text)} // TODO: 실제 사용자로 교체
+              onSend={(text) => sendChat('CurrentUser', text)}
           />
         </Box>
         <AiSelectionModal
-          isOpen={isAiModalOpen}
-          onClose={() => setIsAiModalOpen(false)}
-          onSelectAi={handleAiSelect}
-          aiList={aiList}
+            isOpen={isAiModalOpen}
+            onClose={() => setIsAiModalOpen(false)}
+            aiList={aiList} // aiList prop으로 전달
+            onSelectAi={handleSelectAi} // onSelectAi prop으로 전달
         />
       </Layout>
   );

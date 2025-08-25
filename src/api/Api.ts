@@ -205,4 +205,20 @@ export const leaveGameRoom = async (id: string) => {
   return await axiosInstance.post(`/api/game/rooms/${id}/leave`);
 }
 
+export const getAiListApi = async () => {
+  return await axiosInstance.get('/api/core/api/ai/user');
+}
+
+// export const getAiListsByUserIdsApi = async (params: { ids: number[]; }) => {
+//   return await axiosInstance.get(`/api/core/api/ai/list`, {
+//     params: {
+//       ids: params.ids,
+//     },
+//   });
+// }
+
+export const selectAiApi = async (roomId: string, aiId: number) => {
+  return await axiosInstance.post(`/api/game/rooms/${roomId}/ai/${aiId}`);
+}
+
 export default axiosInstance;

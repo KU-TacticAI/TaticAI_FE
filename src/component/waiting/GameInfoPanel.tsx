@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Box, Button } from '@mui/material';
-import { GameRoomDetail, Player } from '../game/GameTypes';
+import {AI, GameRoomDetail, Player} from '../game/GameTypes';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import {getAiListApi} from "../../api/Api";
 
 interface Props {
   room: GameRoomDetail;
@@ -15,7 +16,7 @@ interface Props {
 const GameInfoPanel: React.FC<Props> = ({ room, onSelectAi, onReady, onStartGame, onLeaveRoom }) => {
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
-  const hostPlayer = room.players.find((player: Player) => player.userId === room.host);
+  const hostPlayer = room.players.find((player: Player) => player.userId === room.hostUserId);
   const isHost = currentUser?.nickname === hostPlayer?.nickname;
 
   const currentPlayer = room.players.find(p => p.nickname === currentUser?.nickname);
@@ -25,7 +26,7 @@ const GameInfoPanel: React.FC<Props> = ({ room, onSelectAi, onReady, onStartGame
   // All players must have selected an AI and be ready.
   // The host does not have an isReady state, their readiness is implied by starting the game.
   const areAllPlayersReady = room.players
-      .filter(p => p.userId !== room.host) // Exclude host from readiness check
+      .filter(p => p.userId !== room.hostUserId) // Exclude host from readiness check
       .every(p => p.isReady && p.selectedAi);
 
   // The host also needs to select an AI before starting

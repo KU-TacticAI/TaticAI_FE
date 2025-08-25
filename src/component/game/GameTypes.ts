@@ -2,7 +2,7 @@ export interface GameRoom {
     roomId: string; // Changed from roomId
     roomName: string;
     gameType: string;
-    host: string;
+    hostUserId: string;
     hostRanking: number;
     playerCount: number;
     maxPlayers: number;
@@ -12,8 +12,11 @@ export interface GameRoom {
 
 export interface AI {
     aiId: string;
-    aiName: string;
+    userId: string;
+    name: string;
     description: string;
+    gameType: string;
+    aiUrl: string;
 }
 
 export interface Player {
