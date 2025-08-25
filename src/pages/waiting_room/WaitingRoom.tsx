@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Layout from '../../component/layout/Layout';
 import './WaitingRoom.css';
 import { Box } from '@mui/material';
+import {useSelector} from 'react-redux';
 
 import {
   selectAiApi,
@@ -17,6 +18,7 @@ import GameInfoPanel from '../../component/waiting/GameInfoPanel';
 import ChatPanel from '../../component/waiting/ChatPenel';
 import { useStompChat } from '../../hooks/useStompChat';
 import AiSelectionModal from '../../component/waiting/AiSelectionModal';
+import {RootState} from "../../store/store";
 
 const WaitingRoom: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,6 +27,7 @@ const WaitingRoom: React.FC = () => {
   const [players, setPlayers] = useState<Player[]>([]);
   const [isAiModalOpen, setIsAiModalOpen] = useState(false);
   const [aiList, setAiList] = useState<AI[]>([]); // aiList 상태를 WaitingRoom에서 관리
+  const currentUserId = useSelector((state: RootState) => state.auth.user?.userId);
 
   const { messages, sendChat, sendReady, startGame, selectAi, roomState } = useStompChat({
     roomId: id as string,
@@ -106,14 +109,22 @@ const WaitingRoom: React.FC = () => {
             <GameInfoPanel
                 room={room}
                 onSelectAi={handleOpenAiModal} // 함수 변경
-                onReady={() => sendReady('currentUserId')}
+                onReady={() => {
+                  if (currentUserId !== undefined) {
+                    sendReady(currentUserId);
+                  }
+                }}
                 onStartGame={startGame}
                 onLeaveRoom={handleLeaveRoom}
             />
           </Box>
           <ChatPanel
               messages={messages}
-              onSend={(text) => sendChat('CurrentUser', text)}
+              onSend={(text) => {
+                if (currentUserId !== undefined) {
+                  sendChat(currentUserId, text);
+                }
+              }}
           />
         </Box>
         <AiSelectionModal

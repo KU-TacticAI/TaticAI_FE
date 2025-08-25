@@ -28,6 +28,7 @@ const App: React.FC = () => {
           dispatch(login({
             token: token,
             user: {
+              userId: userData.id,
               nickname: userData.nickname,
               profileLink: userData.profileLink ?? null,
             },
