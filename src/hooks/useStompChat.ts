@@ -93,15 +93,6 @@ export function useStompChat({ roomId, endpoint = 'http://localhost:8080/ws' }: 
         }
       });
 
-      client.subscribe(`/topic/game.room.${roomId}.state`, (msg: IMessage) => {
-        try {
-          const body = JSON.parse(msg.body);
-          setRoomState(body);
-        } catch (e) {
-          console.error('Invalid room state payload:', e, msg.body);
-        }
-      });
-
       client.publish({
         destination: `/app/chat.room.${roomId}.join`,
         body: JSON.stringify({ type: 'joinRoom', roomId: roomId }),

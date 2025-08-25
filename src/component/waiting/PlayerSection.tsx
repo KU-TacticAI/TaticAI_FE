@@ -12,6 +12,9 @@ const PlayerSection: React.FC<Props> = ({ player, room }) => {
     return <div className="player-section empty">Empty</div>;
   }
 
+  console.log(player)
+  debugger
+
   return (
     <div className="player-section">
       <div className="player-info-layout">

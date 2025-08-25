@@ -5,6 +5,7 @@ import './WaitingRoom.css';
 import { Box } from '@mui/material';
 
 import {
+  selectAiApi,
   getAiListApi,
   getGameRoomDetailApi,
   leaveGameRoom
@@ -74,9 +75,11 @@ const WaitingRoom: React.FC = () => {
   };
 
   // 모달에서 AI를 선택했을 때 호출될 함수
-  const handleSelectAi = (ai: AI) => {
-    if (selectAi) {
-      selectAi(Number(ai.aiId)); // selectAi API 호출
+  const handleSelectAi = async (ai: AI) => {
+    if (room) {
+      const response = await selectAiApi(room.roomId, Number(ai.aiId))
+      console.log(response)
+      // selectAi(Number(ai.aiId)); // selectAi API 호출
     }
     setIsAiModalOpen(false); // 모달 닫기
   };
