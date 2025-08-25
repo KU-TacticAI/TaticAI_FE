@@ -13,8 +13,6 @@ const PlayerSection: React.FC<Props> = ({ player, room }) => {
   }
 
   console.log(player)
-  debugger
-
   return (
     <div className="player-section">
       <div className="player-info-layout">
