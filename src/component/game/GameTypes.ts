@@ -1,5 +1,5 @@
 export interface GameRoom {
-    roomId: string;
+    roomId: string; // Changed from roomId
     roomName: string;
     gameType: string;
     host: string;

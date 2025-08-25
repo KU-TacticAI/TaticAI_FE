@@ -41,13 +41,12 @@
 }
 
 .player-details {
-    flex: 1;
     text-align: left; /* Align text to the left */
 }
 
 .profile-image {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -124,4 +123,27 @@
     border-top: 1px solid #ccc;
     background-color: #444; /* Slightly lighter dark background */
     align-items: center; /* Vertically align items */
+}
+
+.selected-ai-info {
+    width: 90%;
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    height: 80px; /* Fixed height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    background-color: #2a2a2a;
+}
+
+.ai-description {
+    font-size: 0.9em;
+    color: #b0b0b0;
+    margin-top: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

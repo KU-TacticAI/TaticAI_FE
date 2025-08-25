@@ -52,7 +52,7 @@ const App: React.FC = () => {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/game" element={<GamePage />} />
         <Route path="/lobby/:gameName" element={<Lobby />} />
-        <Route path="/waiting-room/:roomId" element={<WaitingRoom />} />
+        <Route path="/waiting-room/:id" element={<WaitingRoom />} />
       </Routes>
     </Router>
   );

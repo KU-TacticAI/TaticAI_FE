@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Client, IMessage } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
+import { GameRoomDetail } from '../component/game/GameTypes';
 
 export interface ChatMessage {
   user: string;
@@ -9,45 +10,51 @@ export interface ChatMessage {
 
 interface UseStompChatOptions {
   roomId: string;
-  endpoint?: string; // 기본값: 'http://localhost:8080/ws'
+  endpoint?: string;
 }
 
 export function useStompChat({ roomId, endpoint = 'http://localhost:8080/ws' }: UseStompChatOptions) {
   const stompRef = useRef<Client | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [roomState, setRoomState] = useState<GameRoomDetail | null>(null);
   const [connected, setConnected] = useState(false);
 
-  // 안전 publish
   const safePublish = useCallback((destination: string, body: any) => {
     const client = stompRef.current;
     if (!client || !client.connected) return;
     client.publish({ destination, body: JSON.stringify(body) });
   }, []);
 
-  // 채팅 전송
   const sendChat = useCallback((user: string, text: string) => {
     if (!text.trim()) return;
     safePublish(`/app/chat.room.${roomId}.send`, {
       type: 'chatMessage',
-      roomId,
+      roomId: roomId,
       user,
       message: text.trim(),
     });
   }, [roomId, safePublish]);
 
-  // 게임 이벤트
   const sendReady = useCallback((userId: string) => {
     safePublish(`/app/game.room.${roomId}.ready`, {
       type: 'ready',
-      roomId,
+      roomId: roomId,
       userId,
+    });
+  }, [roomId, safePublish]);
+
+  const selectAi = useCallback((aiId: string) => {
+    safePublish(`/app/game.room.${roomId}.selectAi`, {
+      type: 'selectAi',
+      roomId: roomId,
+      aiId,
     });
   }, [roomId, safePublish]);
 
   const startGame = useCallback(() => {
     safePublish(`/app/game.room.${roomId}.startGame`, {
       type: 'startGame',
-      roomId,
+      roomId: roomId,
     });
   }, [roomId, safePublish]);
 
@@ -77,10 +84,18 @@ export function useStompChat({ roomId, endpoint = 'http://localhost:8080/ws' }: 
         }
       });
 
-      // 입장 알림
+      client.subscribe(`/topic/game.room.${roomId}.state`, (msg: IMessage) => {
+        try {
+          const body = JSON.parse(msg.body);
+          setRoomState(body);
+        } catch (e) {
+          console.error('Invalid room state payload:', e, msg.body);
+        }
+      });
+
       client.publish({
         destination: `/app/chat.room.${roomId}.join`,
-        body: JSON.stringify({ type: 'joinRoom', roomId }),
+        body: JSON.stringify({ type: 'joinRoom', roomId: roomId }),
       });
     };
 
@@ -110,8 +125,10 @@ export function useStompChat({ roomId, endpoint = 'http://localhost:8080/ws' }: 
   return {
     connected,
     messages,
+    roomState,
     sendChat,
     sendReady,
     startGame,
+    selectAi,
   };
 }
