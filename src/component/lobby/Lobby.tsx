@@ -10,33 +10,9 @@ import { useStompLobby } from '../../hooks/useStompLobby';
 
 const Lobby: React.FC = () => {
     const { gameName = 'all' } = useParams<{ gameName: string }>();
-    const [rooms, setRooms] = useState<GameRoom[]>([]);
     const [showCreateRoomModal, setShowCreateRoomModal] = useState(false);
     const navigate = useNavigate();
-    const { rooms: updatedRooms, connected } = useStompLobby({ gameName });
-
-    useEffect(() => {
-        const fetchGameRooms = async () => {
-            if (gameName && !connected) { // Do not fetch if websocket is already connected
-                try {
-                    const actualGameName = gameName === 'all' ? 'all' : gameName;
-                    const response = await getGameRoomsApi(actualGameName);
-                    setRooms(response.data);
-                } catch (error) {
-                    console.error('Failed to fetch game rooms:', error);
-                }
-            }
-        };
-
-        fetchGameRooms();
-    }, [gameName, connected]);
-
-    useEffect(() => {
-        // Once the websocket is connected, it becomes the source of truth.
-        if (connected) {
-            setRooms(updatedRooms);
-        }
-    }, [updatedRooms, connected]);
+    const { rooms } = useStompLobby({ gameName });
 
     const handleCreateRoom = async (roomDetails: any) => {
         console.log('Creating room:', roomDetails);

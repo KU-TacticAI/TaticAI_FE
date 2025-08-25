@@ -15,30 +15,54 @@ interface Props {
 const GameInfoPanel: React.FC<Props> = ({ room, onSelectAi, onReady, onStartGame, onLeaveRoom }) => {
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
-  // Find the host player object from the players array
   const hostPlayer = room.players.find((player: Player) => player.userId === room.host);
   const isHost = currentUser?.nickname === hostPlayer?.nickname;
 
   const currentPlayer = room.players.find(p => p.nickname === currentUser?.nickname);
   const isAiSelected = !!currentPlayer?.selectedAi;
+  const isCurrentPlayerReady = !!currentPlayer?.isReady;
+
+  // All players must have selected an AI and be ready.
+  // The host does not have an isReady state, their readiness is implied by starting the game.
+  const areAllPlayersReady = room.players
+      .filter(p => p.userId !== room.host) // Exclude host from readiness check
+      .every(p => p.isReady && p.selectedAi);
+
+  // The host also needs to select an AI before starting
+  const isHostReadyToStart = isHost && hostPlayer?.selectedAi;
 
   return (
     <Box className="game-info-section">
       <Box className="game-details">
         <h2>{room.gameType}</h2>
         <p>{room.roomName}</p>
-        {/* TODO: Add more game info/rules */}
       </Box>
-      <Button variant="contained" onClick={onSelectAi}>Select AI</Button>
+      <Button variant="contained" onClick={onSelectAi} disabled={isCurrentPlayerReady}>
+        Select AI
+      </Button>
       <Box className="buttons">
-        {isHost ? (
-          <Button variant="contained" color="primary" onClick={onStartGame}>
-            START GAME
-          </Button>
-        ) : (
-          <Button variant="contained" color="secondary" onClick={onReady} disabled={!isAiSelected}>
-            READY
-          </Button>
+        {room.status === 'WAITING' && (
+          <>
+            {isHost ? (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={onStartGame}
+                disabled={!areAllPlayersReady || !isHostReadyToStart}
+              >
+                START GAME
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color={isCurrentPlayerReady ? 'success' : 'secondary'}
+                onClick={onReady}
+                disabled={!isAiSelected || isCurrentPlayerReady}
+              >
+                {isCurrentPlayerReady ? 'READY DONE' : 'READY'}
+              </Button>
+            )}
+          </>
         )}
         <Button variant="outlined" color="error" onClick={onLeaveRoom}>
           나가기

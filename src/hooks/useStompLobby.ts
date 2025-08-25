@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Client, IMessage } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { GameRoom } from '../component/game/GameTypes';
+import { getGameRoomsApi } from '../api/Api';
 
 interface UseStompLobbyOptions {
   gameName: string;
@@ -12,6 +13,19 @@ export function useStompLobby({ gameName, endpoint = 'http://localhost:8080/ws' 
   const stompRef = useRef<Client | null>(null);
   const [rooms, setRooms] = useState<GameRoom[]>([]);
   const [connected, setConnected] = useState(false);
+
+  useEffect(() => {
+    const fetchInitialRooms = async () => {
+      try {
+        const response = await getGameRoomsApi(gameName);
+        setRooms(response.data);
+      } catch (error) {
+        console.error('Failed to fetch initial game rooms:', error);
+      }
+    };
+
+    fetchInitialRooms();
+  }, [gameName]);
 
   useEffect(() => {
     if (!gameName) return;
