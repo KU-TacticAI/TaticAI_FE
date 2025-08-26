@@ -72,7 +72,14 @@ const WaitingRoom: React.FC = () => {
       // 게임 시작 상태인 경우, 게임 페이지로 이동
       if (roomState.status === 'IN_PROGRESS') {
         console.log('게임이 시작되었습니다. 게임 페이지로 이동합니다.');
-        navigate('/game');
+        navigate('/game', {
+          state: {
+            sessionId: roomState.roomId, // 세션 ID로 사용
+            player_names: roomState.players.map(p => p.nickname), // 플레이어 이름 목록
+            player: currentUserId, // 현재 플레이어 ID
+            gameType: roomState.gameType // 게임 타입도 함께 전달
+          }
+        });
       }
     }
 

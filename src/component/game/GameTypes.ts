@@ -31,6 +31,7 @@ export interface Player {
 
 export interface GameRoomDetail extends GameRoom {
     players: Player[];
+    isDeleted: boolean;
 }
 
 // 공통 게임 데이터 인터페이스
