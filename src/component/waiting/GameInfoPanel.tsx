@@ -38,7 +38,7 @@ const GameInfoPanel: React.FC<Props> = ({ room, onSelectAi, onReady, onStartGame
         <h2>{room.gameType}</h2>
         <p>{room.roomName}</p>
       </Box>
-      <Button variant="contained" onClick={onSelectAi} disabled={isCurrentPlayerReady}>
+      <Button variant="contained" onClick={onSelectAi}>
         Select AI
       </Button>
       <Box className="buttons">

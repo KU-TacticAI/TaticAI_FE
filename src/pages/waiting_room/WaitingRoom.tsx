@@ -34,6 +34,13 @@ const WaitingRoom: React.FC = () => {
     endpoint: 'http://localhost:8080/ws',
   });
 
+  // 게임 시작 시 페이지 이동을 처리하는 useEffect 훅
+  useEffect(() => {
+    if (roomState && roomState.status === 'IN_PROGRESS') {
+      navigate('/game');
+    }
+  }, [roomState, navigate]);
+
   useEffect(() => {
     if (roomState) {
       setRoom(roomState);

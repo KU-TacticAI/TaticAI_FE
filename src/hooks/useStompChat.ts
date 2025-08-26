@@ -44,10 +44,7 @@ export function useStompChat({ roomId, endpoint = 'http://localhost:8080/ws' }: 
   }, [roomId, safePublish]);
 
   const startGame = useCallback(() => {
-    safePublish(`/app/game.room.${roomId}.startGame`, {
-      type: 'startGame',
-      roomId: roomId,
-    });
+    safePublish(`/app/game.room.${roomId}.start`, null);
   }, [roomId, safePublish]);
 
   const selectAi = useCallback((aiId: number) => {
@@ -97,6 +94,8 @@ export function useStompChat({ roomId, endpoint = 'http://localhost:8080/ws' }: 
         destination: `/app/chat.room.${roomId}.join`,
         body: JSON.stringify({ type: 'joinRoom', roomId: roomId }),
       });
+
+      console.log('STOMP connected!');
     };
 
     client.onWebSocketClose = () => setConnected(false);
