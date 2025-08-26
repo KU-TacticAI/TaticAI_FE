@@ -29,25 +29,10 @@ const WaitingRoom: React.FC = () => {
   const [aiList, setAiList] = useState<AI[]>([]); // aiList 상태를 WaitingRoom에서 관리
   const currentUserId = useSelector((state: RootState) => state.auth.user?.userId);
 
-  const { messages, sendChat, sendReady, startGame, selectAi, roomState } = useStompChat({
+  const { messages, sendChat, sendReady, sendLeave, startGame, selectAi, roomState } = useStompChat({
     roomId: id as string,
     endpoint: 'http://localhost:8080/ws',
   });
-
-  // 게임 시작 시 페이지 이동을 처리하는 useEffect 훅
-  useEffect(() => {
-    if (roomState && roomState.status === 'IN_PROGRESS') {
-      navigate('/game');
-    }
-  }, [roomState, navigate]);
-
-  useEffect(() => {
-    if (roomState) {
-      setRoom(roomState);
-      const rawPlayers = roomState.players ?? (roomState as any).playerList ?? (roomState as any).participants ?? [];
-      setPlayers(Array.isArray(rawPlayers) ? rawPlayers : []);
-    }
-  }, [roomState]);
 
   useEffect(() => {
     const fetchRoomData = async () => {
@@ -63,11 +48,35 @@ const WaitingRoom: React.FC = () => {
           setPlayers(Array.isArray(rawPlayers) ? rawPlayers : []);
         } catch (e) {
           console.error('Failed to fetch room data:', e);
+          navigate(`/`);
         }
       }
     };
     fetchRoomData();
   }, [id]);
+
+  useEffect(() => {
+    console.log(roomState);
+    // roomState가 존재할 때 (방 상태 업데이트)
+    if (roomState) {
+      if (roomState.isDeleted) {
+        console.log('방이 삭제되었습니다. 메인 페이지로 이동합니다.');
+        navigate(`/lobby/${roomState.gameType}`);
+        return;
+      }
+      // 방 상태 업데이트
+      setRoom(roomState);
+      const rawPlayers = roomState.players ?? (roomState as any).playerList ?? (roomState as any).participants ?? [];
+      setPlayers(Array.isArray(rawPlayers) ? rawPlayers : []);
+
+      // 게임 시작 상태인 경우, 게임 페이지로 이동
+      if (roomState.status === 'IN_PROGRESS') {
+        console.log('게임이 시작되었습니다. 게임 페이지로 이동합니다.');
+        navigate('/game');
+      }
+    }
+
+  }, [roomState, navigate, id]);
 
   // 모달을 열 때 AI 목록을 가져오는 로직 추가
   const handleOpenAiModal = async () => {
@@ -99,7 +108,8 @@ const WaitingRoom: React.FC = () => {
   const handleLeaveRoom = async () => {
     if (room) {
       try {
-        await leaveGameRoom(room.roomId);
+        // await leaveGameRoom(room.roomId);
+        sendLeave(currentUserId!!);
         navigate(`/lobby/${room.gameType}`);
       } catch (error) {
         console.error('Failed to leave room:', error);

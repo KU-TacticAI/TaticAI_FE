@@ -8,6 +8,7 @@ export interface GameRoom {
     maxPlayers: number;
     isPrivate: boolean;
     status: string;
+    isDeleted: boolean;
 }
 
 export interface AI {

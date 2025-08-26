@@ -43,6 +43,14 @@ export function useStompChat({ roomId, endpoint = 'http://localhost:8080/ws' }: 
     });
   }, [roomId, safePublish]);
 
+  const sendLeave = useCallback((userId: string) => {
+    safePublish(`/app/game.room.${roomId}.leave`, {
+      type: 'leave',
+      roomId: roomId,
+      userId,
+    });
+  }, [roomId, safePublish]);
+
   const startGame = useCallback(() => {
     safePublish(`/app/game.room.${roomId}.start`, null);
   }, [roomId, safePublish]);
@@ -127,6 +135,7 @@ export function useStompChat({ roomId, endpoint = 'http://localhost:8080/ws' }: 
     roomState,
     sendChat,
     sendReady,
+    sendLeave,
     startGame,
     selectAi,
   };
