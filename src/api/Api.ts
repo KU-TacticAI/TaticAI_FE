@@ -181,8 +181,8 @@ export const getGameRoomsApi = async (gameName: string) => {
   return await axiosInstance.get(`/api/game/rooms/lobby/${gameName}`);
 }
 
-export const getGameRoomDetailApi = async (roomId: string) => {
-  return await axiosInstance.get(`/api/game/rooms/${roomId}`);
+export const getGameRoomDetailApi = async (id: string) => {
+  return await axiosInstance.get(`/api/game/rooms/${id}`);
 }
 
 export const getGameLobbyApi = async()=>{
@@ -195,6 +195,30 @@ export const createGameRoom = async(data:object)=>{
       'Content-Type': 'application/json',
     }
   });
+}
+
+export const enterGameRoom = async (id: string) => {
+  return await axiosInstance.post(`/api/game/rooms/${id}`);
+}
+
+export const leaveGameRoom = async (id: string) => {
+  return await axiosInstance.post(`/api/game/rooms/${id}/leave`);
+}
+
+export const getAiListApi = async () => {
+  return await axiosInstance.get('/api/core/api/ai/user');
+}
+
+// export const getAiListsByUserIdsApi = async (params: { ids: number[]; }) => {
+//   return await axiosInstance.get(`/api/core/api/ai/list`, {
+//     params: {
+//       ids: params.ids,
+//     },
+//   });
+// }
+
+export const selectAiApi = async (roomId: string, aiId: number) => {
+  return await axiosInstance.post(`/api/game/rooms/${roomId}/ai/${aiId}`);
 }
 
 export default axiosInstance;

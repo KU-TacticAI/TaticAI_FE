@@ -35,6 +35,7 @@ const Login = () => {
       dispatch(login({
         token: token,
         user: {
+          userId: response.data.id,
           nickname: response.data.nickname,
           profileLink: response.data.nickprofileLink,
         }

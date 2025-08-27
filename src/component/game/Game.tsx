@@ -2,6 +2,7 @@ import React from "react";
 import TicTacToe from "./TicTacToe";
 import Othello from "./Othello";
 import Chess from "./Chess";
+import {useLocation} from "react-router-dom";
 // 다른 게임 컴포넌트들도 필요시 import
 // import Checkers from "./Checkers";
 
@@ -17,8 +18,16 @@ interface GameProps {
   player: string;
 }
 
-const Game: React.FC<GameProps> = ({gameType, sessionId, player_names, player}) => {
-
+// const Game: React.FC<GameProps> = ({gameType, sessionId, player_names, player}) => {
+const Game: React.FC<GameProps> = () => {
+  const location = useLocation();
+  const { sessionId, player_names, player, gameType } = location.state as {
+    sessionId: string;
+    player_names: string[];
+    player: string;
+    gameType: string;
+  };
+  console.log('Game 컴포넌트로 전달된 gameType:', gameType);
   // 게임 진행상황 저장하기 위한 배열 useState
   const [gameProgress, setGameProgress] = React.useState<any[]>([]);
   // 현제 인덱스
@@ -48,6 +57,7 @@ const Game: React.FC<GameProps> = ({gameType, sessionId, player_names, player}) 
         return <Chess gameData={gameProgress[currentIndex]} />;
       case "바둑":
       case "go":
+      case "baduk":
         return <div>바둑 게임 (구현 예정)</div>;
       default:
         return <div>지원하지 않는 게임 타입입니다: {gameType}</div>;
