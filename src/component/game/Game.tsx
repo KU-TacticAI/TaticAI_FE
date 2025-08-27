@@ -55,10 +55,9 @@ const Game: React.FC<GameProps> = () => {
           return <Chess />; // 게임 진행 정보가 없을 때
         }
         return <Chess gameData={gameProgress[currentIndex]} />;
-      case "바둑":
-      case "go":
-      case "baduk":
-        return <div>바둑 게임 (구현 예정)</div>;
+      case "오목":
+      case "omok":
+        return <div>오목 게임 (구현 예정)</div>;
       default:
         return <div>지원하지 않는 게임 타입입니다: {gameType}</div>;
     }

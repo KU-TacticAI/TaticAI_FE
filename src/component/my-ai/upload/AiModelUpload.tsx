@@ -110,7 +110,7 @@ const AiModelUpload: React.FC = () => {
                   <option value="chess">체스</option>
                   <option value="othello">오셀로</option>
                   <option value="tictactoe">틱택토</option>
-                  <option value="baduk">바둑</option>
+                  <option value="omok">오목</option>
                 </select>
               </div>
 
