@@ -1,0 +1,280 @@
+.ai-upload-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+.ai-upload-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.ai-upload-header h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #c34182, #8e2d5a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ai-upload-header p {
+  color: #aaa;
+  font-size: 1.1rem;
+}
+
+.ai-upload-form {
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  border: 1px solid #333;
+  padding: 40px;
+}
+
+.form-section {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 30px;
+}
+
+.form-left,
+.form-right {
+  flex: 1;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #fff;
+  font-weight: 500;
+}
+
+.form-group input[type="text"],
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #444;
+  background: #2a2a2a;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #c34182;
+  background: #333;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+}
+
+.file-upload-section {
+  margin-bottom: 2rem;
+}
+
+.file-upload-area {
+  border: 2px dashed #444;
+  border-radius: 8px;
+  background: #2a2a2a;
+  position: relative;
+  transition: border-color 0.2s, background-color 0.2s;
+  cursor: pointer;
+}
+
+.file-upload-area:hover {
+  border-color: #c34182;
+  background: #333;
+}
+
+.file-upload-area input[type="file"] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.file-upload-placeholder {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.upload-prompt .upload-icon,
+.file-info .file-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.upload-prompt p {
+  color: #aaa;
+  margin: 0.5rem 0;
+}
+
+.file-types {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: center;
+}
+
+.file-details {
+  text-align: left;
+}
+
+.file-name {
+  color: #fff;
+  font-weight: 500;
+  margin: 0;
+}
+
+.file-size {
+  color: #aaa;
+  font-size: 0.9rem;
+  margin: 0.25rem 0 0 0;
+}
+
+.upload-guidelines {
+  background: rgba(195, 65, 130, 0.08);
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid rgba(195, 65, 130, 0.2);
+}
+
+.upload-guidelines h4 {
+  color: #fff;
+  margin-top: 0rem;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.upload-guidelines ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.upload-guidelines li {
+  color: #aaa;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.upload-guidelines li:before {
+  content: "•";
+  color: #c34182;
+  position: absolute;
+  left: 0;
+}
+
+.error-message,
+.success-message {
+  text-align: center;
+  margin: 1.5rem 0;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.error-message {
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.success-message {
+  color: #6bff8c;
+  background: rgba(107, 255, 140, 0.1);
+  border: 1px solid rgba(107, 255, 140, 0.3);
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #333;
+}
+
+.cancel-button,
+.submit-button {
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.cancel-button {
+  background: #333;
+  color: #fff;
+  border: 1px solid #555;
+}
+
+.cancel-button:hover {
+  background: #444;
+}
+
+.submit-button {
+  background: linear-gradient(135deg, #c34182, #8e2d5a);
+  color: white;
+  min-width: 160px;
+}
+
+.submit-button:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@media (max-width: 768px) {
+  .ai-upload-container {
+    padding: 20px;
+  }
+  
+  .form-section {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .ai-upload-header h1 {
+    font-size: 2rem;
+  }
+  
+  .button-container {
+    flex-direction: column;
+  }
+  
+  .cancel-button,
+  .submit-button {
+    width: 100%;
+  }
+}
