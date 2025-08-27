@@ -18,7 +18,6 @@ interface GameProps {
   player: string;
 }
 
-// const Game: React.FC<GameProps> = ({gameType, sessionId, player_names, player}) => {
 const Game: React.FC<GameProps> = () => {
   const location = useLocation();
   const { sessionId, player_names, player, gameType } = location.state as {
