@@ -1,19 +1,23 @@
 export interface GameRoom {
-    roomId: string;
+    roomId: string; // Changed from roomId
     roomName: string;
     gameType: string;
-    host: string;
+    hostUserId: string;
     hostRanking: number;
     playerCount: number;
     maxPlayers: number;
     isPrivate: boolean;
     status: string;
+    isDeleted: boolean;
 }
 
 export interface AI {
     aiId: string;
-    aiName: string;
+    userId: string;
+    name: string;
     description: string;
+    gameType: string;
+    aiUrl: string;
 }
 
 export interface Player {
@@ -27,6 +31,7 @@ export interface Player {
 
 export interface GameRoomDetail extends GameRoom {
     players: Player[];
+    isDeleted: boolean;
 }
 
 // 공통 게임 데이터 인터페이스
