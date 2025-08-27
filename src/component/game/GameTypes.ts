@@ -47,6 +47,7 @@ export interface GameData {
   winner: string | null;
   is_success: boolean;
   timestamp: string;
+  avg_response_times?: number[];
 }
 
 // 공통 컴포넌트 Props 인터페이스

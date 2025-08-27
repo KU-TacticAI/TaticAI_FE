@@ -12,6 +12,9 @@ import {getUser} from "./api/Api";
 import GamePage from "./component/game/page/GamePage"
 import Lobby from "./component/lobby/Lobby";
 import WaitingRoom from "./pages/waiting_room/WaitingRoom";
+import AiModelList from "./component/my-ai/list/AiModelList";
+import AiModelDetail from "./component/my-ai/detail/AiModelDetail";
+import AiModelUpload from "./component/my-ai/upload/AiModelUpload";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -54,6 +57,9 @@ const App: React.FC = () => {
         <Route path="/game" element={<GamePage />} />
         <Route path="/lobby/:gameName" element={<Lobby />} />
         <Route path="/waiting-room/:id" element={<WaitingRoom />} />
+        <Route path="/my-ai" element={<AiModelList />} />
+        <Route path="/my-ai/:id" element={<AiModelDetail />} />
+        <Route path="/my-ai/upload" element={<AiModelUpload />} />
       </Routes>
     </Router>
   );
