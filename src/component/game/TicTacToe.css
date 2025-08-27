@@ -2,15 +2,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 15px 20px;
   font-family: 'Arial', sans-serif;
   background: linear-gradient(135deg, #2c3e50, #34495e);
-  min-height: 100vh;
+  min-height: auto;
   color: white;
 }
 
 .tictactoe-game-info {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   text-align: center;
 }
 
@@ -23,7 +23,7 @@
 
 .tictactoe-game-stats {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 40px;
   background: rgba(255, 255, 255, 0.1);
@@ -95,11 +95,89 @@
   align-items: center;
   gap: 5px;
   position: relative;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+/* 게임 보드와 점수 레이아웃 - 가로 배치 */
+.tictactoe-game-board-container {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-end !important;
+  justify-content: space-between !important;
+  gap: 20px !important;
+  position: relative;
+  width: 100% !important;
+  max-width: 1200px !important;
+  margin: 20px auto 0 auto !important;
+}
+
+/* 최우선순위 가로 배치 강제 */
+div.tictactoe-game-board-container {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-end !important;
+  justify-content: space-between !important;
+  margin: 20px auto 0 auto !important;
+}
+
+.tictactoe-container .tictactoe-game-board-container {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-end !important;
+  justify-content: space-between !important;
+  margin: 20px auto 0 auto !important;
+}
+
+/* 왼쪽/오른쪽 플레이어 점수 영역 */
+.tictactoe-left-player-score,
+.tictactoe-right-player-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 25px;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  min-width: 180px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+/* 플레이어 정보 스타일 */
+.tictactoe-left-player-score .tictactoe-player,
+.tictactoe-right-player-score .tictactoe-player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* 플레이어 이름 스타일 */
+.tictactoe-left-player-score .tictactoe-player-name,
+.tictactoe-right-player-score .tictactoe-player-name {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+}
+
+/* 점수 스타일 */
+.tictactoe-left-player-score .tictactoe-score,
+.tictactoe-right-player-score .tictactoe-score {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #f39c12;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
 .tictactoe-row-coordinates {
   position: absolute;
-  left: -40px;
+  left: -60px;
   top: 10px;
   display: flex;
   flex-direction: column;
@@ -225,6 +303,26 @@
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {
+  .tictactoe-game-board-container {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 20px !important;
+  }
+  
+  .tictactoe-left-player-score,
+  .tictactoe-right-player-score {
+    min-width: 100px;
+    min-height: 150px;
+    padding: 10px;
+  }
+  
+  .tictactoe-left-player-score .tictactoe-score,
+  .tictactoe-right-player-score .tictactoe-score {
+    font-size: 1.5rem;
+  }
+  
   .tictactoe-board {
     grid-template-columns: repeat(3, 60px);
     grid-template-rows: repeat(3, 60px);
@@ -257,7 +355,7 @@
   }
   
   .tictactoe-row-coordinates {
-    left: -35px;
+    left: -55px;
   }
   
   .tictactoe-col-coordinates {
