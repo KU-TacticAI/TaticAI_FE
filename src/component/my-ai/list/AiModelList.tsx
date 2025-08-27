@@ -51,9 +51,9 @@ const AiModelList: React.FC = () => {
     },
     {
       id: 4,
-      modelName: "BadukAlpha",
-      description: "바둑 게임에 최적화된 AI 모델입니다.",
-      gameType: "baduk",
+      modelName: "OmokAlpha",
+      description: "오목 게임에 최적화된 AI 모델입니다.",
+      gameType: "omok",
       version: "1.2.1",
       uploadDate: "2024-01-08",
       fileSize: "128.7 MB"
@@ -77,7 +77,7 @@ const AiModelList: React.FC = () => {
       'chess': '체스',
       'othello': '오셀로',
       'tictactoe': '틱택토',
-      'baduk': '바둑'
+      'omok': '오목'
     };
     return labels[gameType] || gameType;
   };
@@ -136,7 +136,7 @@ const AiModelList: React.FC = () => {
               <option value="chess">체스</option>
               <option value="othello">오셀로</option>
               <option value="tictactoe">틱택토</option>
-              <option value="baduk">바둑</option>
+              <option value="omok">오목</option>
             </select>
           </div>
         </div>

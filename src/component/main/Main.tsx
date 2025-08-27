@@ -15,9 +15,9 @@ const Main: React.FC = () => {
                 <img src="/img/sample-img/img6.jpg" alt="전체"/>
                 <span className="game-title">전체</span>
               </Link>
-              <Link to="/lobby/baduk" className="game-image">
-                <img src="/img/sample-img/img6.jpg" alt="바둑"/>
-                <span className="game-title">바둑</span>
+              <Link to="/lobby/omok" className="game-image">
+                <img src="/img/sample-img/img6.jpg" alt="오목"/>
+                <span className="game-title">오목</span>
               </Link>
               <Link to="/lobby/chess" className="game-image">
                 <img src="/img/sample-img/img7.jpg" alt="체스"/>

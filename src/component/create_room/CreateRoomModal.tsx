@@ -38,7 +38,7 @@ const CreateRoomModal: React.FC<CreateRoomModalProps> = ({ gameName, onClose, on
                         <option value="chess">Chess</option>
                         <option value="othello">Othello</option>
                         <option value="tictactoe">TicTacToe</option>
-                        <option value="baduk">Baduk</option>
+                        <option value="omok">Omok</option>
                     </select>
                 </div>
                 {/*<div className="form-group">*/}
