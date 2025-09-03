@@ -62,7 +62,7 @@ const AiModelDetail: React.FC = () => {
       'chess': '체스',
       'othello': '오셀로',
       'tictactoe': '틱택토',
-      'baduk': '바둑'
+      'omok': '오목'
     };
     return labels[gameType] || gameType;
   };
