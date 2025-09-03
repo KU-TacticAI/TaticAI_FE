@@ -28,19 +28,27 @@ const Login = () => {
 
     try {
       const response = await loginApi(form);
+      // const authHeader = response.headers['authorization'];
+      // const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.substring(7) : null;
       const token = response.data.token;
 
-      console.log('로그인 성공:', response.data);
-      localStorage.setItem('Authorization', token);
-      dispatch(login({
-        token: token,
-        user: {
-          userId: response.data.id,
-          nickname: response.data.nickname,
-          profileLink: response.data.nickprofileLink,
-        }
-      }));
-      window.location.href = '/';
+      if (token) {
+        console.log('로그인 성공, 토큰:', token);
+        localStorage.setItem('Authorization', token);
+        dispatch(login({
+          token: token,
+          user: {
+            userId: response.data.id,
+            nickname: response.data.nickname,
+            profileLink: response.data.nickprofileLink,
+          }
+        }));
+        window.location.href = '/';
+      } else {
+        const message = '로그인에 실패했습니다: 토큰을 받지 못했습니다.';
+        setError(message);
+        alert(message);
+      }
     } catch (err) {
       const error = err as AxiosError;
       const message =

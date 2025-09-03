@@ -115,7 +115,7 @@ const WaitingRoom: React.FC = () => {
   const handleLeaveRoom = async () => {
     if (room) {
       try {
-        // await leaveGameRoom(room.roomId);
+        await leaveGameRoom(room.roomId);
         sendLeave(currentUserId!!);
         navigate(`/lobby/${room.gameType}`);
       } catch (error) {

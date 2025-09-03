@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { login } from './store/slices/authSlice';
+import { login, logout } from './store/slices/authSlice';
 import SignIn from './component/signin/SiginIn';
 import Main from './component/main/Main';
 import Login from './component/login/Login';
@@ -38,6 +38,8 @@ const App: React.FC = () => {
           }));
         } catch (error) {
           console.error('Failed to restore login session:', error);
+          localStorage.removeItem('Authorization');
+          dispatch(logout());
         }
       }
     };
