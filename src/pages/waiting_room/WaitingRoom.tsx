@@ -154,6 +154,7 @@ const WaitingRoom: React.FC = () => {
         <AiSelectionModal
             isOpen={isAiModalOpen}
             onClose={() => setIsAiModalOpen(false)}
+            gameType={room.gameType}
             aiList={aiList} // aiList prop으로 전달
             onSelectAi={handleSelectAi} // onSelectAi prop으로 전달
         />

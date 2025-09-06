@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Layout from "../../layout/Layout";
+import { getAiListApi } from "../../../api/Api";
 import './AiModelList.css';
 
 interface AiModel {
@@ -65,6 +66,7 @@ const AiModelList: React.FC = () => {
     const loadModels = async () => {
       setLoading(true);
       await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await getAiListApi();
       setModels(mockModels);
       setLoading(false);
     };
