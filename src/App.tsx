@@ -62,6 +62,7 @@ const App: React.FC = () => {
         <Route path="/my-ai" element={<AiModelList />} />
         <Route path="/my-ai/:id" element={<AiModelDetail />} />
         <Route path="/my-ai/upload" element={<AiModelUpload />} />
+        <Route path="/my-ai/edit/:id" element={<AiModelUpload />} />
       </Routes>
     </Router>
   );

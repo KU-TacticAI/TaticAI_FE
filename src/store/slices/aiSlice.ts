@@ -1,6 +1,6 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAiListApi, deleteAiApi, createAiApi } from '../../api/Api';
+import { getAiListApi, deleteAiApi, createAiApi, updateAiApi } from '../../api/Api';
 import { AI } from '../../component/game/GameTypes';
 
 interface AiState {
@@ -31,6 +31,18 @@ export const fetchAiList = createAsyncThunk('ai/fetchAiList', async () => {
   const response = await getAiListApi();
   return response.data;
 });
+
+export const updateAi = createAsyncThunk(
+    'ai/updateAi',
+    async ({ id, formData }: { id: string; formData: FormData }, { rejectWithValue }) => {
+      try {
+        const response = await updateAiApi(id, formData);
+        return response.data;
+      } catch (error: any) {
+        return rejectWithValue(error.response.data);
+      }
+    }
+);
 
 export const deleteAi = createAsyncThunk(
     'ai/deleteAi',
@@ -65,6 +77,20 @@ const aiSlice = createSlice({
         state.aiList.push(action.payload);
       })
       .addCase(createAi.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload as string;
+      })
+      .addCase(updateAi.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(updateAi.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        const index = state.aiList.findIndex(ai => ai.aiId === action.payload.aiId);
+        if (index !== -1) {
+          state.aiList[index] = action.payload;
+        }
+      })
+      .addCase(updateAi.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload as string;
       })

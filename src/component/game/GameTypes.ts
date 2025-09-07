@@ -21,6 +21,7 @@ export interface AI {
     aiSize: string;
     score: string;
     tier: string;
+    version : string;
     uploadDate: string;
     updateAt: string;
 }

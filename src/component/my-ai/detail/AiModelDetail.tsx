@@ -16,11 +16,6 @@ const AiModelDetail: React.FC = () => {
   const { aiList, status } = useSelector((state: RootState) => state.ai);
   const model = aiList.find(m => m.aiId.toString() === id);
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [editForm, setEditForm] = useState({
-    name: '',
-    description: '',
-  });
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
@@ -28,15 +23,6 @@ const AiModelDetail: React.FC = () => {
       dispatch(fetchAiList());
     }
   }, [status, dispatch]);
-
-  useEffect(() => {
-    if (model) {
-      setEditForm({
-        name: model.name,
-        description: model.description,
-      });
-    }
-  }, [model]);
 
   const getGameTypeLabel = (gameType: string) => {
     const labels: { [key: string]: string } = {
@@ -46,15 +32,6 @@ const AiModelDetail: React.FC = () => {
       'omok': '오목'
     };
     return labels[gameType] || gameType;
-  };
-
-
-  const handleEditSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Implement actual API call for update
-    console.log('Updating model with:', editForm);
-    alert('모델 정보가 성공적으로 업데이트되었습니다. (구현 필요)');
-    setIsEditing(false);
   };
 
   const handleDelete = async () => {
@@ -111,10 +88,10 @@ const AiModelDetail: React.FC = () => {
           </button>
           <div className="header-actions">
             <button 
-              onClick={() => setIsEditing(!isEditing)}
+              onClick={() => navigate(`/my-ai/edit/${model.aiId}`)}
               className="edit-button"
             >
-              {isEditing ? '취소' : '편집'}
+              편집
             </button>
             <button 
               onClick={() => setShowDeleteModal(true)}
@@ -127,42 +104,12 @@ const AiModelDetail: React.FC = () => {
 
         <div className="detail-content">
           <div className="model-main-info">
-            {isEditing ? (
-              <form onSubmit={handleEditSubmit} className="edit-form">
-                <div className="form-group">
-                  <label htmlFor="modelName">모델 이름</label>
-                  <input
-                    id="modelName"
-                    type="text"
-                    value={editForm.name}
-                    onChange={(e) => setEditForm({...editForm, name: e.target.value})}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="description">설명</label>
-                  <textarea
-                    id="description"
-                    value={editForm.description}
-                    onChange={(e) => setEditForm({...editForm, description: e.target.value})}
-                    rows={4}
-                  />
-                </div>
-                <div className="form-actions">
-                  <button type="submit" className="save-button">저장</button>
-                  <button type="button" onClick={() => setIsEditing(false)} className="cancel-button">
-                    취소
-                  </button>
-                </div>
-              </form>
-            ) : (
-              <div className="model-info">
-                <div className="model-header">
-                  <h1 className="model-title">{model.name}</h1>
-                </div>
-                <p className="model-description">{model.description}</p>
+            <div className="model-info">
+              <div className="model-header">
+                <h1 className="model-title">{model.name}</h1>
               </div>
-            )}
+              <p className="model-description">{model.description}</p>
+            </div>
           </div>
 
           <div className="detail-sections">
@@ -180,6 +127,10 @@ const AiModelDetail: React.FC = () => {
                 <div className="info-item">
                   <span className="label">티어</span>
                   <span className="value">{model.tier}</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">버전</span>
+                  <span className="value">{model.version}</span>
                 </div>
                 <div className="info-item">
                   <span className="label">파일 크기</span>

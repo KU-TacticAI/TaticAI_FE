@@ -233,6 +233,14 @@ export const deleteAiApi = async  (id:string, data:object)=>{
   });
 }
 
+export const updateAiApi = async (id: string, formData: FormData) => {
+  return await axiosInstance.put(`/api/core/api/ai/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+}
+
 // export const getAiListsByUserIdsApi = async (params: { ids: number[]; }) => {
 //   return await axiosInstance.get(`/api/core/api/ai/list`, {
 //     params: {
