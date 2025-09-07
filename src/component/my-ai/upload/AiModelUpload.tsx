@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import Layout from "../../layout/Layout";
+import { RootState, AppDispatch } from '../../../store/store';
+import { createAi } from "../../../store/slices/aiSlice";
 import './AiModelUpload.css';
 
 const AiModelUpload: React.FC = () => {
@@ -15,6 +18,7 @@ const AiModelUpload: React.FC = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const dispatch: AppDispatch = useDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -46,20 +50,19 @@ const AiModelUpload: React.FC = () => {
     try {
       const formData = new FormData();
       const modelData = {
-        modelName: form.modelName,
+        name: form.modelName,
         description: form.description,
         gameType: form.gameType,
         version: form.version
       };
 
       formData.append(
-        'json',
+        'requestDto',
         new Blob([JSON.stringify(modelData)], { type: 'application/json' })
       );
       formData.append('file', file);
 
-      // TODO: Replace with actual API call
-      // await uploadAiModel(formData);
+      await dispatch(createAi({ formData })).unwrap();
       
       // Simulate upload delay
       await new Promise(resolve => setTimeout(resolve, 2000));

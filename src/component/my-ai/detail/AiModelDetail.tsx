@@ -1,61 +1,42 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import Layout from "../../layout/Layout";
+import { AI } from "../../game/GameTypes";
+import { fetchAiList, deleteAi } from "../../../store/slices/aiSlice";
+import { RootState, AppDispatch } from '../../../store/store';
 import './AiModelDetail.css';
-
-interface AiModel {
-  id: number;
-  modelName: string;
-  description: string;
-  gameType: string;
-  version: string;
-  uploadDate: string;
-  fileSize: string;
-  lastUsed?: string;
-}
 
 const AiModelDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const [model, setModel] = useState<AiModel | null>(null);
-  const [loading, setLoading] = useState(true);
+  const dispatch: AppDispatch = useDispatch();
+
+  const { aiList, status } = useSelector((state: RootState) => state.ai);
+  const model = aiList.find(m => m.aiId.toString() === id);
+
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({
-    modelName: '',
+    name: '',
     description: '',
-    version: ''
   });
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  // Mock data - replace with actual API call
-  const mockModel: AiModel = {
-    id: 1,
-    modelName: "ChessGrandmaster Pro",
-    description: "고급 체스 AI 모델로 딥러닝 기반의 전략적 판단을 제공합니다. 수백만 개의 체스 게임 데이터로 훈련되어 뛰어난 성능을 자랑합니다.",
-    gameType: "chess",
-    version: "2.1.0",
-    uploadDate: "2024-01-15",
-    fileSize: "45.2 MB",
-    lastUsed: "2024-01-20"
-  };
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchAiList());
+    }
+  }, [status, dispatch]);
 
   useEffect(() => {
-    const loadModel = async () => {
-      setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setModel(mockModel);
+    if (model) {
       setEditForm({
-        modelName: mockModel.modelName,
-        description: mockModel.description,
-        version: mockModel.version
+        name: model.name,
+        description: model.description,
       });
-      setLoading(false);
-    };
-
-    if (id) {
-      loadModel();
     }
-  }, [id]);
+  }, [model]);
 
   const getGameTypeLabel = (gameType: string) => {
     const labels: { [key: string]: string } = {
@@ -70,31 +51,30 @@ const AiModelDetail: React.FC = () => {
 
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Replace with actual API call
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    if (model) {
-      setModel({
-        ...model,
-        modelName: editForm.modelName,
-        description: editForm.description,
-        version: editForm.version
-      });
-    }
-    
+    // TODO: Implement actual API call for update
+    console.log('Updating model with:', editForm);
+    alert('모델 정보가 성공적으로 업데이트되었습니다. (구현 필요)');
     setIsEditing(false);
-    alert('모델 정보가 성공적으로 업데이트되었습니다.');
   };
 
   const handleDelete = async () => {
-    // TODO: Replace with actual API call
-    await new Promise(resolve => setTimeout(resolve, 500));
-    alert('AI 모델이 성공적으로 삭제되었습니다.');
-    navigate('/my-ai');
+    if (!id) {
+      console.error("ID is not available");
+      alert("오류: 모델 ID를 찾을 수 없습니다.");
+      return;
+    }
+    try {
+      await dispatch(deleteAi({ id, password })).unwrap();
+      alert('AI 모델이 성공적으로 삭제되었습니다.');
+      navigate('/my-ai');
+    } catch (error: any) {
+      console.error("Failed to delete AI:", error);
+      alert(`AI 모델 삭제에 실패했습니다: ${error.message || '서버 오류'}`);
+    }
   };
 
 
-  if (loading) {
+  if (status === 'loading') {
     return (
       <Layout>
         <div className="ai-detail-container">
@@ -154,18 +134,9 @@ const AiModelDetail: React.FC = () => {
                   <input
                     id="modelName"
                     type="text"
-                    value={editForm.modelName}
-                    onChange={(e) => setEditForm({...editForm, modelName: e.target.value})}
+                    value={editForm.name}
+                    onChange={(e) => setEditForm({...editForm, name: e.target.value})}
                     required
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="version">버전</label>
-                  <input
-                    id="version"
-                    type="text"
-                    value={editForm.version}
-                    onChange={(e) => setEditForm({...editForm, version: e.target.value})}
                   />
                 </div>
                 <div className="form-group">
@@ -187,7 +158,7 @@ const AiModelDetail: React.FC = () => {
             ) : (
               <div className="model-info">
                 <div className="model-header">
-                  <h1 className="model-title">{model.modelName}</h1>
+                  <h1 className="model-title">{model.name}</h1>
                 </div>
                 <p className="model-description">{model.description}</p>
               </div>
@@ -203,20 +174,24 @@ const AiModelDetail: React.FC = () => {
                   <span className="value game-type">{getGameTypeLabel(model.gameType)}</span>
                 </div>
                 <div className="info-item">
-                  <span className="label">버전</span>
-                  <span className="value">{model.version}</span>
+                  <span className="label">점수</span>
+                  <span className="value">{model.score}</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">티어</span>
+                  <span className="value">{model.tier}</span>
                 </div>
                 <div className="info-item">
                   <span className="label">파일 크기</span>
-                  <span className="value">{model.fileSize}</span>
+                  <span className="value">{model.aiSize}</span>
                 </div>
                 <div className="info-item">
                   <span className="label">업로드 날짜</span>
                   <span className="value">{model.uploadDate}</span>
                 </div>
                 <div className="info-item">
-                  <span className="label">마지막 사용</span>
-                  <span className="value">{model.lastUsed || '사용 기록 없음'}</span>
+                  <span className="label">최근 수정 날짜</span>
+                  <span className="value">{model.updateAt}</span>
                 </div>
               </div>
             </div>
@@ -229,9 +204,17 @@ const AiModelDetail: React.FC = () => {
             <div className="modal-content">
               <h3>AI 모델 삭제</h3>
               <p>
-                "<strong>{model.modelName}</strong>" 모델을 정말 삭제하시겠습니까?<br/>
+                "<strong>{model.name}</strong>" 모델을 정말 삭제하시겠습니까?<br/>
                 모델을 삭제하면 더이상 되돌릴 수 없어요.
               </p>
+              <p>
+                비밀번호를 입력하세요
+              </p>
+              <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+              />
               <div className="modal-actions">
                 <button onClick={() => setShowDeleteModal(false)} className="cancel-button">
                   취소

@@ -215,7 +215,22 @@ export const leaveGameRoom = async (id: string) => {
 }
 
 export const getAiListApi = async () => {
-  return await axiosInstance.get('/api/core/api/ai/user');
+  return await axiosInstance.get('/api/core/api/ai');
+}
+
+export const createAiApi = async (formData: FormData) => {
+  return await axiosInstance.post(`/api/core/api/ai`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+}
+
+export const deleteAiApi = async  (id:string, data:object)=>{
+  return await axiosInstance.delete(`/api/core/api/ai/${id}`, {
+    data: data,
+    headers: { 'Content-Type': 'application/json' }
+  });
 }
 
 // export const getAiListsByUserIdsApi = async (params: { ids: number[]; }) => {

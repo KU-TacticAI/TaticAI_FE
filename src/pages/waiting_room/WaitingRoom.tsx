@@ -3,11 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Layout from '../../component/layout/Layout';
 import './WaitingRoom.css';
 import { Box } from '@mui/material';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {
   selectAiApi,
-  getAiListApi,
   getGameRoomDetailApi,
   leaveGameRoom
 } from '../../api/Api';
@@ -18,16 +17,18 @@ import GameInfoPanel from '../../component/waiting/GameInfoPanel';
 import ChatPanel from '../../component/waiting/ChatPenel';
 import { useStompChat } from '../../hooks/useStompChat';
 import AiSelectionModal from '../../component/waiting/AiSelectionModal';
-import {RootState} from "../../store/store";
+import {RootState, AppDispatch} from "../../store/store";
+import {fetchAiList} from "../../store/slices/aiSlice";
 
 const WaitingRoom: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
   const [room, setRoom] = useState<GameRoomDetail | null>(null);
   const [players, setPlayers] = useState<Player[]>([]);
   const [isAiModalOpen, setIsAiModalOpen] = useState(false);
-  const [aiList, setAiList] = useState<AI[]>([]); // aiList 상태를 WaitingRoom에서 관리
   const currentUserId = useSelector((state: RootState) => state.auth.user?.userId);
+  const { aiList, status: aiStatus } = useSelector((state: RootState) => state.ai);
 
   const { messages, sendChat, sendReady, sendLeave, startGame, selectAi, roomState } = useStompChat({
     roomId: id as string,
@@ -87,15 +88,8 @@ const WaitingRoom: React.FC = () => {
 
   // 모달을 열 때 AI 목록을 가져오는 로직 추가
   const handleOpenAiModal = async () => {
-    if (room?.players) {
-      try {
-        const playersIdList = room.players.map(player => Number(player.userId));
-        // const response = await getAiListsByUserIdsApi({ ids: playersIdList });
-        const response = await getAiListApi();
-        setAiList(response.data);
-      } catch (error) {
-        console.error("Failed to fetch AI list:", error);
-      }
+    if (aiStatus === 'idle') {
+        dispatch(fetchAiList());
     }
     setIsAiModalOpen(true);
   };
