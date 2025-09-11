@@ -1,76 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Layout from "../../layout/Layout";
+import { fetchAiList } from "../../../store/slices/aiSlice";
+import { RootState, AppDispatch } from "../../../store/store";
+import { AI } from "../../game/GameTypes";
 import './AiModelList.css';
-
-interface AiModel {
-  id: number;
-  modelName: string;
-  description: string;
-  gameType: string;
-  version: string;
-  uploadDate: string;
-  fileSize: string;
-}
 
 const AiModelList: React.FC = () => {
   const navigate = useNavigate();
-  const [models, setModels] = useState<AiModel[]>([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch: AppDispatch = useDispatch();
+  const { aiList: models, status, error } = useSelector((state: RootState) => state.ai);
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Mock data - replace with actual API call
-  const mockModels: AiModel[] = [
-    {
-      id: 1,
-      modelName: "ChessGrandmaster Pro",
-      description: "고급 체스 AI 모델로 딥러닝 기반의 전략적 판단을 제공합니다.",
-      gameType: "chess",
-      version: "2.1.0",
-      uploadDate: "2024-01-15",
-      fileSize: "45.2 MB"
-    },
-    {
-      id: 2,
-      modelName: "OthelloMaster",
-      description: "오셀로 게임에 특화된 AI 모델입니다.",
-      gameType: "othello",
-      version: "1.5.2",
-      uploadDate: "2024-01-10",
-      fileSize: "32.1 MB"
-    },
-    {
-      id: 3,
-      modelName: "TicTacToe Basic",
-      description: "틱택토 게임을 위한 기본 AI 모델입니다.",
-      gameType: "tictactoe",
-      version: "1.0.0",
-      uploadDate: "2024-01-12",
-      fileSize: "5.8 MB"
-    },
-    {
-      id: 4,
-      modelName: "OmokAlpha",
-      description: "오목 게임에 최적화된 AI 모델입니다.",
-      gameType: "omok",
-      version: "1.2.1",
-      uploadDate: "2024-01-08",
-      fileSize: "128.7 MB"
-    }
-  ];
-
   useEffect(() => {
-    // Simulate API loading
-    const loadModels = async () => {
-      setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setModels(mockModels);
-      setLoading(false);
-    };
-
-    loadModels();
-  }, []);
+    if (status === 'idle') {
+      dispatch(fetchAiList());
+    }
+  }, [status, dispatch]);
 
   const getGameTypeLabel = (gameType: string) => {
     const labels: { [key: string]: string } = {
@@ -81,16 +29,15 @@ const AiModelList: React.FC = () => {
     };
     return labels[gameType] || gameType;
   };
-
-
+  
   const filteredModels = models.filter(model => {
     const matchesFilter = filter === 'all' || model.gameType === filter;
-    const matchesSearch = model.modelName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch = model.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          model.description.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
-  if (loading) {
+  if (status === 'loading') {
     return (
       <Layout>
         <div className="ai-models-container">
@@ -101,6 +48,16 @@ const AiModelList: React.FC = () => {
         </div>
       </Layout>
     );
+  }
+
+  if (status === 'failed') {
+    return (
+        <Layout>
+            <div className="ai-models-container">
+                <p>Error: {error}</p>
+            </div>
+        </Layout>
+    )
   }
 
   return (
@@ -153,15 +110,15 @@ const AiModelList: React.FC = () => {
             </div>
           ) : (
             filteredModels.map(model => (
-              <div key={model.id} className="model-card">
+              <div key={model.aiId} className="model-card">
                 <div className="model-card-header">
                   <div className="model-info">
-                    <h3 className="model-name">{model.modelName}</h3>
+                    <h3 className="model-name">{model.name}</h3>
                   </div>
                   <div className="model-actions">
                     <button
                       className="action-button"
-                      onClick={() => navigate(`/my-ai/${model.id}`)}
+                      onClick={() => navigate(`/my-ai/${model.aiId}`)}
                       title="상세보기"
                     >
                       ⚙️
@@ -180,12 +137,12 @@ const AiModelList: React.FC = () => {
                       </span>
                     </div>
                     <div className="meta-item">
-                      <span className="meta-label">버전:</span>
-                      <span className="meta-value">{model.version}</span>
+                      <span className="meta-label">점수:</span>
+                      <span className="meta-value">{model.score}</span>
                     </div>
                     <div className="meta-item">
                       <span className="meta-label">크기:</span>
-                      <span className="meta-value">{model.fileSize}</span>
+                      <span className="meta-value">{model.aiSize}</span>
                     </div>
                     <div className="meta-item">
                       <span className="meta-label">업로드:</span>
@@ -198,7 +155,7 @@ const AiModelList: React.FC = () => {
                 <div className="model-card-footer">
                   <button 
                     className="secondary-button"
-                    onClick={() => navigate(`/my-ai/${model.id}`)}
+                    onClick={() => navigate(`/my-ai/${model.aiId}`)}
                   >
                       편집
                   </button>
@@ -216,5 +173,6 @@ const AiModelList: React.FC = () => {
     </Layout>
   );
 };
+
 
 export default AiModelList;

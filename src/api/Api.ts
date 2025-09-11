@@ -12,6 +12,7 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+let isRefreshing = false;
 let refreshSubscribers: ((token: string) => void)[] = [];
 
 const addSubscriber = (callback: (token: string) => void) => {
@@ -52,47 +53,73 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
-    (response: AxiosResponse) => response,
+    (response) => response,
     async (error: AxiosError) => {
-      const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
+      // let isRefreshing = false;
 
-      if (error.response?.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true;
-        let isRefreshing = false;
+      const originalRequest = error.config as (AxiosRequestConfig & { _retry?: boolean; });
 
-        if (!isRefreshing) {
-          isRefreshing = true;
+      const status = error.response?.status;
+      // 이미 한 번 재시도했거나, 리프레시/로그인 요청 자체면 패스
+      const url = (originalRequest?.url || '').toString();
+      const isRefreshCall = url.includes('/token/refresh');
+      const isLoginCall = url.includes('/login');
 
-          try {
-            const response = await axios.post<{ token: string }>(
-                '/refresh',
-                {},
-                { withCredentials: true }
-            );
-            const newToken = response.data.token;
-            localStorage.setItem('Authorization', newToken);
-            onRefreshed(newToken);
-            isRefreshing = false;
-          } catch (refreshError) {
-            isRefreshing = false;
-            localStorage.removeItem('Authorization');
-            // useNavigate는 훅이므로 여기에서 직접 호출 불가 → App 단에서 catch 후 redirect 해야 함
-            window.location.href = '/';
-            return Promise.reject(refreshError);
-          }
-        }
+      if (status !== 401 || originalRequest._retry || isRefreshCall || isLoginCall) {
+        return Promise.reject(error);
+      }
 
-        return new Promise((resolve) => {
+      originalRequest._retry = true;
+
+      // 이미 누군가가 리프레시 중이면 큐에 넣고 토큰 갱신 후 재시도
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
           addSubscriber((newToken: string) => {
-            if (originalRequest.headers) {
-              originalRequest.headers.Authorization = `Bearer ${newToken}`;
+            try {
+              originalRequest.headers = originalRequest.headers ?? {};
+              (originalRequest.headers as any).Authorization = `Bearer ${newToken}`;
+              resolve(axiosInstance(originalRequest));
+            } catch (e) {
+              reject(e);
             }
-            resolve(axiosInstance(originalRequest));
           });
         });
       }
 
-      return Promise.reject(error);
+      // 내가 리프레시 담당자가 됨
+      isRefreshing = true;
+      try {
+        // 주의: 인터셉터 미적용 인스턴스로 호출하거나 axios 기본 인스턴스 사용
+        const { data } = await axiosInstance.post<{ token: string }>(
+            '/api/core/token/refresh',
+            {},
+            { withCredentials: true }
+        );
+
+        const newAccess = data.token;
+        // 저장 및 기본 헤더 갱신 (레이스 완화)
+        localStorage.setItem('Authorization', newAccess);
+        axiosInstance.defaults.headers.Authorization = `Bearer ${newAccess}`;
+
+        // 대기 중인 요청들 재시도
+        onRefreshed(newAccess);
+
+        // 내 것도 재시도
+        originalRequest.headers = originalRequest.headers ?? {};
+        (originalRequest.headers as any).Authorization = `Bearer ${newAccess}`;
+        // isRefreshing = false;
+        return axiosInstance(originalRequest);
+      } catch (refreshErr) {
+        // 실패 시 큐 비우고 세션 정리
+        refreshSubscribers = [];
+        localStorage.removeItem('Authorization');
+        // 필요하면 여기서 라우팅 처리
+        alert("fail to get nefw tokens");
+        window.location.href = '/login';
+        return Promise.reject(refreshErr);
+      } finally {
+        isRefreshing = false;
+      }
     }
 );
 
@@ -206,7 +233,30 @@ export const leaveGameRoom = async (id: string) => {
 }
 
 export const getAiListApi = async () => {
-  return await axiosInstance.get('/api/core/api/ai/user');
+  return await axiosInstance.get('/api/core/api/ai');
+}
+
+export const createAiApi = async (formData: FormData) => {
+  return await axiosInstance.post(`/api/core/api/ai`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+}
+
+export const deleteAiApi = async  (id:string, data:object)=>{
+  return await axiosInstance.delete(`/api/core/api/ai/${id}`, {
+    data: data,
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+
+export const updateAiApi = async (id: string, formData: FormData) => {
+  return await axiosInstance.put(`/api/core/api/ai/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 }
 
 // export const getAiListsByUserIdsApi = async (params: { ids: number[]; }) => {
