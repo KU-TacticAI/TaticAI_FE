@@ -1,7 +1,6 @@
 import React from 'react';
 import './GameResultModal.css';
 import { Score } from './GameTypes';
-import { useNavigate } from 'react-router-dom';
 
 interface GameResultModalProps {
   isOpen: boolean;
@@ -24,13 +23,6 @@ const GameResultModal: React.FC<GameResultModalProps> = ({
   avg_response_times,
   onClose
 }) => {
-  const navigate = useNavigate();
-
-  const handleConfirm = () => {
-    navigate('/');
-    onClose();
-  };
-
   if (!isOpen) return null;
 
   const getWinnerIndex = () => {
@@ -68,14 +60,8 @@ const GameResultModal: React.FC<GameResultModalProps> = ({
               </div>
               <div className="player-info-box-modal">
                 <div className="player-name-modal">{playerNames[0]}</div>
-                <div className="info-label">점수 : <span className="score-value">{
-                  gameType.toLowerCase() === 'chess' || gameType.toLowerCase() === 'othello' || gameType.toLowerCase() === 'omok'
-                    ? score['black']
-                    : gameType.toLowerCase() === 'tictactoe'
-                      ? score['x']
-                      : '-'
-                }</span></div>
-                <div className="info-label">평균 응답시간 : <span className="score-value">{avg_response_times && avg_response_times[0] !== undefined ? avg_response_times[0].toFixed(0) + 'ms' : '-'}</span></div>
+                <div className="info-label">점수 : <span className="score-value">{score && (gameType.toLowerCase() === 'chess' ? (0 in score ? score["black"] : score["white"]) : gameType.toLowerCase() === 'othello' ? (0 in score ? score["black"] : score["white"]) : (0 in score ? score["x"] : score["o"]))}</span></div>
+                <div className="info-label">평균 응답시간 : <span className="score-value">{avg_response_times && avg_response_times[0] !== undefined ? avg_response_times[0].toFixed(2) + 's' : '-'}</span></div>
               </div>
             </div>
           </div>
@@ -93,21 +79,15 @@ const GameResultModal: React.FC<GameResultModalProps> = ({
               </div>
               <div className="player-info-box-modal">
                 <div className="player-name-modal">{playerNames[1]}</div>
-                <div className="info-label">점수 : <span className="score-value">{
-                  gameType.toLowerCase() === 'chess' || gameType.toLowerCase() === 'othello' || gameType.toLowerCase() === 'omok'
-                    ? score['white']
-                    : gameType.toLowerCase() === 'tictactoe'
-                      ? score['o']
-                      : '-'
-                }</span></div>
-                <div className="info-label">평균 응답시간 : <span className="score-value">{avg_response_times && avg_response_times[1] !== undefined ? avg_response_times[1].toFixed(0) + 'ms' : '-'}</span></div>
+                <div className="info-label">점수 : <span className="score-value">{score && (gameType.toLowerCase() === 'chess' ? ("white" in score ? score["white"] : score["black"]) : gameType.toLowerCase() === 'othello' ? ("white" in score ? score["white"] : score["black"]) : ("o" in score ? score["o"] : score["x"]))}</span></div>
+                <div className="info-label">평균 응답시간 : <span className="score-value">{avg_response_times && avg_response_times[1] !== undefined ? avg_response_times[1].toFixed(2) + 's' : '-'}</span></div>
               </div>
             </div>
           </div>
         </div>
         
         <div className="game-result-footer">
-          <button className="close-button" onClick={handleConfirm}>
+          <button className="close-button" onClick={onClose}>
             확인
           </button>
         </div>

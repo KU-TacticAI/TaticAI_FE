@@ -2,7 +2,6 @@ import React from "react";
 import TicTacToe from "./TicTacToe";
 import Othello from "./Othello";
 import Chess from "./Chess";
-import Omok from "./Omok";
 import {useLocation} from "react-router-dom";
 // 다른 게임 컴포넌트들도 필요시 import
 // import Checkers from "./Checkers";
@@ -27,7 +26,7 @@ const Game: React.FC<GameProps> = () => {
     player: string;
     gameType: string;
   };
-  // console.log('Game 컴포넌트로 전달된 gameType:', gameType);
+  console.log('Game 컴포넌트로 전달된 gameType:', gameType);
   // 게임 진행상황 저장하기 위한 배열 useState
   const [gameProgress, setGameProgress] = React.useState<any[]>([]);
   // 현제 인덱스
@@ -49,8 +48,7 @@ const Game: React.FC<GameProps> = () => {
         if (gameProgress.length === 0) {
           return <TicTacToe />; // 게임 진행 정보가 없을 때
         }
-        return <TicTacToe gameData={gameProgress[currentIndex]} />;      
-      case "체스":
+        return <TicTacToe gameData={gameProgress[currentIndex]} />;      case "체스":
       case "chess":
         if (gameProgress.length === 0 || currentIndex < 0 || currentIndex >= gameProgress.length) {
           return <Chess />; // 게임 진행 정보가 없을 때
@@ -58,10 +56,7 @@ const Game: React.FC<GameProps> = () => {
         return <Chess gameData={gameProgress[currentIndex]} />;
       case "오목":
       case "omok":
-        if (gameProgress.length === 0) {
-          return <Omok />; // 게임 진행 정보가 없을 때
-        }
-        return <Omok gameData={gameProgress[currentIndex]} />;
+        return <div>오목 게임 (구현 예정)</div>;
       default:
         return <div>지원하지 않는 게임 타입입니다: {gameType}</div>;
     }
@@ -76,7 +71,7 @@ const Game: React.FC<GameProps> = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      // console.log('게임 진행 정보:', data);
+      console.log('게임 진행 정보:', data);
       // 데이터가 비어있는경우
       if (Object.keys(data).length === 0) {
       }else {
@@ -87,7 +82,7 @@ const Game: React.FC<GameProps> = () => {
           item.player_names = player_names; // player_names 추가
         });
         const lastInfo = data[data.length - 1];
-        // console.log('마지막 게임 진행 정보:', lastInfo);
+        console.log('마지막 게임 진행 정보:', lastInfo);
         if (lastInfo.is_finished) {
           is_finished = true; // 게임이 종료되었음을 표시
         }
@@ -115,7 +110,7 @@ const Game: React.FC<GameProps> = () => {
     setCurrentIndex(prev => {
       const next = prev + 1;
       if (next < gameProgress.length) {
-        // console.log('업데이트:', gameProgress[next]);
+        console.log('업데이트:', gameProgress[next]);
         setTimeout(updateGameBoard, 1000);
         return next;
       }
@@ -138,7 +133,7 @@ const Game: React.FC<GameProps> = () => {
       // 새로운 스냅샷이 남아 있으면 하나만 꺼내서 처리
       if (idx < prog.length - 1) {
         setCurrentIndex(idx + 1);
-        // console.log('보드 업데이트:', prog[idx + 1]);
+        console.log('보드 업데이트:', prog[idx + 1]);
       }
       // else: 더 이상 처리할 게 없으면 그냥 가만히 둡니다.
     }, 500);
