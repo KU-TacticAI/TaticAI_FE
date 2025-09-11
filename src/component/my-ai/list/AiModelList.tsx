@@ -200,12 +200,12 @@ const AiModelList: React.FC = () => {
                     className="secondary-button"
                     onClick={() => navigate(`/my-ai/${model.id}`)}
                   >
-                      기본버튼
+                      편집
                   </button>
                   <button 
                     className="primary-button"
                   >
-                    프라이머리 컬러버튼
+                    삭제
                   </button>
                 </div>
               </div>

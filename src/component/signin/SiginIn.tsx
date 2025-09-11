@@ -1,3 +1,4 @@
+// SiginIn.tsx
 import React, {useState} from 'react';
 import {AxiosError} from 'axios';
 import './SiginIn.css';
@@ -38,7 +39,7 @@ const Signup = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(''); // "null" 대신 null 또는 ''
+    setError('');
     setSuccess(false);
 
     if (form.password !== form.confirmPassword) {
@@ -60,7 +61,7 @@ const Signup = () => {
       setSuccess(true);
       setForm({username: '', nickname: '', email: '', password: '', confirmPassword: ''});
       setFile(null);
-      setImagePreviewUrl(''); // 빈 문자열로 초기화
+      setImagePreviewUrl('');
 
       window.location.href = '/';
     } catch (err) {
@@ -78,41 +79,104 @@ const Signup = () => {
           <h1>계정 만들기</h1>
           <form onSubmit={handleSubmit} className="signup-form">
             <div className="form-columns">
-              {/* Column 1: Text fields */}
+              {/* 수정된 부분: Column 1 - 텍스트 입력 필드 */}
               <div className="form-column">
                 <div className="form-group">
                   <label htmlFor="username">이름</label>
-                  <input id="username" name="username" type="text" value={form.username} onChange={handleChange} required />
+                  <input
+                      id="username"
+                      name="username"
+                      type="text"
+                      value={form.username}
+                      onChange={handleChange}
+                      placeholder="이름을 입력하세요"
+                      required
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="nickname">닉네임</label>
-                  <input id="nickname" name="nickname" type="text" value={form.nickname} onChange={handleChange} required />
+                  <input
+                      id="nickname"
+                      name="nickname"
+                      type="text"
+                      value={form.nickname}
+                      onChange={handleChange}
+                      placeholder="닉네임을 입력하세요"
+                      required
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="email">이메일 주소</label>
-                  <input id="email" name="email" type="email" value={form.email} onChange={handleChange} required />
+                  <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={form.email}
+                      onChange={handleChange}
+                      placeholder="이메일 주소를 입력하세요"
+                      required
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="password">비밀번호</label>
-                  <input id="password" name="password" type="password" value={form.password} onChange={handleChange} required />
+                  <input
+                      id="password"
+                      name="password"
+                      type="password"
+                      value={form.password}
+                      onChange={handleChange}
+                      placeholder="비밀번호를 입력하세요"
+                      required
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="confirmPassword">비밀번호 확인</label>
-                  <input id="confirmPassword" name="confirmPassword" type="password" value={form.confirmPassword} onChange={handleChange} required />
+                  <input
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      type="password"
+                      value={form.confirmPassword}
+                      onChange={handleChange}
+                      placeholder="비밀번호를 다시 입력하세요"
+                      required
+                  />
                 </div>
               </div>
-              {/* Column 2: Image upload */}
+
+              {/* 수정된 부분: Column 2 - 이미지 업로드 및 유의사항 */}
               <div className="form-column">
                 <div className="form-group">
                   <label htmlFor="profileImage">프로필 사진</label>
-                  <input id="profileImage" type="file" onChange={onFileChange} accept="image/*" className="file-input"/>
                   <div className="image-preview-container">
-                    {imagePreviewUrl ? (
-                        <img src={imagePreviewUrl} alt="프로필 사진 미리보기" className="image-preview"/>
-                    ) : (
-                        <div className="image-placeholder">이미지 미리보기</div>
-                    )}
+                    <label htmlFor="profileImage" className="file-input-label">
+                      {imagePreviewUrl ? (
+                          <img src={imagePreviewUrl} alt="프로필 사진 미리보기" className="image-preview"/>
+                      ) : (
+                          <div className="image-placeholder">
+                            <span style={{ fontSize: '2rem' }}>⬆️</span>
+                            <p>파일을 선택하거나 드래그하여 업로드하세요</p>
+                            <p style={{ fontSize: '0.8rem', color: '#888' }}>지원 형식: .jpg, .png 등</p>
+                          </div>
+                      )}
+                    </label>
+                    <input
+                        id="profileImage"
+                        type="file"
+                        onChange={onFileChange}
+                        accept="image/*"
+                        className="file-input"
+                    />
                   </div>
+                </div>
+                
+                {/* 추가된 부분: 유의사항 박스 */}
+                <div className="notes-box">
+                    <h4>계정 생성 유의사항</h4>
+                    <ul>
+                        <li>사용 가능한 이메일 주소를 입력해주세요.</li>
+                        <li>비밀번호는 8자 이상으로 설정해주세요.</li>
+                        <li>프로필 사진은 필수가 아니며, 추후에 변경 가능합니다.</li>
+                    </ul>
                 </div>
               </div>
             </div>

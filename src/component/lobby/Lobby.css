@@ -17,7 +17,7 @@
     top: 10px;
     right: 10px;
     padding: 10px 15px;
-    background-color: #007bff;
+    background-color: #c01e69;
     color: white;
     border: none;
     border-radius: 5px;
@@ -26,7 +26,7 @@
 }
 
 .create-room-button:hover {
-    background-color: #0056b3;
+    background-color: #9b054b;
 }
 
 .room-list {
