@@ -71,19 +71,19 @@
 }
 
 .modal-actions button:first-child {
-    background-color: #007bff;
+    background-color: #d40477;
     color: white;
 }
 
 .modal-actions button:first-child:hover {
-    background-color: #0056b3;
+    background-color: #83004c;
 }
 
 .modal-actions button:last-child {
-    background-color: #6c757d;
+    background-color: #83004c;
     color: white;
 }
 
 .modal-actions button:last-child:hover {
-    background-color: #5a6268;
+    background-color: #83004c;
 }

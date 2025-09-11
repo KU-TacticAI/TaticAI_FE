@@ -24,11 +24,11 @@ const Main: React.FC = () => {
                 <span className="game-title">체스</span>
               </Link>
               <Link to="/lobby/othello" className="game-image">
-                <img src="/img/sample-img/img7.jpg" alt="오셀로"/>
+                <img src="/img/sample-img/img8.jpg" alt="오셀로"/>
                 <span className="game-title">오셀로</span>
               </Link>
               <Link to="/lobby/tictactoe" className="game-image">
-                <img src="/img/sample-img/img7.jpg" alt="틱텍토"/>
+                <img src="/img/sample-img/img9.jpg" alt="틱텍토"/>
                 <span className="game-title">틱텍토</span>
               </Link>
             </section>
