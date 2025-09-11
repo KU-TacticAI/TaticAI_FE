@@ -135,6 +135,7 @@ const BaseBoardGame: React.FC<BaseGameProps> = ({ gameData, gameType, renderCell
     switch (gameType.toLowerCase()) {
       case 'othello': return '오셀로';
       case 'tictactoe': return '틱택토';
+      case 'omok': return '오목';
       case 'chess': return '체스';
       default: return gameType;
     }
