@@ -135,5 +135,12 @@ export const GAME_CONFIGS: { [key: string]: GameConfig } = {
       "-5": { type: 'queen', color: 'black' },
       "-6": { type: 'king', color: 'black' }
     }
+  },
+  omok: {
+    boardSize: 15,
+    cellCount: 225,
+    playerSymbols: ['●', '○'],
+    playerColors: ['black', 'white'],
+    defaultBoardState: Array(225).fill(0)
   }
 };
