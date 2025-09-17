@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import Layout from "../../layout/Layout";
+import { RootState, AppDispatch } from '../../../store/store';
+import { createAi, updateAi, fetchAiList } from "../../../store/slices/aiSlice";
 import './AiModelUpload.css';
 
 const AiModelUpload: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const isEditMode = !!id;
   const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
+
+  const { aiList, status: aiStatus } = useSelector((state: RootState) => state.ai);
+
   const [form, setForm] = useState({
     modelName: '',
     description: '',
@@ -14,7 +23,26 @@ const AiModelUpload: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    if (isEditMode && aiStatus === 'idle') {
+      dispatch(fetchAiList());
+    }
+  }, [isEditMode, aiStatus, dispatch]);
+
+  useEffect(() => {
+    if (isEditMode && aiList.length > 0) {
+      const modelToEdit = aiList.find(m => m.aiId.toString() === id);
+      if (modelToEdit) {
+        setForm({
+          modelName: modelToEdit.name,
+          description: modelToEdit.description,
+          gameType: modelToEdit.gameType,
+          version: modelToEdit.version,
+        });
+      }
+    }
+  }, [isEditMode, id, aiList]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -34,10 +62,9 @@ const AiModelUpload: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setSuccess(false);
     setIsUploading(true);
 
-    if (!file) {
+    if (!isEditMode && !file) {
       setError('AI 모델 파일을 선택해주세요.');
       setIsUploading(false);
       return;
@@ -46,29 +73,32 @@ const AiModelUpload: React.FC = () => {
     try {
       const formData = new FormData();
       const modelData = {
-        modelName: form.modelName,
+        name: form.modelName,
         description: form.description,
         gameType: form.gameType,
         version: form.version
       };
 
       formData.append(
-        'json',
+        'requestDto',
         new Blob([JSON.stringify(modelData)], { type: 'application/json' })
       );
-      formData.append('file', file);
+      
+      if (file) {
+        formData.append('file', file);
+      }
 
-      // TODO: Replace with actual API call
-      // await uploadAiModel(formData);
+      if (isEditMode && id) {
+        await dispatch(updateAi({ id, formData })).unwrap();
+        alert('AI 모델이 성공적으로 수정되었습니다.');
+      } else {
+        await dispatch(createAi({ formData })).unwrap();
+        alert('AI 모델이 성공적으로 업로드되었습니다.');
+      }
       
-      // Simulate upload delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      setSuccess(true);
-      alert('AI 모델이 성공적으로 업로드되었습니다.');
       navigate('/my-ai');
     } catch (err) {
-      setError('AI 모델 업로드 중 오류가 발생했습니다.');
+      setError(isEditMode ? 'AI 모델 수정 중 오류가 발생했습니다.' : 'AI 모델 업로드 중 오류가 발생했습니다.');
     } finally {
       setIsUploading(false);
     }
@@ -78,8 +108,8 @@ const AiModelUpload: React.FC = () => {
     <Layout>
       <div className="ai-upload-container">
         <div className="ai-upload-header">
-          <h1>AI 모델 업로드</h1>
-          <p>페이지 디스크립션을 적어주세유</p>
+          <h1>{isEditMode ? 'AI 모델 수정' : 'AI 모델 업로드'}</h1>
+          <p>{isEditMode ? 'AI 모델의 정보를 수정합니다.' : '페이지 디스크립션을 적어주세유'}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="ai-upload-form">
@@ -100,18 +130,25 @@ const AiModelUpload: React.FC = () => {
 
               <div className="form-group">
                 <label htmlFor="gameType">게임 유형 *</label>
-                <select
+                {isEditMode ? (
+                    <div className="info-item">
+                      <span className="value game-type">{form.gameType}</span>
+                    </div>
+                  ):(
+                  <select
                   id="gameType"
                   name="gameType"
                   value={form.gameType}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="chess">체스</option>
-                  <option value="othello">오셀로</option>
-                  <option value="tictactoe">틱택토</option>
-                  <option value="omok">오목</option>
-                </select>
+                onChange={handleChange}
+                required
+              >
+                <option value="chess">체스</option>
+                <option value="othello">오셀로</option>
+                <option value="tictactoe">틱택토</option>
+                <option value="omok">오목</option>
+              </select>
+            )
+            }
               </div>
 
               <div className="form-group">
@@ -141,14 +178,14 @@ const AiModelUpload: React.FC = () => {
 
             <div className="form-right">
               <div className="file-upload-section">
-                <label htmlFor="modelFile">AI 모델 파일 *</label>
+                <label htmlFor="modelFile">AI 모델 파일 {isEditMode ? '(선택)' : '*'}</label>
                 <div className="file-upload-area">
                   <input
                     id="modelFile"
                     type="file"
                     onChange={onFileChange}
                     accept=".zip,.tar,.gz,.pkl,.h5,.pt,.pth"
-                    required
+                    required={!isEditMode}
                   />
                   <div className="file-upload-placeholder">
                     {file ? (
@@ -181,7 +218,6 @@ const AiModelUpload: React.FC = () => {
           </div>
 
           {error && <div className="error-message">{error}</div>}
-          {success && <div className="success-message">AI 모델이 성공적으로 업로드되었습니다!</div>}
 
           <div className="button-container">
             <button 
@@ -189,7 +225,7 @@ const AiModelUpload: React.FC = () => {
               className="submit-button"
               disabled={isUploading}
             >
-              {isUploading ? '업로드 중...' : 'AI 모델 업로드'}
+              {isUploading ? (isEditMode ? '수정 중...' : '업로드 중...') : (isEditMode ? 'AI 모델 수정' : 'AI 모델 업로드')}
             </button>
           </div>
         </form>

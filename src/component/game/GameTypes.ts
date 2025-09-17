@@ -18,6 +18,12 @@ export interface AI {
     description: string;
     gameType: string;
     aiUrl: string;
+    aiSize: string;
+    score: string;
+    tier: string;
+    version : string;
+    uploadDate: string;
+    updateAt: string;
 }
 
 export interface Player {
