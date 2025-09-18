@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 const NavigationBar = () => {
   return (
       <nav className="main-nav">
-        <Link to="/">내 기록 보기</Link>
+        <Link to="/my-record">내 기록 보기</Link>
         <Link to="/ranking">Ai 승률 랭킹</Link>
         <Link to="#">게임 소개</Link>
         <Link to="/my-ai">내 AI 관리</Link>
