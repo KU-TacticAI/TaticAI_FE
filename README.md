@@ -1,46 +1,81 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# 🎮 TacticAI Frontend
 
-## Available Scripts
+> **TacticAI**는 사용자가 AI와 함께 플레이하거나 AI끼리 대전하는 보드 게임 플랫폼입니다.  
+> 본 저장소는 해당 플랫폼의 **프론트엔드**로, React + TypeScript 기반 SPA로 구성되어 있습니다.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 📁 디렉토리 구조
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```bash
+src/
+├── api/              # Axios 인스턴스 및 API 함수
+├── component/        # 주요 화면 구성 컴포넌트
+│   ├── layout/         # 전체 레이아웃 및 구조
+│   ├── header/         # 헤더 바 컴포넌트
+│   ├── nav/            # 내비게이션 바
+│   ├── lobby/          # 로비 및 방 목록 UI
+│   ├── create_room/    # 방 생성 폼
+│   ├── game/           # 게임 진행 화면
+│   ├── waiting/        # 게임 시작 전 대기 화면
+│   ├── my-ai/          # 사용자 AI 관리
+│   ├── signin/         # 회원가입
+│   ├── login/          # 로그인
+│   ├── my_page/        # 마이페이지
+├── hooks/            # 커스텀 훅 모음
+├── pages/
+│   └── waiting_room/  # 대기방 진입 페이지
+├── ranking/          # 랭킹 테이블 구성 요소 (pagination, row, controls 등)
+├── resource/         # 리소스 및 정적 데이터
+├── store/            # Zustand 기반 전역 상태관리
+├── App.tsx           # 전체 라우팅 정의
+└── index.tsx         # React 진입점
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+---
 
-### `npm test`
+## 🚀 기술 스택
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| 항목       | 사용 기술                         |
+|------------|----------------------------------|
+| 프레임워크 | React 18 (CRA 기반)              |
+| 언어       | TypeScript                       |
+| UI 라이브러리 | MUI, Emotion, custom SCSS      |
+| 라우팅     | React Router v6                  |
+| 상태 관리  | Zustand                          |
+| 인증       | JWT + Axios Interceptor 활용     |
+| API 통신   | Axios                            |
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🔐 인증 구조
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- 로그인 시 JWT Access Token과 Refresh Token을 발급받아 저장
+- `axiosInstance`를 통한 자동 토큰 부착 및 재발급 처리
+- 게임 대기방, 로비 등 인증 기반 접근 제한 처리
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🧩 주요 기능
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+| 페이지 / 컴포넌트 | 설명 |
+|------------------|------|
+| `lobby` | 생성된 게임방 리스트 조회 및 참가 |
+| `create_room` | AI를 선택하여 게임방 생성 |
+| `game` | 게임 화면, AI vs AI 또는 AI vs 유저 플레이 |
+| `waiting` | 게임 대기방 UI (상대 AI 준비 상태 확인) |
+| `my-ai` | 사용자가 보유한 AI 모델 리스트 |
+| `ranking` | AI 랭킹 테이블 및 페이지네이션 |
+| `my_page` | 유저 정보 및 AI 업로드 기록 확인 |
+| `signin`, `login` | 회원가입 및 로그인 기능 제공 |
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## 👨‍💻 기여자
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+| 이름 | 역할 |
+|------|------|
+| 이서준 | 상태관리, 인증 처리, 전반적 구조 설계 |
+| 팀원B | 전체 UI 개발, 게임 화면 및 반응형 구현 |
+| 팀원A | AI 서버 연동, Axios API 작성 |
