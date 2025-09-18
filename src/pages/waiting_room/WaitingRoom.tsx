@@ -99,7 +99,7 @@ const WaitingRoom: React.FC = () => {
     if (room) {
       const response = await selectAiApi(room.roomId, Number(ai.aiId))
       console.log(response)
-      // selectAi(Number(ai.aiId)); // selectAi API 호출
+      selectAi(Number(ai.aiId)); // selectAi API 호출
     }
     setIsAiModalOpen(false); // 모달 닫기
   };
@@ -109,8 +109,8 @@ const WaitingRoom: React.FC = () => {
   const handleLeaveRoom = async () => {
     if (room) {
       try {
-        await leaveGameRoom(room.roomId);
-        sendLeave(currentUserId!!);
+        // await leaveGameRoom(room.roomId);
+        sendLeave();
         navigate(`/lobby/${room.gameType}`);
       } catch (error) {
         console.error('Failed to leave room:', error);
@@ -129,7 +129,7 @@ const WaitingRoom: React.FC = () => {
                 onSelectAi={handleOpenAiModal} // 함수 변경
                 onReady={() => {
                   if (currentUserId !== undefined) {
-                    sendReady(currentUserId);
+                    sendReady();
                   }
                 }}
                 onStartGame={startGame}

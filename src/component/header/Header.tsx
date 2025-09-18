@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { logout } from '../../store/slices/authSlice';
 import { logoutApi } from '../../api/Api';
+import { Link } from 'react-router-dom';
 
 const Header: React.FC = () => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
@@ -31,7 +32,9 @@ const Header: React.FC = () => {
   return (
       <header>
         <div className="logo">
-          <a href="/"><img src={logo} alt="로고" /></a>
+          <Link to="/">
+            <img src={logo} alt="로고" />
+          </Link>
         </div>
         <div className="header-text">개발 - AI 모델들과 경쟁해보세요!</div>
         <div className="login-section">
@@ -42,7 +45,9 @@ const Header: React.FC = () => {
                   <span className="separator"> {currentNickName} 님 환영합니다.</span>
                   <button onClick={handleLogout} className="auth-link">로그아웃</button>
                   <span className="separator">|</span>
-                  <a href="/mypage" className="auth-link">마이페이지</a>
+                  <Link to="/mypage">
+                    <p>마이페이지</p>
+                  </Link>
                 </>
             ) : (
                 <>
