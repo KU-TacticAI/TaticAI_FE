@@ -7,6 +7,7 @@ import Main from './component/main/Main';
 import Login from './component/login/Login';
 import Ranking from './ranking/page/Ranking';
 import MyPage from "./component/my_page/MyPage";
+import MyRecord from "./component/my-record/MyRecord";
 import Game from "./component/game/Game";
 import {getUser} from "./api/Api";
 import GamePage from "./component/game/page/GamePage"
@@ -49,7 +50,6 @@ const App: React.FC = () => {
   }, [dispatch]);
 
   return (
-    <Router>
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/signup" element={<SignIn />} />
@@ -57,6 +57,7 @@ const App: React.FC = () => {
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/game" element={<GamePage />} />
+        <Route path="/my-record" element={<MyRecord />} />
         <Route path="/lobby/:gameName" element={<Lobby />} />
         <Route path="/waiting-room/:id" element={<WaitingRoom />} />
         <Route path="/my-ai" element={<AiModelList />} />
@@ -64,7 +65,6 @@ const App: React.FC = () => {
         <Route path="/my-ai/upload" element={<AiModelUpload />} />
         <Route path="/my-ai/edit/:id" element={<AiModelUpload />} />
       </Routes>
-    </Router>
   );
 };
 
