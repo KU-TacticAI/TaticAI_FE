@@ -8,6 +8,7 @@ import Login from './component/login/Login';
 import Ranking from './ranking/page/Ranking';
 import MyPage from "./component/my_page/MyPage";
 import MyRecord from "./component/my-record/MyRecord";
+import Info from "./component/info/Info";
 import Game from "./component/game/Game";
 import {getUser} from "./api/Api";
 import GamePage from "./component/game/page/GamePage"
@@ -58,6 +59,7 @@ const App: React.FC = () => {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/game" element={<GamePage />} />
         <Route path="/my-record" element={<MyRecord />} />
+        <Route path="/info" element={<Info />} />
         <Route path="/lobby/:gameName" element={<Lobby />} />
         <Route path="/waiting-room/:id" element={<WaitingRoom />} />
         <Route path="/my-ai" element={<AiModelList />} />
