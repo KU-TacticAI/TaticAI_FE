@@ -1,36 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../layout/Layout';
 import './MyRecord.css';
+import { getAiResult } from '../../api/Api';
 
-// ai 버튼에 연결할 임시 데이터
-const mockData = [
-  {
-    id: 1,
-    winRate: '58.3%',
-    gamesPlayed: '120판',
-    stat1: '111',
-    stat2: '222',
-  },
-  {
-    id: 2,
-    winRate: '72.1%',
-    gamesPlayed: '86판',
-    stat1: '333',
-    stat2: '444',
-  },
-  {
-    id: 3,
-    winRate: '45.0%',
-    gamesPlayed: '210판',
-    stat1: '555',
-    stat2: '666',
-  },
-];
+export interface AiStatisticsDto {
+  aiId: number;
+  gameCount: number;
+  avg_turns: number;
+  avgResponseTimeMs: number;
+  winRate: number; // 0~1 범위인지 0~100 범위인지 확인 필요
+}
 
 const MyRecord = () => {
-
+  const [aiStats, setAiStats] = useState<AiStatisticsDto[]>([]);
   const [selectedId, setSelectedId] = useState(1);
-  const selectedData = mockData.find(data => data.id === selectedId);
+
+  // API 호출
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await getAiResult()
+        setAiStats(response.data);
+        if (response.data.length > 0) {
+          setSelectedId(response.data[0].aiId); // 첫 번째 aiId 선택
+        }
+      } catch (error) {
+        console.error('AI 통계 불러오기 실패:', error);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+  const selectedData = aiStats.find((data) => data.aiId === selectedId);
 
   return (
     <Layout>
@@ -41,13 +43,13 @@ const MyRecord = () => {
           <div className="left-panel">
             <div className="main-image-placeholder">티어img 추가 예정</div>
             <div className="selector-circles">
-              {mockData.map((item) => (
+              {aiStats.map((item) => (
                 <div
-                  key={item.id}
-                  className={`circle ${selectedId === item.id ? 'active' : ''}`}
-                  onClick={() => setSelectedId(item.id)}
+                  key={item.aiId}
+                  className={`circle ${selectedId === item.aiId ? 'active' : ''}`}
+                  onClick={() => setSelectedId(item.aiId)}
                 >
-                  {item.id}
+                  {item.aiId}
                 </div>
               ))}
             </div>
@@ -63,15 +65,15 @@ const MyRecord = () => {
                 </div>
                 <div className="info-box">
                   <h3>게임 판수</h3>
-                  <p>{selectedData.gamesPlayed}</p>
+                  <p>{selectedData.gameCount}</p>
                 </div>
                 <div className="info-box">
-                  <h3>글자1</h3>
-                  <p>{selectedData.stat1}</p>
+                  <h3>평균 응답시간</h3>
+                  <p>{selectedData.avgResponseTimeMs}</p>
                 </div>
                 <div className="info-box">
-                  <h3>글자2</h3>
-                  <p>{selectedData.stat2}</p>
+                  <h3>평균 턴수</h3>
+                  <p>{selectedData.avg_turns}</p>
                 </div>
               </>
             )}
