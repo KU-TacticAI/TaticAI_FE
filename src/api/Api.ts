@@ -271,4 +271,8 @@ export const selectAiApi = async (roomId: string, aiId: number) => {
   return await axiosInstance.post(`/api/game/rooms/${roomId}/ai/${aiId}`);
 }
 
+export const getAiResult = async ()=>{
+  return await axiosInstance.get('/api/core/ai-statistics');
+}
+
 export default axiosInstance;
