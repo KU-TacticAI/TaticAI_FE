@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Layout from '../layout/Layout';
 import './MyRecord.css';
 import { getAiResult } from '../../api/Api';
+import { Link } from "react-router-dom";
 
 export interface AiStatisticsDto {
   aiId: number;
@@ -79,6 +80,9 @@ const MyRecord = () => {
             )}
           </div>
         </div>
+       <Link to="/my-record/detail" className="submit-button">
+           상세기록 보기
+       </Link>
       </div>
     </Layout>
   );
