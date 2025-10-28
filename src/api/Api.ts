@@ -8,7 +8,7 @@ import { NavigateFunction } from 'react-router-dom';
 import { RankingItem } from '../ranking/table/RankingTable';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080', // 또는 배포용 주소
+  baseURL: 'http://ec2-15-164-217-45.ap-northeast-2.compute.amazonaws.com:8080', // 또는 배포용 주소
   withCredentials: true,
 });
 
@@ -259,20 +259,16 @@ export const updateAiApi = async (id: string, formData: FormData) => {
   });
 }
 
-// export const getAiListsByUserIdsApi = async (params: { ids: number[]; }) => {
-//   return await axiosInstance.get(`/api/core/api/ai/list`, {
-//     params: {
-//       ids: params.ids,
-//     },
-//   });
-// }
-
 export const selectAiApi = async (roomId: string, aiId: number) => {
   return await axiosInstance.post(`/api/game/rooms/${roomId}/ai/${aiId}`);
 }
 
 export const getAiResult = async ()=>{
   return await axiosInstance.get('/api/core/ai-statistics');
+}
+
+export const getGameResultDetail = async ()=>{
+  return await axiosInstance.get('/api/game/result');
 }
 
 export default axiosInstance;

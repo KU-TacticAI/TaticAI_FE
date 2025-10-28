@@ -32,7 +32,7 @@ const WaitingRoom: React.FC = () => {
 
   const { messages, sendChat, sendReady, sendLeave, startGame, selectAi, roomState } = useStompChat({
     roomId: id as string,
-    endpoint: 'http://localhost:8080/ws',
+    endpoint: 'http://ec2-15-164-217-45.ap-northeast-2.compute.amazonaws.com:8080/ws',
   });
 
   useEffect(() => {
