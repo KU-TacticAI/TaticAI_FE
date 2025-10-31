@@ -9,7 +9,8 @@ interface UseStompLobbyOptions {
   endpoint?: string;
 }
 
-export function useStompLobby({ gameName, endpoint = 'http://ec2-15-164-217-45.ap-northeast-2.compute.amazonaws.com:8080/ws' }: UseStompLobbyOptions) {
+// export function useStompLobby({ gameName, endpoint = 'http://localhost:8080/ws' }: UseStompLobbyOptions) {
+export function useStompLobby({ gameName, endpoint = 'http://ec2-54-180-79-48.ap-northeast-2.compute.amazonaws.com:8080/ws' }: UseStompLobbyOptions) {
   const stompRef = useRef<Client | null>(null);
   const [rooms, setRooms] = useState<GameRoom[]>([]);
   const [connected, setConnected] = useState(false);
