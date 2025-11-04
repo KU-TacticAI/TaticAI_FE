@@ -8,7 +8,7 @@ import { NavigateFunction } from 'react-router-dom';
 import { RankingItem } from '../ranking/table/RankingTable';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://ec2-52-79-222-76.ap-northeast-2.compute.amazonaws.com:8080', // 또는 배포용 주소
+  baseURL: 'https://ec2-52-79-222-76.ap-northeast-2.compute.amazonaws.com:8080', // 또는 배포용 주소
   // baseURL: 'http://localhost:8080', // 또는 배포용 주소
   withCredentials: true,
 });
