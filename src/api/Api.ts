@@ -156,7 +156,7 @@ export const logoutApi = async () => {
  * 회원 정보 + 프로필 사진
  * @param data : 'multipart/form-data'
  */
-export const signIn = async (data: object) => {
+export const signIn = async (data: FormData) => {
   return await axiosInstance.post('/api/core/users/sign-in', data, {
     headers: {
       'Content-Type': 'multipart/form-data',
@@ -175,7 +175,7 @@ export const getUser = async () => {
  * 회원 정보 수정
  * @param data : 'multipart/form-data'
  */
-export const updateUser = async (data: object) => {
+export const updateUser = async (data: FormData) => {
   return await axiosInstance.put('/api/core/users', data, { // Changed to put and added a placeholder URL
     headers: {
       'Content-Type': 'multipart/form-data',
