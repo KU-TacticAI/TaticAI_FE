@@ -126,7 +126,8 @@ export function useStompChat({ roomId, endpoint = 'https://tacticai.site/ws' }: 
         body: JSON.stringify({
           type: 'joinRoom',
           roomId: roomId,
-          userId: user.userId, // Redux에서 가져온 userId 사용
+          userId: user.userId,
+          playerName: user.nickname,
         }),
       });
     };
