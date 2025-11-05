@@ -10,7 +10,7 @@ interface UseStompLobbyOptions {
 }
 
 // export function useStompLobby({ gameName, endpoint = 'http://localhost:8080/ws' }: UseStompLobbyOptions) {
-export function useStompLobby({ gameName, endpoint = 'https://ec2-52-79-222-76.ap-northeast-2.compute.amazonaws.com:8080/ws' }: UseStompLobbyOptions) {
+export function useStompLobby({ gameName, endpoint = 'https://tacticai.site/ws' }: UseStompLobbyOptions) {
   const stompRef = useRef<Client | null>(null);
   const [rooms, setRooms] = useState<GameRoom[]>([]);
   const [connected, setConnected] = useState(false);
