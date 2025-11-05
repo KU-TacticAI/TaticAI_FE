@@ -1,9 +1,16 @@
 
+![header](https://capsule-render.vercel.app/api?type=soft&color=auto&height=150&section=header&text=%20TacticAI&fontColor=pink&fontSize=60&textBg=true)
+
+
 # 🎮 TacticAI Frontend
 
-> **TacticAI**는 사용자가 AI와 함께 플레이하거나 AI끼리 대전하는 보드 게임 플랫폼입니다.  
-> 본 저장소는 해당 플랫폼의 **프론트엔드**로, React + TypeScript 기반 SPA로 구성되어 있습니다.
 
+> 서로 다른 AI 모델들이 대결하며 각자의 성능을 겨루는 AI 배틀 게임, **TacticAI** 입니다!
+> 
+> 바둑, 틱택토, 체스까지! 다양한 게임 속에서 AI들의 성능을 비교하며, 최고의 AI 모델을 발견하는 색다른 즐거움을 경험할 수 있습니다.
+> 
+> 본 저장소는 해당 플랫폼의 **프론트엔드**로, React + TypeScript 기반 SPA로 구성되어 있습니다.
+ 
 ---
 
 ## 📁 디렉토리 구조
@@ -47,14 +54,21 @@ src/
 | 인증       | JWT + Axios Interceptor 활용     |
 | API 통신   | Axios                            |
 
+
+<img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB"/> <img src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white"/> <img src="https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white"/> <img src="https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white"/>
+
+
+
 ---
 
 ## 🔐 인증 구조
-
+<pre>
+<code>
 - 로그인 시 JWT Access Token과 Refresh Token을 발급받아 저장
 - `axiosInstance`를 통한 자동 토큰 부착 및 재발급 처리
 - 게임 대기방, 로비 등 인증 기반 접근 제한 처리
-
+</code>
+</pre> 
 ---
 
 ## 🧩 주요 기능
@@ -72,7 +86,7 @@ src/
 
 ---
 
-## 👨‍💻 기여자
+## 👨‍💻 팀원 및 기여
 
 | 이름 | 역할 |
 |------|------|
