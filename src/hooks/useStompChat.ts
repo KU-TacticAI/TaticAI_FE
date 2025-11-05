@@ -24,7 +24,8 @@ export function useStompChat({ roomId, endpoint = 'https://tacticai.site/ws' }: 
 
   // 3. useSelector를 사용해 Redux 스토어에서 user 정보 가져오기
   const user = useSelector((state: RootState) => state.auth.user);
-  const token = useSelector((state: RootState) => state.auth.token);
+  // const token = useSelector((state: RootState) => state.auth.token);
+  const token = localStorage.getItem('Authorization') ?? '';
 
   const safePublish = useCallback((destination: string, body: any) => {
     const client = stompRef.current;
