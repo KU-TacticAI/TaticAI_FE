@@ -27,12 +27,13 @@ const WaitingRoom: React.FC = () => {
   const [room, setRoom] = useState<GameRoomDetail | null>(null);
   const [players, setPlayers] = useState<Player[]>([]);
   const [isAiModalOpen, setIsAiModalOpen] = useState(false);
-  const currentUserId = useSelector((state: RootState) => state.auth.user?.userId);
   const { aiList, status: aiStatus } = useSelector((state: RootState) => state.ai);
+  const user = useSelector((state: RootState) => state.auth.user);
+  const currentUserId = user?.userId;
 
   const { messages, sendChat, sendReady, sendLeave, startGame, selectAi, roomState } = useStompChat({
     roomId: id as string,
-    endpoint: 'http://ec2-15-164-217-45.ap-northeast-2.compute.amazonaws.com:8080/ws',
+    endpoint: 'https://tacticai.site/ws',
   });
 
   useEffect(() => {
@@ -104,7 +105,7 @@ const WaitingRoom: React.FC = () => {
     setIsAiModalOpen(false); // 모달 닫기
   };
 
-  if (!room) return <div>Loading...</div>;
+  if (!room || !user) return <div>Loading...</div>;
 
   const handleLeaveRoom = async () => {
     if (room) {
