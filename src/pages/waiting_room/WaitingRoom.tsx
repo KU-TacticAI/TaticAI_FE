@@ -39,21 +39,27 @@ const WaitingRoom: React.FC = () => {
 
   // 5초마다 방 상태를 갱신하는 polling
   useEffect(() => {
+    if (!id) return;
+
     const fetchRoomData = async () => {
-      if (id) {
-        try {
-          const res = await getGameRoomDetailApi(id);
-          setRoom(res.data);
-          const rawPlayers =
-              res.data?.players ??
-              (res.data as any)?.playerList ??
-              (res.data as any)?.participants ??
-              [];
-          setPlayers(Array.isArray(rawPlayers) ? rawPlayers : []);
-        } catch (e) {
-          console.error('Failed to fetch room data:', e);
-          navigate(`/`);
-        }
+      console.log('[Polling] 방 상태 갱신 시도...', new Date().toLocaleTimeString());
+      try {
+        const res = await getGameRoomDetailApi(id);
+        console.log('[Polling] 방 상태 갱신 성공:', res.data);
+
+        setRoom(res.data);
+        const rawPlayers =
+            res.data?.players ??
+            (res.data as any)?.playerList ??
+            (res.data as any)?.participants ??
+            [];
+        setPlayers(Array.isArray(rawPlayers) ? rawPlayers : []);
+
+      } catch (e) {
+        console.error('[Polling] 방 상태 갱신 실패:', e);
+        // 방을 찾을 수 없는 경우 (404 등) 로비로 이동
+        clearInterval(intervalId);
+        navigate(`/`);
       }
     };
 
@@ -67,9 +73,10 @@ const WaitingRoom: React.FC = () => {
 
     // cleanup: 컴포넌트 언마운트 시 interval 정리
     return () => {
+      console.log('[Polling] interval 정리');
       clearInterval(intervalId);
     };
-  }, [id, navigate]);
+  }, [id, navigate, currentUserId]);
 
   // // 컴포넌트 언마운트 시 방 나가기
   // useEffect(() => {
