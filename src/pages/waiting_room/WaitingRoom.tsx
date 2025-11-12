@@ -33,7 +33,7 @@ const WaitingRoom: React.FC = () => {
 
   const { messages, sendChat, sendReady, sendLeave, startGame, selectAi, roomState } = useStompChat({
     roomId: id as string,
-    endpoint: 'http://tacticai.site/ws',
+    endpoint: '/ws',
     // endpoint: 'http://localhost:8080/ws',
   });
 
