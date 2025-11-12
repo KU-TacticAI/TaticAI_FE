@@ -16,22 +16,22 @@ interface Props {
 const GameInfoPanel: React.FC<Props> = ({ room, onSelectAi, onReady, onStartGame, onLeaveRoom }) => {
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
-  const hostPlayer = room.players.find((player: Player) => player.userId === room.hostUserId);
+  const hostPlayer = room?.players?.find((player: Player) => player.userId === room.hostUserId);
   const isHost = currentUser?.nickname === hostPlayer?.nickname;
 
-  const currentPlayer = room.players.find(p => p.nickname === currentUser?.nickname);
+  const currentPlayer = room?.players?.find(p => p.nickname === currentUser?.nickname);
   const isAiSelected = !!currentPlayer?.selectedAi;
   const isCurrentPlayerReady = !!currentPlayer?.isReady;
 
   // All players must have selected an AI and be ready.
   // The host does not have an isReady state, their readiness is implied by starting the game.
-  const areAllPlayersReady = room.players
-      .filter(p => p.userId !== room.hostUserId) // Exclude host from readiness check
-      .every(p => p.isReady && p.selectedAi);
+  const areAllPlayersReady = room?.players
+    ?.filter(p => p.userId !== room.hostUserId) // Exclude host from readiness check
+    .every(p => p.isReady && p.selectedAi);
 
   // The host also needs to select an AI before starting
   const isHostReadyToStart = isHost && hostPlayer?.selectedAi;
-
+  
   return (
     <Box className="game-info-section">
       <Box className="game-details">

@@ -137,14 +137,14 @@ const WaitingRoom: React.FC = () => {
                 onLeaveRoom={handleLeaveRoom}
             />
           </Box>
-          <ChatPanel
-              messages={messages}
-              onSend={(text) => {
-                if (currentUserId !== undefined) {
-                  sendChat(currentUserId, text);
-                }
-              }}
-          />
+          {/*<ChatPanel*/}
+          {/*    messages={messages}*/}
+          {/*    onSend={(text) => {*/}
+          {/*      if (currentUserId !== undefined) {*/}
+          {/*        sendChat(currentUserId, text);*/}
+          {/*      }*/}
+          {/*    }}*/}
+          {/*/>*/}
         </Box>
         <AiSelectionModal
             isOpen={isAiModalOpen}
