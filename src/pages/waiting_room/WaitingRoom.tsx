@@ -31,7 +31,7 @@ const WaitingRoom: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const currentUserId = user?.userId;
 
-  const { messages, sendChat, sendReady, sendLeave, startGame, selectAi, roomState } = useStompChat({
+  const { connected, messages, sendChat, sendReady, sendLeave, startGame, selectAi, roomState } = useStompChat({
     roomId: id as string,
     endpoint: '/ws',
     // endpoint: 'http://localhost:8080/ws',
@@ -64,7 +64,7 @@ const WaitingRoom: React.FC = () => {
       clearInterval(intervalId);
     };
 
-  }, [id, navigate]);
+  }, [id, navigate, connected]);
 
   useEffect(() => {
     console.log(roomState);
