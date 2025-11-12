@@ -88,25 +88,58 @@ const WaitingRoom: React.FC = () => {
   //   };
   // }, [room, sendLeave]);
 
-  // 브라우저 종료/탭 닫기 시 방 나가기
+  // 브라우저 종료/탭 닫기 시 방 나가기 (여러 이벤트로 확실하게 처리)
   useEffect(() => {
-    const handleBeforeUnload = () => {
+    const handlePageUnload = () => {
       if (room && currentUserId) {
-        console.log('브라우저 종료: 방 나가기');
-        sendLeave();
+        console.log('[이벤트] 페이지 나가기 감지');
 
-        // Beacon API로 확실하게 전송 (비동기 요청이 끊기지 않도록)
-        navigator.sendBeacon(
-            `${process.env.REACT_APP_API_URL || ''}/api/game-rooms/${room.roomId}/leave`,
-            JSON.stringify({ userId: currentUserId })
+        // 1. WebSocket으로 방 나가기 시도
+        try {
+          sendLeave();
+        } catch (e) {
+          console.error('sendLeave 실패:', e);
+        }
+
+        // 2. Beacon API로 HTTP 요청 (Content-Type을 명시)
+        const blob = new Blob(
+            [JSON.stringify({ userId: currentUserId })],
+            { type: 'application/json' }
         );
+        const apiUrl = process.env.REACT_APP_API_URL || window.location.origin;
+        navigator.sendBeacon(`${apiUrl}/api/game-rooms/${room.roomId}/leave`, blob);
+
+        // 3. 동기적 HTTP 요청 (fallback)
+        try {
+          const xhr = new XMLHttpRequest();
+          xhr.open('POST', `${apiUrl}/api/game-rooms/${room.roomId}/leave`, false); // 동기 요청
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.send(JSON.stringify({ userId: currentUserId }));
+        } catch (e) {
+          console.error('동기 HTTP 요청 실패:', e);
+        }
       }
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    // beforeunload: 페이지를 벗어날 때
+    window.addEventListener('beforeunload', handlePageUnload);
+
+    // pagehide: 페이지가 숨겨질 때 (모바일에서 더 잘 작동)
+    window.addEventListener('pagehide', handlePageUnload);
+
+    // visibilitychange: 탭이 백그라운드로 갈 때
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden' && room && currentUserId) {
+        console.log('[이벤트] 페이지 숨김 감지');
+        handlePageUnload();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('beforeunload', handlePageUnload);
+      window.removeEventListener('pagehide', handlePageUnload);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [room, currentUserId, sendLeave]);
 
