@@ -88,27 +88,27 @@ const WaitingRoom: React.FC = () => {
   //   };
   // }, [room, sendLeave]);
 
-  // // 브라우저 종료/탭 닫기 시 방 나가기
-  // useEffect(() => {
-  //   const handleBeforeUnload = () => {
-  //     if (room && currentUserId) {
-  //       console.log('브라우저 종료: 방 나가기');
-  //       sendLeave();
-  //
-  //       // Beacon API로 확실하게 전송 (비동기 요청이 끊기지 않도록)
-  //       navigator.sendBeacon(
-  //           `${process.env.REACT_APP_API_URL || ''}/api/game-rooms/${room.roomId}/leave`,
-  //           JSON.stringify({ userId: currentUserId })
-  //       );
-  //     }
-  //   };
-  //
-  //   window.addEventListener('beforeunload', handleBeforeUnload);
-  //
-  //   return () => {
-  //     window.removeEventListener('beforeunload', handleBeforeUnload);
-  //   };
-  // }, [room, currentUserId, sendLeave]);
+  // 브라우저 종료/탭 닫기 시 방 나가기
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (room && currentUserId) {
+        console.log('브라우저 종료: 방 나가기');
+        sendLeave();
+
+        // Beacon API로 확실하게 전송 (비동기 요청이 끊기지 않도록)
+        navigator.sendBeacon(
+            `${process.env.REACT_APP_API_URL || ''}/api/game-rooms/${room.roomId}/leave`,
+            JSON.stringify({ userId: currentUserId })
+        );
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [room, currentUserId, sendLeave]);
 
   useEffect(() => {
     console.log(roomState);
