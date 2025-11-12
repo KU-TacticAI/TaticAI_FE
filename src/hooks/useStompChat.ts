@@ -50,7 +50,7 @@ export function useStompChat({ roomId, endpoint = 'https://tacticai.site/ws' }: 
       userId: user.userId,
       roomId: roomId,
     });
-  }, [roomId, safePublish]);
+  }, [roomId, user, safePublish]);
 
   const sendLeave = useCallback(() => {
     if (!user) return;
