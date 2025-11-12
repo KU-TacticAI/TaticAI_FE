@@ -54,8 +54,16 @@ const WaitingRoom: React.FC = () => {
         }
       }
     };
+
     fetchRoomData();
-  }, [id]);
+
+    const intervalId = setInterval(fetchRoomData, 5000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+
+  }, [id, navigate]);
 
   useEffect(() => {
     console.log(roomState);
@@ -137,14 +145,14 @@ const WaitingRoom: React.FC = () => {
                 onLeaveRoom={handleLeaveRoom}
             />
           </Box>
-          <ChatPanel
-              messages={messages}
-              onSend={(text) => {
-                if (currentUserId !== undefined) {
-                  sendChat(currentUserId, text);
-                }
-              }}
-          />
+          {/*<ChatPanel*/}
+          {/*    messages={messages}*/}
+          {/*    onSend={(text) => {*/}
+          {/*      if (currentUserId !== undefined) {*/}
+          {/*        sendChat(currentUserId, text);*/}
+          {/*      }*/}
+          {/*    }}*/}
+          {/*/>*/}
         </Box>
         <AiSelectionModal
             isOpen={isAiModalOpen}
