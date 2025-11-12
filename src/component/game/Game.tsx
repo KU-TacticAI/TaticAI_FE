@@ -8,9 +8,9 @@ import {useLocation} from "react-router-dom";
 // import Checkers from "./Checkers";
 
 // api 기본 URL 설정
-const API_BASE_URL = "http://ec2-3-36-131-108.ap-northeast-2.compute.amazonaws.com:8000"; // 실제 API URL로 변경 필요
-const API_PROGRESS_URL = `${API_BASE_URL}/progress`;
-const API_START_URL = `${API_BASE_URL}/game-request/`;
+const API_BASE_URL = ""; // 실제 API URL로 변경 필요
+const API_PROGRESS_URL = `${API_BASE_URL}/ai/progress`;
+const API_START_URL = `${API_BASE_URL}/ai/game-request/`;
 
 interface GameProps {
   gameType: string;
