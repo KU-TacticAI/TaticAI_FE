@@ -31,12 +31,13 @@ const WaitingRoom: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const currentUserId = user?.userId;
 
-  const { messages, sendChat, sendReady, sendLeave, startGame, selectAi, roomState } = useStompChat({
+  const { connected, messages, sendChat, sendReady, sendLeave, startGame, selectAi, roomState } = useStompChat({
     roomId: id as string,
     endpoint: '/ws',
     // endpoint: 'http://localhost:8080/ws',
   });
 
+  // 5초마다 방 상태를 갱신하는 polling
   useEffect(() => {
     const fetchRoomData = async () => {
       if (id) {
@@ -56,15 +57,51 @@ const WaitingRoom: React.FC = () => {
       }
     };
 
+    // 초기 데이터 로드
     fetchRoomData();
 
-    const intervalId = setInterval(fetchRoomData, 5000);
+    // 5초마다 polling
+    const intervalId = setInterval(() => {
+      fetchRoomData();
+    }, 5000);
 
+    // cleanup: 컴포넌트 언마운트 시 interval 정리
     return () => {
       clearInterval(intervalId);
     };
-
   }, [id, navigate]);
+
+  // 컴포넌트 언마운트 시 방 나가기
+  useEffect(() => {
+    return () => {
+      if (room) {
+        console.log('컴포넌트 언마운트: 방 나가기');
+        sendLeave();
+      }
+    };
+  }, [room, sendLeave]);
+
+  // 브라우저 종료/탭 닫기 시 방 나가기
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (room && currentUserId) {
+        console.log('브라우저 종료: 방 나가기');
+        sendLeave();
+
+        // Beacon API로 확실하게 전송 (비동기 요청이 끊기지 않도록)
+        navigator.sendBeacon(
+            `${process.env.REACT_APP_API_URL || ''}/api/game-rooms/${room.roomId}/leave`,
+            JSON.stringify({ userId: currentUserId })
+        );
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [room, currentUserId, sendLeave]);
 
   useEffect(() => {
     console.log(roomState);
@@ -99,7 +136,7 @@ const WaitingRoom: React.FC = () => {
   // 모달을 열 때 AI 목록을 가져오는 로직 추가
   const handleOpenAiModal = async () => {
     if (aiStatus === 'idle') {
-        dispatch(fetchAiList());
+      dispatch(fetchAiList());
     }
     setIsAiModalOpen(true);
   };
