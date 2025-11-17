@@ -29,7 +29,7 @@ export interface AI {
 export interface Player {
     userId: string;
     nickname: string;
-    profileImage: string;
+    profileUrl: string;
     ranking: number;
     isReady: boolean;
     selectedAi: AI | null;
