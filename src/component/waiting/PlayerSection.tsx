@@ -17,7 +17,7 @@ const PlayerSection: React.FC<Props> = ({ player, room }) => {
     <div className="player-section">
       <div className="player-info-layout">
         <img
-          src={player.profileImage || defaultProfileIcon}
+          src={player.profileUrl || defaultProfileIcon}
           alt={player.nickname || player.userId}
           className="profile-image"
         />
