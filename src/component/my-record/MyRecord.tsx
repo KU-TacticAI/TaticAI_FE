@@ -3,6 +3,7 @@ import Layout from '../layout/Layout';
 import './MyRecord.css';
 import { getAiResult } from '../../api/Api';
 import { Link } from "react-router-dom";
+import { getTierByWinRate } from '../tierConfig/tierConfig';
 
 export interface AiStatisticsDto {
   aiId: number;
@@ -34,57 +35,71 @@ const MyRecord = () => {
   }, []);
 
   const selectedData = aiStats.find((data) => data.aiId === selectedId);
+  const tierInfo = selectedData ? getTierByWinRate(selectedData.winRate) : null;
 
   return (
-    <Layout>
-      <div className="record-page-container">
-        <h1 className="page-title">내 기록 보기</h1>
-        <div className="content-wrapper">
+      <Layout>
+        <div className="record-page-container">
+          <h1 className="page-title">내 기록 보기</h1>
+          <div className="content-wrapper">
 
-          <div className="left-panel">
-            <div className="main-image-placeholder">티어img 추가 예정</div>
-            <div className="selector-circles">
-              {aiStats.map((item) => (
-                <div
-                  key={item.aiId}
-                  className={`circle ${selectedId === item.aiId ? 'active' : ''}`}
-                  onClick={() => setSelectedId(item.aiId)}
-                >
-                  {item.aiId}
-                </div>
-              ))}
+            <div className="left-panel">
+              <div className="main-image-placeholder">
+                {tierInfo ? (
+                    <>
+                      <img
+                          src={tierInfo.imagePath}
+                          alt={`${tierInfo.name} Tier`}
+                          className="tier-image"
+                      />
+                      <p className="tier-name">{tierInfo.name}</p>
+                    </>
+                ) : (
+                    <p>데이터를 불러오는 중...</p>
+                )}
+              </div>
+              <div className="selector-circles">
+                {aiStats.map((item) => (
+                    <div
+                        key={item.aiId}
+                        className={`circle ${selectedId === item.aiId ? 'active' : ''}`}
+                        onClick={() => setSelectedId(item.aiId)}
+                    >
+                      {item.aiId}
+                    </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 오른쪽 패널: 데이터 표시 박스 */}
+            <div className="right-panel">
+              {selectedData && (
+                  <>
+                    <div className="info-box">
+                      <h3>승률</h3>
+                      <p>{(selectedData.winRate * 100).toFixed(1)}%</p>
+                    </div>
+                    <div className="info-box">
+                      <h3>게임 판수</h3>
+                      <p>{selectedData.gameCount}</p>
+                    </div>
+                    <div className="info-box">
+                      <h3>평균 응답시간</h3>
+                      <p>{selectedData.avgResponseTimeMs}</p>
+                    </div>
+                    <div className="info-box">
+                      <h3>평균 턴수</h3>
+                      <p>{selectedData.avg_turns}</p>
+                    </div>
+                  </>
+              )}
             </div>
           </div>
-
-          {/* 오른쪽 패널: 데이터 표시 박스 */}
-          <div className="right-panel">
-            {selectedData && (
-              <>
-                <div className="info-box">
-                  <h3>승률</h3>
-                  <p>{selectedData.winRate}</p>
-                </div>
-                <div className="info-box">
-                  <h3>게임 판수</h3>
-                  <p>{selectedData.gameCount}</p>
-                </div>
-                <div className="info-box">
-                  <h3>평균 응답시간</h3>
-                  <p>{selectedData.avgResponseTimeMs}</p>
-                </div>
-                <div className="info-box">
-                  <h3>평균 턴수</h3>
-                  <p>{selectedData.avg_turns}</p>
-                </div>
-              </>
-            )}
-          </div>
+          <Link to="/my-record/detail" className="submit-button">
+            상세기록 보기
+          </Link>
         </div>
-       <Link to="/my-record/detail" className="submit-button">
-           상세기록 보기
-       </Link>
-      </div>
-    </Layout>
+      </Layout>
   );
 };
 
