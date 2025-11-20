@@ -65,16 +65,11 @@ const MyRecordDetail = () => {
 
     const formatGameType = (type: string) => {
         switch (type) {
-            case 'GameType.TICTACTOE':
-                return '틱택토'; // 또는 'Tic-Tac-Toe'
-            case 'GameType.OMOK':
-                return '오목';       // 또는 'Omok'
-            case 'GameType.CHESS':
-                return '체스';      // 또는 'Chess'
-            case 'GameType.OTHELLO':
-                return '오셀로';   // 또는 'Othello'
-            default:
-                return type.replace('GameType.', ''); // 그 외의 경우 접두사만 제거
+            case 'GameType.TICTACTOE': return '틱택토'; // 또는 'Tic-Tac-Toe'
+            case 'GameType.OMOK': return '오목';       // 또는 'Omok'
+            case 'GameType.CHESS': return '체스';      // 또는 'Chess'
+            case 'GameType.OTHELLO': return '오셀로';   // 또는 'Othello'
+            default: return type.replace('GameType.', ''); // 그 외의 경우 접두사만 제거
         }
     };
 
@@ -134,5 +129,18 @@ const MyRecordDetail = () => {
             </div>
         );
     };
+
+    return (
+        <Layout>
+            <div className="record-detail-container">
+                <h1 className="detail-page-title">나의 대전기록 상세</h1>
+                {renderGameTable(ticTacToeGameRecords, 'TicTacToe')}
+                {renderGameTable(omokGameRecords, 'Omok')}
+                {renderGameTable(chessGameRecords, 'Chess')}
+                {renderGameTable(othelloGameRecords, 'Othello')}
+            </div>
+        </Layout>
+    );
 };
+
 export default MyRecordDetail;
