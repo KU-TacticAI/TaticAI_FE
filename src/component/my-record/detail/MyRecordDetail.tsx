@@ -96,7 +96,6 @@ const MyRecordDetail = () => {
                     <tbody>
                     {gameRecords.map((record) => {
                         // 무승부 판단 로직 (winnerAiId가 없거나 0이면 무승부)
-                        // 주의: 백엔드 데이터가 -1 등을 쓴다면 조건 수정 필요
                         const isDraw = !record.winnerAiId || record.winnerAiId === 0;
 
                         let resultText = '패배';
@@ -113,10 +112,7 @@ const MyRecordDetail = () => {
                         return (
                             <tr key={record.id} className={rowClass}>
                                 <td>{record.aiName || '이름'}</td>
-
-                                {/* 여기를 수정했습니다: 게임 타입 변환 */}
                                 <td>{formatGameType(record.gameType)}</td>
-
                                 <td>{formatDate(record.createdAt)}</td>
                                 <td>{record.responseTimeMs}ms</td>
                                 <td>{record.turnCount}</td>
