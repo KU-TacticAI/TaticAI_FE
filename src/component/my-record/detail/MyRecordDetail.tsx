@@ -80,7 +80,6 @@ const MyRecordDetail = () => {
 
         return (
             <div className="game-section">
-                {/* 섹션 제목은 이미 파라미터로 예쁘게 들어오므로 그대로 둠 */}
                 <h2 className="game-section-title">{gameType}</h2>
                 <table className="game-table">
                     <thead>
