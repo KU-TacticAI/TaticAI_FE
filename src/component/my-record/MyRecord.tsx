@@ -89,8 +89,7 @@ const MyRecord = () => {
                     </div>
                     <div className="info-box">
                       <h3>평균 턴수</h3>
-                      <p>{selectedData.avgTurns}</p>
-                    </div>
+                      <p>{selectedData.avgTurns.toFixed(1)}</p>                    </div>
                   </>
               )}
             </div>

@@ -24,6 +24,7 @@ interface IGameDetail {
     turnCount: number;
     moveData: string;
     isWin:Boolean;
+    createdAt: string;
 }
 
 interface ILogOutput {
@@ -57,7 +58,7 @@ const MyRecordDetail = () => {
         initData();
     }, []);
 
-    const formatDate = (date: Date) => {
+    const formatDate = (date: string | Date) => {
         const d = new Date(date);
         return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
     };
@@ -89,8 +90,7 @@ const MyRecordDetail = () => {
                                 <tr key={record.id} className={isWin ? 'win-row' : 'lose-row'}>
                                     <td>{record.aiName || '이름'}</td>
                                     <td>{record.gameType}</td>
-                                    {/*<td>{formatDate(record.createAt)}</td>*/}
-                                    <td>{formatDate(new Date("2025-03-04"))}</td>
+                                    <td>{formatDate(record.createdAt)}</td>
                                     <td>{record.responseTimeMs}ms</td>
                                     <td>{record.turnCount}</td>
                                     <td>{isWin ? '승리' : '패배'}</td>
