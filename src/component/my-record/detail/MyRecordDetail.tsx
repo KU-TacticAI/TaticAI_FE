@@ -65,16 +65,11 @@ const MyRecordDetail = () => {
 
     const formatGameType = (type: string) => {
         switch (type) {
-            case 'GameType.TICTACTOE':
-                return '틱택토'; // 또는 'Tic-Tac-Toe'
-            case 'GameType.OMOK':
-                return '오목';       // 또는 'Omok'
-            case 'GameType.CHESS':
-                return '체스';      // 또는 'Chess'
-            case 'GameType.OTHELLO':
-                return '오셀로';   // 또는 'Othello'
-            default:
-                return type.replace('GameType.', ''); // 그 외의 경우 접두사만 제거
+            case 'GameType.TICTACTOE': return '틱택토'; // 또는 'Tic-Tac-Toe'
+            case 'GameType.OMOK': return '오목';       // 또는 'Omok'
+            case 'GameType.CHESS': return '체스';      // 또는 'Chess'
+            case 'GameType.OTHELLO': return '오셀로';   // 또는 'Othello'
+            default: return type.replace('GameType.', ''); // 그 외의 경우 접두사만 제거
         }
     };
 
@@ -85,7 +80,6 @@ const MyRecordDetail = () => {
 
         return (
             <div className="game-section">
-                {/* 섹션 제목은 이미 파라미터로 예쁘게 들어오므로 그대로 둠 */}
                 <h2 className="game-section-title">{gameType}</h2>
                 <table className="game-table">
                     <thead>
@@ -101,7 +95,6 @@ const MyRecordDetail = () => {
                     <tbody>
                     {gameRecords.map((record) => {
                         // 무승부 판단 로직 (winnerAiId가 없거나 0이면 무승부)
-                        // 주의: 백엔드 데이터가 -1 등을 쓴다면 조건 수정 필요
                         const isDraw = !record.winnerAiId || record.winnerAiId === 0;
 
                         let resultText = '패배';
@@ -118,10 +111,7 @@ const MyRecordDetail = () => {
                         return (
                             <tr key={record.id} className={rowClass}>
                                 <td>{record.aiName || '이름'}</td>
-
-                                {/* 여기를 수정했습니다: 게임 타입 변환 */}
                                 <td>{formatGameType(record.gameType)}</td>
-
                                 <td>{formatDate(record.createdAt)}</td>
                                 <td>{record.responseTimeMs}ms</td>
                                 <td>{record.turnCount}</td>
@@ -134,5 +124,18 @@ const MyRecordDetail = () => {
             </div>
         );
     };
+
+    return (
+        <Layout>
+            <div className="record-detail-container">
+                <h1 className="detail-page-title">나의 대전기록 상세</h1>
+                {renderGameTable(ticTacToeGameRecords, 'TicTacToe')}
+                {renderGameTable(omokGameRecords, 'Omok')}
+                {renderGameTable(chessGameRecords, 'Chess')}
+                {renderGameTable(othelloGameRecords, 'Othello')}
+            </div>
+        </Layout>
+    );
 };
+
 export default MyRecordDetail;
