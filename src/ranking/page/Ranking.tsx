@@ -17,9 +17,9 @@ import { getRankings } from '../../api/Api';
 const PAGE_SIZE = 10;
 
 const sortMapping: { [key: string]: string } = {
-  scoreDesc: 'totalScore,desc',
-  scoreAsc: 'totalScore,asc',
-  rankAsc: 'rank,asc',
+  scoreDesc: 'winRate,desc',
+  scoreAsc: 'winRate,asc',
+  rankAsc: 'rankOrder,asc',
 };
 
 const Ranking: React.FC = () => {

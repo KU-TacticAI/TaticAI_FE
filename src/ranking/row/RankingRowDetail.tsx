@@ -16,7 +16,7 @@ const RankingRowDetail: React.FC<RankingRowDetailProps> = ({ item }) => {
               <tr>
                 <th>AI Name</th>
                 <th>Game</th>
-                <th>Score</th>
+                <th>Win Rate</th> {/* Score -> Win Rate 변경 */}
                 <th>Tier</th>
               </tr>
               </thead>
@@ -25,7 +25,7 @@ const RankingRowDetail: React.FC<RankingRowDetailProps> = ({ item }) => {
                   <tr key={ai.aiId || index}>
                     <td>{ai.aiName}</td>
                     <td>{ai.gameType}</td>
-                    <td>{ai.score?.toLocaleString() ?? 'N/A'}</td>
+                    <td>{ai.winRate ? ai.winRate.toFixed(1) + '%' : '0%'}</td>
                     <td>{ai.tier}</td>
                   </tr>
               ))}

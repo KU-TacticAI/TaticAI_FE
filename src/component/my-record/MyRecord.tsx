@@ -8,7 +8,7 @@ import { getTierByWinRate } from '../tierConfig/tierConfig';
 export interface AiStatisticsDto {
   aiId: number;
   gameCount: number;
-  avg_turns: number;
+  avgTurns: number;
   avgResponseTimeMs: number;
   winRate: number; // 0~1 범위인지 0~100 범위인지 확인 필요
 }
@@ -89,7 +89,7 @@ const MyRecord = () => {
                     </div>
                     <div className="info-box">
                       <h3>평균 턴수</h3>
-                      <p>{selectedData.avg_turns}</p>
+                      <p>{selectedData.avgTurns}</p>
                     </div>
                   </>
               )}

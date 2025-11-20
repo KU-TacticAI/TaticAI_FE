@@ -48,10 +48,10 @@ const MyRecordDetail = () => {
     useEffect(() => {
         const initData = async () => {
             const response = await getGameResultDetail();
-            setGameRecords(response.data.filter((data: IGameDetail) => data.gameType == 'OTHELLOTICTACTOE'));
-            setOmokGameRecords(response.data.filter((data: IGameDetail) => data.gameType == 'GOMOKU'));
-            setChessGameRecords(response.data.filter((data: IGameDetail) => data.gameType == 'CHESS'));
-            setOthelloGameRecords(response.data.filter((data: IGameDetail) => data.gameType == 'OTHELLO'));
+            setGameRecords(response.data.filter((data: IGameDetail) => data.gameType == 'GameType.TICTACTOE'));
+            setOmokGameRecords(response.data.filter((data: IGameDetail) => data.gameType == 'GameType.OMOK'));
+            setChessGameRecords(response.data.filter((data: IGameDetail) => data.gameType == 'GameType.CHESS'));
+            setOthelloGameRecords(response.data.filter((data: IGameDetail) => data.gameType == 'GameType.OTHELLO'));
         }
 
         initData();
