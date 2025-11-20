@@ -4,6 +4,7 @@ import './RankingTable.css'
 
 // Corresponds to RankingAiResponseDto
 export interface RankingAi {
+  winRate: any;
   aiId: number;
   aiName: string;
   gameType: 'Othello' | 'Gomoku' | 'Chess'; // Assuming gameType is one of these
@@ -15,8 +16,9 @@ export interface RankingAi {
 export interface RankingItem {
   userId: number;
   username: string;
-  totalScore: number;
   rank: number;
+  winRate: number;     // 승률
+  record: string;      // 전적 (예: "10승 5패")
   aiList: RankingAi[];
 }
 
@@ -30,7 +32,8 @@ const RankingTable: React.FC<RankingTableProps> = ({ items }) => (
       <tr>
         <th>Rank</th>
         <th>Player</th>
-        <th>Total Score</th>
+        <th>Win Rate</th>
+        <th>Record</th>
       </tr>
       </thead>
       <tbody>

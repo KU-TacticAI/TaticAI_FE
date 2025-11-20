@@ -8,8 +8,8 @@ import { NavigateFunction } from 'react-router-dom';
 import { RankingItem } from '../ranking/table/RankingTable';
 
 const axiosInstance = axios.create({
-  baseURL: '/', // 또는 배포용 주소
-  // baseURL: 'http://localhost:8080', // 또는 배포용 주소
+  // baseURL: '/', // 또는 배포용 주소
+  baseURL: 'http://localhost:8080', // 또는 배포용 주소
   withCredentials: true,
 });
 
