@@ -33,8 +33,8 @@ const WaitingRoom: React.FC = () => {
 
   const { connected, messages, sendChat, sendReady, sendLeave, startGame, selectAi, roomState } = useStompChat({
     roomId: id as string,
-    // endpoint: '/ws',
-    endpoint: 'http://localhost:8080/ws',
+    endpoint: '/ws',
+    // endpoint: 'http://localhost:8080/ws',
   });
 
   // 5초마다 방 상태를 갱신하는 polling
