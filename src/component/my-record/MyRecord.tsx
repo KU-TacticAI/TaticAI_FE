@@ -59,13 +59,14 @@ const MyRecord = () => {
                 )}
               </div>
               <div className="selector-circles">
-                {aiStats.map((item) => (
+                {aiStats.map((item, index) => (
                     <div
                         key={item.aiId}
                         className={`circle ${selectedId === item.aiId ? 'active' : ''}`}
                         onClick={() => setSelectedId(item.aiId)}
+                        title={`AI #${index + 1} - 승률 ${(item.winRate * 100).toFixed(1)}%`}
                     >
-                      {item.aiId}
+                      {index + 1}  {/* aiId 대신 순서 번호 */}
                     </div>
                 ))}
               </div>

@@ -31,7 +31,6 @@ export function useStompLobby({ gameName, endpoint = 'https://tacticai.site/ws' 
 
     return () => clearTimeout(timer);
 
-    // fetchInitialRooms();
   }, [gameName]);
 
   useEffect(() => {
