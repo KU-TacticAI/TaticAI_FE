@@ -121,10 +121,6 @@ const AiModelDetail: React.FC = () => {
                   <span className="value game-type">{getGameTypeLabel(model.gameType)}</span>
                 </div>
                 <div className="info-item">
-                  <span className="label">점수</span>
-                  <span className="value">{model.score}</span>
-                </div>
-                <div className="info-item">
                   <span className="label">티어</span>
                   <span className="value">{model.tier}</span>
                 </div>
