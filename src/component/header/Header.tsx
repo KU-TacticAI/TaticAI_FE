@@ -55,8 +55,8 @@ const Header: React.FC = () => {
                   <a href="/login" className="auth-link">로그인</a>
                   <span className="separator">|</span>
                   <a href="/signup" className="auth-link">회원가입</a>
-                  <span className="separator">|</span>
-                  <a href="/find-id" className="auth-link">아이디찾기</a>
+                  {/*<span className="separator">|</span>*/}
+                  {/*<a href="/find-id" className="auth-link">아이디찾기</a>*/}
                 </>
             )}
           </div>
