@@ -41,7 +41,7 @@ interface IGameRecordDto {
 }
 
 interface IAiInfo {
-    id: number;
+    aiId: number;
     name: string;
 }
 
@@ -61,7 +61,7 @@ const MyRecordDetail = () => {
                 // AI ID를 키로, AI 이름을 값으로 하는 맵 생성
                 const aiMap = new Map<number, string>();
                 aiList.forEach((ai: IAiInfo) => {
-                    aiMap.set(ai.id, ai.name);
+                    aiMap.set(ai.aiId, ai.name);
                 });
 
                 // 2. 게임 결과 가져오기
