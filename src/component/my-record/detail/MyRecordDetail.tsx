@@ -73,11 +73,23 @@ const MyRecordDetail = () => {
                     aiName: aiMap.get(record.aiId) || `AI #${record.aiId}`
                 }));
 
-                // 4. 게임 타입별로 분류
-                setGameRecords(enrichedData.filter((data: IGameDetail) => data.gameType === 'GameType.TICTACTOE'));
-                setOmokGameRecords(enrichedData.filter((data: IGameDetail) => data.gameType === 'GameType.OMOK'));
-                setChessGameRecords(enrichedData.filter((data: IGameDetail) => data.gameType === 'GameType.CHESS'));
-                setOthelloGameRecords(enrichedData.filter((data: IGameDetail) => data.gameType === 'GameType.OTHELLO'));
+                // 4. 게임 타입별로 분류하고 날짜 기준 내림차순 정렬
+                const sortByDate = (a: IGameDetail, b: IGameDetail) => {
+                    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+                };
+
+                setGameRecords(enrichedData
+                .filter((data: IGameDetail) => data.gameType === 'GameType.TICTACTOE')
+                .sort(sortByDate));
+                setOmokGameRecords(enrichedData
+                .filter((data: IGameDetail) => data.gameType === 'GameType.OMOK')
+                .sort(sortByDate));
+                setChessGameRecords(enrichedData
+                .filter((data: IGameDetail) => data.gameType === 'GameType.CHESS')
+                .sort(sortByDate));
+                setOthelloGameRecords(enrichedData
+                .filter((data: IGameDetail) => data.gameType === 'GameType.OTHELLO')
+                .sort(sortByDate));
             } catch (error) {
                 console.error('Failed to fetch game records:', error);
             }
