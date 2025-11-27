@@ -41,7 +41,7 @@ interface IGameRecordDto {
 }
 
 interface IAiInfo {
-    id: number;
+    aiId: number;
     name: string;
 }
 
