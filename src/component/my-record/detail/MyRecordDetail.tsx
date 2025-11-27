@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from "../../layout/Layout";
 import './MyRecordDetail.css';
-import { getGameResultDetail } from '../../../api/Api'
+import { getGameResultDetail, getAiListApi } from '../../../api/Api'
 
 interface IGameInfo {
     id: number;
@@ -40,6 +40,11 @@ interface IGameRecordDto {
     gameDetails: IGameDetail;
 }
 
+interface IAiInfo {
+    id: number;
+    name: string;
+}
+
 const MyRecordDetail = () => {
     const [ticTacToeGameRecords, setGameRecords] = useState<IGameDetail[]>([]);
     const [omokGameRecords, setOmokGameRecords] = useState<IGameDetail[]>([]);
@@ -48,11 +53,34 @@ const MyRecordDetail = () => {
 
     useEffect(() => {
         const initData = async () => {
-            const response = await getGameResultDetail();
-            setGameRecords(response.data.filter((data: IGameDetail) => data.gameType == 'GameType.TICTACTOE'));
-            setOmokGameRecords(response.data.filter((data: IGameDetail) => data.gameType == 'GameType.OMOK'));
-            setChessGameRecords(response.data.filter((data: IGameDetail) => data.gameType == 'GameType.CHESS'));
-            setOthelloGameRecords(response.data.filter((data: IGameDetail) => data.gameType == 'GameType.OTHELLO'));
+            try {
+                // 1. AI 목록 먼저 가져오기
+                const aiResponse = await getAiListApi();
+                const aiList: IAiInfo[] = aiResponse.data;
+
+                // AI ID를 키로, AI 이름을 값으로 하는 맵 생성
+                const aiMap = new Map<number, string>();
+                aiList.forEach((ai: IAiInfo) => {
+                    aiMap.set(ai.id, ai.name);
+                });
+
+                // 2. 게임 결과 가져오기
+                const gameResponse = await getGameResultDetail();
+
+                // 3. 게임 결과에 AI 이름 추가
+                const enrichedData = gameResponse.data.map((record: IGameDetail) => ({
+                    ...record,
+                    aiName: aiMap.get(record.aiId) || `AI #${record.aiId}`
+                }));
+
+                // 4. 게임 타입별로 분류
+                setGameRecords(enrichedData.filter((data: IGameDetail) => data.gameType === 'GameType.TICTACTOE'));
+                setOmokGameRecords(enrichedData.filter((data: IGameDetail) => data.gameType === 'GameType.OMOK'));
+                setChessGameRecords(enrichedData.filter((data: IGameDetail) => data.gameType === 'GameType.CHESS'));
+                setOthelloGameRecords(enrichedData.filter((data: IGameDetail) => data.gameType === 'GameType.OTHELLO'));
+            } catch (error) {
+                console.error('Failed to fetch game records:', error);
+            }
         }
 
         initData();
